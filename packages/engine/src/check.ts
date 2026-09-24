@@ -56,16 +56,9 @@ export function checkLevel(level: LevelContent, options: LevelRunOptions = {}): 
   }
   if (violations.overLimit > 0)
     problems.push(`Эталон длиннее лимита на ${violations.overLimit} бл.`);
-  if (level.scene.kind !== 'grid') {
-    return {
-      ok: false,
-      result: null,
-      violations,
-      problems: [...problems, 'Свободная сцена пока не проверяется'],
-    };
-  }
   const result = runHeadless(level, level.reference, {
     ...(level.inputs ? { inputs: level.inputs } : {}),
+    ...(level.answers ? { answers: level.answers } : {}),
     ...options,
   });
   if (!result.success) problems.push('Эталон не достигает цели');

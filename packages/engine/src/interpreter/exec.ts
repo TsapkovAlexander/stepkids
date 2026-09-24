@@ -53,6 +53,8 @@ export function createExecContext(runtime: Runtime, thread: Thread): ExecContext
   const ctx: ExecContext = {
     actorId: thread.actorId,
     world,
+    runtime,
+    params: [],
     emit,
     now: () => runtime.now,
 

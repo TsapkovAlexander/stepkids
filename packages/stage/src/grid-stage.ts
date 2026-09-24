@@ -1,11 +1,19 @@
 import { Application, Container, Sprite, type Texture } from 'pixi.js';
-import type { GridWorld } from '@stepkids/engine';
-import { THEMES } from './art';
+import type { FreeWorld, GridWorld, World } from '@stepkids/engine';
+import { PROP_COSTUMES, THEMES } from './art';
 import { ActorView } from './actor-view';
 import { BoardView, type StageMarkers } from './board-view';
 import { ItemView } from './item-view';
 import { cellAt, cellCenter, computeLayout, type BoardLayout } from './layout';
-import { burstTexture, characterTexture, itemTexture, preloadTextures } from './textures';
+import { FreeView } from './free-view';
+import {
+  backgroundTexture,
+  burstTexture,
+  characterTexture,
+  itemTexture,
+  preloadTextures,
+  spriteTexture,
+} from './textures';
 
 export interface GridStageOptions {
   /** CSS font family for speech bubbles; the host loads the font before creating the stage. */
@@ -17,8 +25,9 @@ export interface GridStageOptions {
 }
 
 /**
- * PixiJS renderer of the grid scene. It owns no game logic: every frame it reads the world
- * model and the virtual clock supplied by the host and draws the interpolated state.
+ * PixiJS renderer of both scenes (grid for tiers 1–2, free for tiers 3–4). It owns no game
+ * logic: every frame it reads the world model and the virtual clock supplied by the host
+ * and draws the interpolated state.
  */
 export class GridStage {
   private readonly root = new Container();
@@ -29,6 +38,7 @@ export class GridStage {
   private actors: ActorView[] = [];
   private burst: Sprite | null = null;
   private world: GridWorld | null = null;
+  private free: FreeView | null = null;
   private layout: BoardLayout | null = null;
   private timeSource: () => number = () => 0;
   private destroyed = false;
@@ -80,8 +90,12 @@ export class GridStage {
   }
 
   /** Rebuilds the scene graph for a world (a new run or a newly loaded level). */
-  async show(world: GridWorld, markers: StageMarkers = {}): Promise<void> {
+  async show(world: World, markers: StageMarkers = {}): Promise<void> {
     const token = ++this.showToken;
+    if (world.kind === 'free') {
+      await this.showFree(world, token);
+      return;
+    }
     const palette = THEMES[world.theme];
     const costumesOf = this.options.costumes ?? (() => ['default']);
     const characters = [...world.actors.values()].map((actor) => ({
@@ -135,6 +149,40 @@ export class GridStage {
     this.frame();
   }
 
+  private async showFree(world: FreeWorld, token: number): Promise<void> {
+    const costumesOf = this.options.costumes ?? (() => ['default']);
+    const textures = new Map<string, Texture>();
+    const jobs: Array<Promise<void>> = [];
+    for (const sprite of world.sprites.values()) {
+      const costumes = new Set([
+        sprite.costume,
+        'default',
+        ...costumesOf(sprite.character),
+        ...(PROP_COSTUMES[sprite.character] ?? []),
+      ]);
+      for (const costume of costumes) {
+        jobs.push(
+          spriteTexture(sprite.character, costume).then(
+            (texture) => void textures.set(`${sprite.character}:${costume}`, texture),
+          ),
+        );
+      }
+    }
+    const [backdrop] = await Promise.all([backgroundTexture(world.background), ...jobs]);
+    if (token !== this.showToken || this.destroyed || !backdrop) return;
+    this.clearScene();
+    this.free = new FreeView(
+      world,
+      backdrop,
+      textures,
+      this.options.fontFamily ?? 'sans-serif',
+      this.options.onActorTap,
+    );
+    this.scene.addChild(this.free.container);
+    this.relayout();
+    this.frame();
+  }
+
   /** Current layout, for hosts that position DOM overlays over cells. */
   getLayout(): BoardLayout | null {
     return this.layout;
@@ -159,12 +207,19 @@ export class GridStage {
     this.actors = [];
     this.board = null;
     this.burst = null;
+    this.world = null;
+    this.free = null;
   }
 
   private relayout(): void {
-    const world = this.world;
-    if (!world || this.destroyed) return;
+    if (this.destroyed) return;
     const { width, height } = this.app.screen;
+    if (this.free) {
+      this.free.relayout(width, height);
+      return;
+    }
+    const world = this.world;
+    if (!world) return;
     this.layout = computeLayout(width, height, world.cols, world.rows);
     this.board?.relayout(this.layout);
     for (const view of this.items) view.relayout(this.layout);
@@ -172,7 +227,12 @@ export class GridStage {
   }
 
   private frame(): void {
-    if (!this.world || !this.layout || this.destroyed) return;
+    if (this.destroyed) return;
+    if (this.free) {
+      this.free.update(this.timeSource(), this.app.screen.width);
+      return;
+    }
+    if (!this.world || !this.layout) return;
     const now = this.timeSource();
     const clock = performance.now();
     this.board?.update(clock);
@@ -205,3 +265,6 @@ export class GridStage {
     }
   }
 }
+
+/** Name that reads right for both scene kinds. */
+export { GridStage as SceneStage };

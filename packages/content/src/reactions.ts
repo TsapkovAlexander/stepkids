@@ -15,6 +15,7 @@ export type ReactionKey =
   | 'tooSlow'
   | 'wrongCostume'
   | 'wrongVisibility'
+  | 'notTouching'
   | 'empty'
   | 'timeout'
   | 'error'
@@ -40,6 +41,7 @@ export const REACTION_LINES: Record<ReactionKey, string[]> = {
   tooSlow: ['Я не успел! Попробуем быстрее.'],
   wrongCostume: ['Я не в том костюме!', 'Надо переодеться.'],
   wrongVisibility: ['Ой, меня видно! А надо было спрятаться.', 'Меня не видно! Покажись.'],
+  notTouching: ['Я не долетел. Попробуем ещё!', 'Почти! Нужно подобраться ближе.'],
   empty: ['Добавь блоки в программу!', 'Программа пустая. Нажми на блок внизу!'],
   timeout: ['Я устал ходить. Давай попробуем по-другому.'],
   error: ['Что-то пошло не так. Попробуем ещё раз!'],

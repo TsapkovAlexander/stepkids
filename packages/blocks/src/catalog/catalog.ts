@@ -1,5 +1,6 @@
 import { createId, isBlockNode, type ArgValue, type BlockNode, type Primitive } from '../ast';
 import type { Tier } from '../level';
+import { ADVANCED_BLOCKS } from './advanced-blocks';
 import { CORE_BLOCKS } from './core-blocks';
 import { LABEL_MAX_LENGTH, type BlockDef, type ParamDef } from './types';
 
@@ -109,4 +110,4 @@ function normalizeLiteral(param: ParamDef, value: Primitive | undefined): Primit
   }
 }
 
-export const defaultCatalog = new BlockCatalog(CORE_BLOCKS);
+export const defaultCatalog = new BlockCatalog([...CORE_BLOCKS, ...ADVANCED_BLOCKS]);

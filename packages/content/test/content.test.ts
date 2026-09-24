@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { defaultCatalog, TASK_TEXT_LIMIT_YOUNG } from '@stepkids/blocks';
+import {
+  defaultCatalog,
+  normalizeForBlockly,
+  targetToWorkspace,
+  TASK_TEXT_LIMIT_YOUNG,
+  withScripts,
+  workspaceToScripts,
+  type ProgramDoc,
+} from '@stepkids/blocks';
 import { checkLevel, runHeadless } from '@stepkids/engine';
 import { AUTHORED_WORLDS } from '../src/worlds';
 import { CHARACTERS, SEED_WORLDS, characterById, costumesOf, seedWorld } from '../src';
@@ -51,6 +59,24 @@ describe.each(allLevels)('level $id', ({ content }) => {
     const check = checkLevel(content, { costumes: costumesOf });
     expect(check.problems).toEqual([]);
     expect(check.result?.stars).toBe(3);
+  });
+
+  it('opens in the puzzle editor without loss and still earns three stars', () => {
+    const reference = content.reference;
+    if (!reference) return;
+    let program: ProgramDoc = reference;
+    for (const target of reference.targets) {
+      const saved = JSON.parse(
+        JSON.stringify(targetToWorkspace(reference, target.target, defaultCatalog)),
+      );
+      program = withScripts(program, target.target, workspaceToScripts(saved, defaultCatalog));
+    }
+    const strip = (doc: ProgramDoc) =>
+      doc.targets.map((target) => target.scripts.map(({ x: _x, y: _y, ...script }) => script));
+    expect(strip(program)).toEqual(strip(normalizeForBlockly(reference, defaultCatalog)));
+    expect(
+      checkLevel({ ...content, reference: program }, { costumes: costumesOf }).result?.stars,
+    ).toBe(3);
   });
 
   it('is voiced and short enough for a six-year-old', () => {

@@ -1,5 +1,5 @@
 import { normalizePhrase, type Goal, type StarsRule } from '@stepkids/blocks';
-import type { GridWorld } from './world/grid-world';
+import type { World } from './world/types';
 
 export type GoalDetail =
   | 'starsLeft'
@@ -10,6 +10,7 @@ export type GoalDetail =
   | 'tooSlow'
   | 'wrongCostume'
   | 'wrongVisibility'
+  | 'notTouching'
   | 'manual';
 
 export interface GoalStatus {
@@ -21,13 +22,13 @@ export interface GoalStatus {
 }
 
 export interface GoalState {
-  world: GridWorld;
+  world: World;
   timeMs: number;
   variable?: (name: string) => number | string | undefined;
 }
 
-function defaultActor(world: GridWorld, actorId?: string): string {
-  const first = world.actors.keys().next().value;
+function defaultActor(world: World, actorId?: string): string {
+  const first = world.actorIds()[0];
   return actorId ?? first ?? '';
 }
 
@@ -35,6 +36,7 @@ export function evaluateGoal(goal: Goal, state: GoalState): GoalStatus {
   const { world } = state;
   switch (goal.kind) {
     case 'collectAll': {
+      if (world.kind !== 'grid') return { goal, met: true };
       const starsLeft = world.starsLeft();
       return starsLeft === 0
         ? { goal, met: true }
@@ -42,7 +44,7 @@ export function evaluateGoal(goal: Goal, state: GoalState): GoalStatus {
     }
     case 'reach': {
       const actorId = defaultActor(world, goal.actor);
-      const actor = world.hasActor(actorId) ? world.actor(actorId) : null;
+      const actor = world.kind === 'grid' && world.hasActor(actorId) ? world.actor(actorId) : null;
       const met = !!actor && actor.x === goal.x && actor.y === goal.y;
       return met ? { goal, met } : { goal, met, detail: 'notReached' };
     }
@@ -65,7 +67,8 @@ export function evaluateGoal(goal: Goal, state: GoalState): GoalStatus {
     }
     case 'drawShape': {
       const actorId = defaultActor(world, goal.actor);
-      const trail = world.hasActor(actorId) ? world.actor(actorId).trail : [];
+      const trail =
+        world.kind === 'grid' && world.hasActor(actorId) ? world.actor(actorId).trail : [];
       const drawn = new Set(trail.map((cell) => `${cell.x}:${cell.y}`));
       const wanted = new Set(goal.cells.map(([x, y]) => `${x}:${y}`));
       const met = drawn.size === wanted.size && [...wanted].every((key) => drawn.has(key));
@@ -80,6 +83,21 @@ export function evaluateGoal(goal: Goal, state: GoalState): GoalStatus {
       const actorId = defaultActor(world, goal.actor);
       const met = world.hasActor(actorId) && world.actor(actorId).hidden === goal.hidden;
       return met ? { goal, met } : { goal, met, detail: 'wrongVisibility' };
+    }
+    case 'touching': {
+      const actorId = defaultActor(world, goal.actor);
+      let met = false;
+      if (world.hasActor(actorId)) {
+        if (world.kind === 'free') met = world.touching(actorId, goal.target, state.timeMs);
+        else {
+          const me = world.actor(actorId);
+          met =
+            world.hasActor(goal.target) &&
+            world.actor(goal.target).x === me.x &&
+            world.actor(goal.target).y === me.y;
+        }
+      }
+      return met ? { goal, met } : { goal, met, detail: 'notTouching' };
     }
     case 'manual':
       return { goal, met: false, detail: 'manual' };

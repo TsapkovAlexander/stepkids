@@ -75,7 +75,7 @@ export interface ChoiceParam extends ParamBase {
 /** Options come from the scene at edit time (costumes of the actor, sprites, messages…). */
 export interface DynamicChoiceParam extends ParamBase {
   kind: 'dynamic';
-  source: 'costumes' | 'actors' | 'messages' | 'variables' | 'lists';
+  source: 'costumes' | 'actors' | 'messages' | 'variables' | 'lists' | 'procedures';
   default: string;
 }
 
@@ -124,6 +124,11 @@ export interface BlockDef {
   codegen: CodegenTemplates;
   /** Hidden from palettes but still executable (e.g. the implicit start of the ribbon). */
   hidden?: boolean;
+  /**
+   * How the block reads in the puzzle editor: "иди в x {x} y {y}". Defaults to the label
+   * followed by its parameters.
+   */
+  text?: string;
 }
 
 export const LABEL_MAX_LENGTH = 12;

@@ -167,7 +167,7 @@ as $$
       where jsonb_typeof(goal) is distinct from 'object'
         or goal ->> 'kind' is null
         or goal ->> 'kind' not in (
-          'collectAll', 'reach', 'say', 'varEquals', 'withinTime', 'drawShape', 'costume', 'hidden', 'manual'
+          'collectAll', 'reach', 'say', 'varEquals', 'withinTime', 'drawShape', 'costume', 'hidden', 'touching', 'manual'
         )
     );
 $$;

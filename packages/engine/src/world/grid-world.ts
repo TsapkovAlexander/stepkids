@@ -131,6 +131,10 @@ export class GridWorld {
     return this.actors.has(id);
   }
 
+  actorIds(): string[] {
+    return [...this.actors.keys()];
+  }
+
   actor(id: string): GridActorState {
     const actor = this.actors.get(id);
     if (!actor) throw new Error(`No actor "${id}" in the scene`);

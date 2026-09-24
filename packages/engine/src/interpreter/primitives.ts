@@ -1,6 +1,8 @@
 import { DIRECTIONS, type Direction } from '@stepkids/blocks';
 import { TIMING } from '../constants';
+import { EngineError } from '../errors';
 import { FRAME } from '../waits';
+import { createAdvancedPrimitives } from './primitives-advanced';
 import type { CommandGenerator, ExecContext, PrimitiveRegistry } from './types';
 
 function toDirection(value: unknown): Direction {
@@ -20,6 +22,7 @@ function* gridStep(
   blockId: string,
 ): CommandGenerator {
   const { world, actorId } = ctx;
+  if (world.kind !== 'grid') throw new EngineError('unsupported_scene', blockId);
   for (let i = 0; i < count; i += 1) {
     ctx.countStep();
     const plan = world.planStep(actorId, dir, ctx.now());
@@ -52,7 +55,8 @@ function* gridStep(
 }
 
 export function createCorePrimitives(): PrimitiveRegistry {
-  return {
+  const advanced = createAdvancedPrimitives();
+  const core: PrimitiveRegistry = {
     commands: {
       'motion.step': (ctx, args, block) =>
         gridStep(ctx, toDirection(args.dir), toCount(args.count), block.id),
@@ -102,9 +106,11 @@ export function createCorePrimitives(): PrimitiveRegistry {
       'looks.costume': (ctx, args) => {
         ctx.world.setCostume(ctx.actorId, String(args.costume ?? 'next'));
       },
-
-      'control.stop': (ctx) => ctx.stopThread(),
     },
     reporters: {},
+  };
+  return {
+    commands: { ...core.commands, ...advanced.commands },
+    reporters: { ...core.reporters, ...advanced.reporters },
   };
 }

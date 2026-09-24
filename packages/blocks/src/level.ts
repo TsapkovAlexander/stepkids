@@ -49,6 +49,12 @@ export const goalSchema = z.discriminatedUnion('kind', [
   }),
   /** The actor is hidden (or visible) when the program ends. */
   z.object({ kind: z.literal('hidden'), hidden: z.boolean(), actor: z.string().optional() }),
+  /** The actor touches another sprite (or the edge) when the program ends. */
+  z.object({
+    kind: z.literal('touching'),
+    target: z.string().min(1).max(40),
+    actor: z.string().optional(),
+  }),
   /** Free task checked by a parent. */
   z.object({ kind: z.literal('manual') }),
 ]);
@@ -87,10 +93,14 @@ export type LevelKind = z.infer<typeof levelKindSchema>;
 
 export const TASK_TEXT_LIMIT_YOUNG = 80;
 
-export const levelInputSchema = z.object({
-  atMs: z.number().int().min(0).max(120_000),
-  tap: z.string().min(1).max(40),
-});
+/** A scripted input of the headless check: tap an actor or press a key at a moment. */
+export const levelInputSchema = z
+  .object({
+    atMs: z.number().int().min(0).max(120_000),
+    tap: z.string().min(1).max(40).optional(),
+    key: z.string().min(1).max(20).optional(),
+  })
+  .refine((input) => !!input.tap !== !!input.key, 'An input is either a tap or a key');
 export type LevelInput = z.infer<typeof levelInputSchema>;
 
 /** One immutable version of a level — what `level_versions` stores. */
@@ -111,8 +121,10 @@ export const levelContentSchema = z
     hints: z.array(hintSchema).max(3),
     /** Reference solution for the backoffice pass check; never shown to the child. */
     reference: programSchema.optional(),
-    /** Taps the headless check performs for interactive tasks ("tap the hero to jump"). */
-    inputs: z.array(levelInputSchema).max(20).optional(),
+    /** Taps and keys the headless check performs for interactive tasks. */
+    inputs: z.array(levelInputSchema).max(40).optional(),
+    /** Answers the headless check gives to "спросить и ждать", in order. */
+    answers: z.array(z.string().max(60)).max(10).optional(),
   })
   .superRefine((level, ctx) => {
     if (level.tier <= 2 && level.taskText.length > TASK_TEXT_LIMIT_YOUNG) {

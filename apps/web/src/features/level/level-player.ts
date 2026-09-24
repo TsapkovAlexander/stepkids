@@ -1,5 +1,12 @@
 import type { LevelContent, ProgramDoc } from '@stepkids/blocks';
-import { GridWorld, LevelRun, Latch, type RunResult } from '@stepkids/engine';
+import {
+  FreeWorld,
+  GridWorld,
+  LevelRun,
+  Latch,
+  type RunResult,
+  type World,
+} from '@stepkids/engine';
 import type { GridStage, StageMarkers } from '@stepkids/stage';
 
 /** `done` — a sandbox run ended; the scene stays as the program left it until Stop. */
@@ -41,7 +48,7 @@ const REACTION_MAX_MS = 4000;
 export class LevelPlayer {
   private stage: GridStage | null = null;
   private run: LevelRun | null = null;
-  private world: GridWorld;
+  private world: World;
   private displayTime = 0;
   private speed = 1;
   private raf = 0;
@@ -125,14 +132,15 @@ export class LevelPlayer {
     this.run = null;
   }
 
-  private freshWorld(): GridWorld {
-    if (this.level.scene.kind !== 'grid')
-      throw new Error('Only grid scenes are playable in the ribbon');
-    return new GridWorld(this.level.scene, { costumes: this.hooks.costumes });
+  private freshWorld(): World {
+    const options = { costumes: this.hooks.costumes };
+    return this.level.scene.kind === 'grid'
+      ? new GridWorld(this.level.scene, options)
+      : new FreeWorld(this.level.scene, options);
   }
 
-  private hero(world: GridWorld): string {
-    return world.hasActor('hero') ? 'hero' : (world.actors.keys().next().value ?? 'hero');
+  private hero(world: World): string {
+    return world.hasActor('hero') ? 'hero' : (world.actorIds()[0] ?? 'hero');
   }
 
   private startRun(program: ProgramDoc, stepMode: boolean): void {

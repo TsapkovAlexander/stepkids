@@ -8,3 +8,6 @@ export * from './json-schema';
 export * from './catalog/types';
 export * from './catalog/catalog';
 export { CORE_BLOCKS, MELODIES, SAY_PRESETS, TOUCH_TARGETS } from './catalog/core-blocks';
+export { ADVANCED_BLOCKS, KEYS } from './catalog/advanced-blocks';
+export * from './codegen';
+export * from './blockly-json';

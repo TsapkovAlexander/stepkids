@@ -200,17 +200,6 @@ describe('LevelRun', () => {
     run.stop();
     expect(run.abort({ kind: 'empty' })).toBe(aborted);
   });
-
-  it('refuses free scenes until tier 3 lands', () => {
-    const free = {
-      kind: 'free' as const,
-      background: 'park',
-      sprites: [{ id: 'cat', character: 'kitten', x: 0, y: 0 }],
-    };
-    expect(
-      () => new LevelRun({ scene: free, goals: [{ kind: 'manual' }], stars: {} }, ribbon()),
-    ).toThrow();
-  });
 });
 
 describe('checkLevel', () => {
@@ -264,11 +253,6 @@ describe('checkLevel', () => {
     expect(checkLevel(content({ reference: undefined, goals: [{ kind: 'manual' }] })).ok).toBe(
       true,
     );
-  });
-
-  it('does not check free scenes yet', () => {
-    const free = { kind: 'free' as const, background: 'park', sprites: [] };
-    expect(checkLevel(content({ scene: free as never })).ok).toBe(false);
   });
 
   it('finds violations without a limit', () => {

@@ -107,8 +107,8 @@ export function ToolPalette({
                 tool === entry && 'ring-4 ring-brand',
               )}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element -- inline SVG art */}
               {art ? (
+                // eslint-disable-next-line @next/next/no-img-element -- inline SVG art
                 <img src={art} alt="" className="h-12 w-12" draggable={false} />
               ) : (
                 <Eraser aria-hidden size={34} />

@@ -1,6 +1,7 @@
 import { ITEM_COLORS, type GridItemKind, type ItemColor } from '@stepkids/blocks';
 import { Texture } from 'pixi.js';
 import {
+  backgroundSvg,
   burstSvg,
   characterSvg,
   doorSvg,
@@ -9,6 +10,7 @@ import {
   keySvg,
   portalSvg,
   rockSvg,
+  spriteSvg,
   starSvg,
   svgDataUrl,
   treeSvg,
@@ -21,26 +23,31 @@ const TEXTURE_SIZE = 256;
 
 const cache = new Map<string, Promise<Texture>>();
 
-async function rasterize(svg: string, size: number): Promise<HTMLCanvasElement> {
+async function rasterize(svg: string, width: number, height = width): Promise<HTMLCanvasElement> {
   // Explicit width/height makes Firefox and Safari decode the SVG at full size.
-  const sized = svg.replace('<svg ', `<svg width="${size}" height="${size}" `);
+  const sized = svg.replace('<svg ', `<svg width="${width}" height="${height}" `);
   const image = new Image();
   image.decoding = 'async';
   image.src = svgDataUrl(sized);
   await image.decode();
   const canvas = document.createElement('canvas');
-  canvas.width = size;
-  canvas.height = size;
+  canvas.width = width;
+  canvas.height = height;
   const context = canvas.getContext('2d');
   if (!context) throw new Error('Canvas 2D is not available');
-  context.drawImage(image, 0, 0, size, size);
+  context.drawImage(image, 0, 0, width, height);
   return canvas;
 }
 
-export function svgTexture(key: string, svg: () => string): Promise<Texture> {
+export function svgTexture(
+  key: string,
+  svg: () => string,
+  width = TEXTURE_SIZE,
+  height = width,
+): Promise<Texture> {
   let texture = cache.get(key);
   if (!texture) {
-    texture = rasterize(svg(), TEXTURE_SIZE).then((canvas) => Texture.from(canvas));
+    texture = rasterize(svg(), width, height).then((canvas) => Texture.from(canvas));
     cache.set(key, texture);
   }
   return texture;
@@ -79,6 +86,16 @@ export function itemTexture(
     case 'flower':
       return svgTexture('flower', flowerSvg);
   }
+}
+
+/** Any free-scene sprite: heroes, items and props. */
+export function spriteTexture(character: string, costume: string): Promise<Texture> {
+  return svgTexture(`sprite:${character}:${costume}`, () => spriteSvg(character, costume));
+}
+
+/** 960×720 raster of a 480×360 backdrop — sharp on retina tablets. */
+export function backgroundTexture(id: string): Promise<Texture> {
+  return svgTexture(`bg:${id}`, () => backgroundSvg(id), 960, 720);
 }
 
 export function burstTexture(): Promise<Texture> {

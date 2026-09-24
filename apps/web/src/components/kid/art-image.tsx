@@ -15,8 +15,8 @@ export function CharacterArt({
   alt?: string;
 }) {
   const src = useMemo(() => svgDataUrl(characterSvg(character, costume)), [character, costume]);
-  // eslint-disable-next-line @next/next/no-img-element -- inline SVG data, nothing to optimise
   return (
+    // eslint-disable-next-line @next/next/no-img-element -- inline SVG data, nothing to optimise
     <img
       src={src}
       alt={alt}

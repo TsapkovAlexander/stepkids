@@ -1,6 +1,7 @@
 import type { BlockDef, BlockNode, Primitive } from '@stepkids/blocks';
 import type { Wait } from '../waits';
-import type { GridWorld } from '../world/grid-world';
+import type { Runtime } from '../runtime';
+import type { World } from '../world/types';
 
 export type Args = Record<string, Primitive>;
 
@@ -9,7 +10,11 @@ export type CommandGenerator = Generator<Wait, void, void>;
 /** Everything a primitive may touch while executing one block in one thread. */
 export interface ExecContext {
   readonly actorId: string;
-  readonly world: GridWorld;
+  readonly world: World;
+  /** Scheduler services: variables, lists, messages, clones, timer, random, questions. */
+  readonly runtime: Runtime;
+  /** Parameters of the custom block being executed (innermost call last). */
+  readonly params: Array<Record<string, Primitive>>;
   /** Current virtual time. */
   now(): number;
   /** Sleeps for virtual milliseconds (scaled by speed through the host's tick). */
@@ -61,6 +66,8 @@ export interface RuntimeEvents {
   collect: { actorId: string; itemId: string; kind: string; time: number };
   teleport: { actorId: string; time: number };
   error: { code: string; message: string; blockId: string | null; time: number };
+  variable: { name: string; value: Primitive; time: number };
+  ask: { actorId: string; text: string; time: number };
 }
 
 export type RuntimeEmit = <K extends keyof RuntimeEvents>(

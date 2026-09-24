@@ -12,9 +12,12 @@ import { createExecContext, StopSignal } from './interpreter/exec';
 import { createCorePrimitives } from './interpreter/primitives';
 import type { CommandGenerator, PrimitiveRegistry, RuntimeEvents } from './interpreter/types';
 import type { Latch, Wait } from './waits';
+import type { Primitive } from '@stepkids/blocks';
+
+import { Latch as LatchImpl } from './waits';
+import { scriptOwner, type World } from './world/types';
 
 const EMPTY_GENERATOR: CommandGenerator = (function* () {})();
-import type { GridWorld } from './world/grid-world';
 
 export type RuntimeStatus = 'ready' | 'running' | 'stopped' | 'error';
 
@@ -28,7 +31,13 @@ export interface RuntimeOptions {
   primitives?: PrimitiveRegistry;
   /** Host speech synthesis; returns a latch resolved when the phrase is spoken. */
   speak?: (request: SpeechRequest) => Latch | null;
+  /** Host question dialog ("спросить и ждать"); resolve the latch and call `answer()`. */
+  ask?: (request: SpeechRequest) => void;
   limits?: Partial<Limits>;
+  /** Seed of "случайное число" so checks are reproducible. */
+  seed?: number;
+  /** Answers used by headless runs for "спросить и ждать", in order. */
+  answers?: readonly string[];
 }
 
 export interface Thread {
@@ -59,20 +68,30 @@ export class Runtime {
   /** Step mode: blocks wait at their boundary until the user grants a step. */
   stepMode = false;
   stepBudget = 0;
+  readonly variables = new Map<string, Primitive>();
+  readonly lists = new Map<string, Primitive[]>();
+  /** Last answer to "спросить и ждать". */
+  answer = '';
   private threads: Thread[] = [];
+  private rng: number;
+  private timerStart = 0;
+  private pendingAsk: Latch | null = null;
+  private readonly answers: string[];
   private nextThreadId = 1;
   private tickIndex = 0;
   private stepsThisTick = 0;
   private idle = true;
 
   constructor(
-    readonly world: GridWorld,
+    readonly world: World,
     readonly program: ProgramDoc,
     private readonly options: RuntimeOptions = {},
   ) {
     this.catalog = options.catalog ?? defaultCatalog;
     this.primitives = options.primitives ?? createCorePrimitives();
     this.limits = { ...LIMITS, ...options.limits };
+    this.rng = (options.seed ?? 20260924) >>> 0;
+    this.answers = [...(options.answers ?? [])];
   }
 
   get threadCount(): number {
@@ -92,8 +111,8 @@ export class Runtime {
 
   /** True if the program can still react to taps or keys after its threads finish. */
   hasInteractiveHats(): boolean {
-    return (
-      this.scriptsWithHat('event_tap').length > 0 || this.scriptsWithHat('event_touch').length > 0
+    return ['event_tap', 'event_touch', 'event_key'].some(
+      (hat) => this.scriptsWithHat(hat).length > 0,
     );
   }
 
@@ -108,6 +127,7 @@ export class Runtime {
     }
     this.status = 'running';
     this.events.emit('start', { time: this.now });
+    this.timerStart = this.now;
     for (const { actorId, script } of this.scriptsWithHat('event_start'))
       this.spawn(actorId, script);
     this.idle = this.threads.length === 0;
@@ -133,12 +153,133 @@ export class Runtime {
 
   /** "When this hero is tapped": restarts the matching scripts. */
   tap(actorId: string): void {
-    if (this.status !== 'running' || this.world.actor(actorId).stopped) return;
-    for (const entry of this.scriptsWithHat('event_tap')) {
-      if (entry.actorId !== actorId) continue;
-      this.threads = this.threads.filter((thread) => thread.script !== entry.script);
-      this.spawn(entry.actorId, entry.script);
+    if (
+      this.status !== 'running' ||
+      !this.world.hasActor(actorId) ||
+      this.world.actor(actorId).stopped
+    )
+      return;
+    this.startHats('event_tap', () => true, [actorId]);
+  }
+
+  /** "When key pressed" — the on-screen arrows on tablets, the keyboard on desktops. */
+  keyPress(key: string): void {
+    if (this.status !== 'running') return;
+    this.startHats('event_key', (args) => args.key === key || args.key === 'any');
+  }
+
+  /** "Отправить сообщение": every "когда получено" script with that message (re)starts. */
+  broadcast(message: string): void {
+    if (this.status !== 'running') return;
+    this.startHats('event_message', (args) => String(args.message) === message);
+  }
+
+  /** Restarts scripts with the hat for every actor running them (clones included). */
+  private startHats(
+    hat: string,
+    match: (args: Record<string, unknown>) => boolean,
+    only?: string[],
+  ): void {
+    for (const entry of this.scriptsWithHat(hat)) {
+      if (!match(entry.script.blocks[0]?.args ?? {})) continue;
+      for (const actorId of this.world.actorIds()) {
+        if (only && !only.includes(actorId)) continue;
+        if (scriptOwner(this.world, actorId) !== entry.actorId || this.world.actor(actorId).stopped)
+          continue;
+        this.threads = this.threads.filter(
+          (thread) => !(thread.script === entry.script && thread.actorId === actorId),
+        );
+        this.spawn(actorId, entry.script);
+      }
     }
+  }
+
+  getVariable(name: string): Primitive {
+    return this.variables.get(name) ?? 0;
+  }
+
+  setVariable(name: string, value: Primitive): void {
+    this.variables.set(name, value);
+    this.events.emit('variable', { name, value, time: this.now });
+  }
+
+  list(name: string): Primitive[] {
+    let list = this.lists.get(name);
+    if (!list) {
+      list = [];
+      this.lists.set(name, list);
+    }
+    return list;
+  }
+
+  /** Deterministic PRNG (mulberry32) in [0, 1). */
+  random(): number {
+    this.rng = (this.rng + 0x6d2b79f5) >>> 0;
+    let t = this.rng;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  }
+
+  timerSeconds(): number {
+    return (this.now - this.timerStart) / 1000;
+  }
+
+  resetTimer(): void {
+    this.timerStart = this.now;
+  }
+
+  /** Starts a question; the thread waits on the latch until {@link submitAnswer}. */
+  ask(actorId: string, question: string): Latch {
+    const latch = new LatchImpl();
+    this.pendingAsk = latch;
+    if (this.options.ask) {
+      this.options.ask({ actorId, text: question });
+    } else {
+      this.answer = this.answers.shift() ?? '';
+      latch.resolve();
+    }
+    return latch;
+  }
+
+  submitAnswer(text: string): void {
+    this.answer = text;
+    this.pendingAsk?.resolve();
+    this.pendingAsk = null;
+  }
+
+  /** "Клонируй себя" (free scene): the clone runs "когда я начинаю как клон" scripts. */
+  createClone(actorId: string): void {
+    const world = this.world;
+    if (world.kind !== 'free') throw new EngineError('unsupported_scene');
+    if (world.cloneTotal() >= this.limits.maxClones) throw new EngineError('too_many_clones');
+    const cloneId = world.clone(actorId);
+    const owner = scriptOwner(world, cloneId);
+    for (const entry of this.scriptsWithHat('event_clone_start')) {
+      if (entry.actorId === owner) this.spawn(cloneId, entry.script);
+    }
+  }
+
+  deleteClone(actorId: string): boolean {
+    if (this.world.kind !== 'free' || !this.world.deleteClone(actorId)) return false;
+    this.stopActorThreads(actorId);
+    return true;
+  }
+
+  /** "Стоп всё": every thread ends; the run is then evaluated as finished. */
+  stopAllThreads(): void {
+    for (const thread of this.threads) thread.done = true;
+  }
+
+  /** Body of a custom block defined for the actor (clones use their original's). */
+  procedure(actorId: string, name: string): ScriptNode | undefined {
+    const owner = scriptOwner(this.world, actorId);
+    const scripts = this.program.targets.find((target) => target.target === owner)?.scripts ?? [];
+    return scripts.find(
+      (script) =>
+        script.blocks[0]?.type === 'procedures_define' &&
+        String(script.blocks[0]?.args?.name) === name,
+    );
   }
 
   /** Advances virtual time and runs every ready thread once. */
@@ -191,7 +332,7 @@ export class Runtime {
     });
   }
 
-  private scriptsWithHat(hat: string): Array<{ actorId: string; script: ScriptNode }> {
+  scriptsWithHat(hat: string): Array<{ actorId: string; script: ScriptNode }> {
     const result: Array<{ actorId: string; script: ScriptNode }> = [];
     for (const target of this.program.targets) {
       for (const script of target.scripts) {
@@ -226,14 +367,16 @@ export class Runtime {
     if (touches.length === 0) return;
     const hats = this.scriptsWithHat('event_touch');
     for (const touch of touches) {
-      if (this.world.actor(touch.actorId).stopped) continue;
+      if (!this.world.hasActor(touch.actorId) || this.world.actor(touch.actorId).stopped) continue;
       for (const entry of hats) {
         const what = entry.script.blocks[0]?.args?.what ?? 'actor';
-        if (entry.actorId !== touch.actorId || what !== touch.what) continue;
+        if (entry.actorId !== scriptOwner(this.world, touch.actorId) || what !== touch.what)
+          continue;
         const running = this.threads.some(
-          (thread) => thread.script === entry.script && !thread.done,
+          (thread) =>
+            thread.script === entry.script && thread.actorId === touch.actorId && !thread.done,
         );
-        if (!running) this.spawn(entry.actorId, entry.script);
+        if (!running) this.spawn(touch.actorId, entry.script);
       }
     }
   }

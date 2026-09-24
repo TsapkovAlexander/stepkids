@@ -10,10 +10,11 @@ import {
 } from '@stepkids/blocks';
 import { TIMING } from './constants';
 import { Emitter } from './emitter';
-import { EngineError } from './errors';
 import { computeStars, evaluateGoals, type GoalStatus } from './goals';
 import { Runtime, type RuntimeOptions } from './runtime';
+import { FreeWorld } from './world/free-world';
 import { GridWorld, type BumpReason, type GridWorldOptions } from './world/grid-world';
+import type { World } from './world/types';
 
 export type Failure =
   | { kind: 'bump'; reason: BumpReason; actorId: string; blockId: string | null }
@@ -60,7 +61,7 @@ const CONTINUOUS_BLOCKS = new Set(['control_forever', 'event_tap', 'event_touch'
  * headless checker drive the very same object, which keeps their verdicts identical.
  */
 export class LevelRun {
-  readonly world: GridWorld;
+  readonly world: World;
   readonly runtime: Runtime;
   readonly events = new Emitter<LevelRunEvents>();
   readonly blocks: number;
@@ -76,8 +77,10 @@ export class LevelRun {
     readonly program: ProgramDoc,
     options: LevelRunOptions = {},
   ) {
-    if (level.scene.kind !== 'grid') throw new EngineError('unsupported_scene');
-    this.world = new GridWorld(level.scene, options);
+    this.world =
+      level.scene.kind === 'grid'
+        ? new GridWorld(level.scene, options)
+        : new FreeWorld(level.scene, options);
     this.runtime = new Runtime(this.world, program, options);
     this.blocks = countBlocks(program, [START_BLOCK]);
     this.maxTimeMs = options.maxTimeMs ?? Infinity;
@@ -142,10 +145,17 @@ export class LevelRun {
 
   private evaluate(): void {
     if (this.result || this.runtime.status !== 'running') return;
-    const goals = evaluateGoals(this.level.goals, { world: this.world, timeMs: this.runtime.now });
+    const goals = evaluateGoals(this.level.goals, {
+      world: this.world,
+      timeMs: this.runtime.now,
+      variable: (name) => {
+        const value = this.runtime.getVariable(name);
+        return typeof value === 'boolean' ? String(value) : value;
+      },
+    });
     const manual = this.level.goals.some((goal) => goal.kind === 'manual');
     const idle = this.runtime.isIdle();
-    const actorsAlive = [...this.world.actors.values()].some((actor) => !actor.stopped);
+    const actorsAlive = this.world.actorIds().some((id) => !this.world.actor(id).stopped);
     const waitingForInput = this.acceptsInput && this.runtime.hasInteractiveHats() && actorsAlive;
 
     if (goals.met && (idle || this.continuous)) {
@@ -196,7 +206,8 @@ export function runHeadless(
   while (!run.result && run.runtime.status === 'running') {
     while (inputs[0] && inputs[0].atMs <= run.timeMs) {
       const input = inputs.shift();
-      if (input && run.world.hasActor(input.tap)) run.runtime.tap(input.tap);
+      if (input?.tap && run.world.hasActor(input.tap)) run.runtime.tap(input.tap);
+      if (input?.key) run.runtime.keyPress(input.key);
     }
     if (inputs.length === 0) run.acceptsInput = false;
     run.advance(TIMING.tickMs);
