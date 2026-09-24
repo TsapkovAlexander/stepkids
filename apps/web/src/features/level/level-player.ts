@@ -2,7 +2,8 @@ import type { LevelContent, ProgramDoc } from '@stepkids/blocks';
 import { GridWorld, LevelRun, Latch, type RunResult } from '@stepkids/engine';
 import type { GridStage, StageMarkers } from '@stepkids/stage';
 
-export type PlayerStatus = 'idle' | 'running' | 'stepping' | 'reacting' | 'won';
+/** `done` — a sandbox run ended; the scene stays as the program left it until Stop. */
+export type PlayerStatus = 'idle' | 'running' | 'stepping' | 'reacting' | 'won' | 'done';
 
 export interface PlayerState {
   status: PlayerStatus;
@@ -21,6 +22,8 @@ export interface PlayerHooks {
   onState: (state: PlayerState) => void;
   /** Called once a run is over (after the hero's reaction for failures). */
   onFinish: (result: RunResult, program: ProgramDoc) => void;
+  /** Workshop and shows: no goals, no reactions, the final scene stays on screen. */
+  sandbox?: boolean;
 }
 
 const EMPTY: ReadonlySet<string> = new Set();
@@ -79,7 +82,7 @@ export class LevelPlayer {
   }
 
   step(program: ProgramDoc): void {
-    if (!this.run || this.run.finished || this.state.status === 'idle' || this.state.status === 'won') {
+    if (!this.run || this.run.finished || this.state.status === 'idle' || this.state.status === 'won' || this.state.status === 'done') {
       if (this.state.status === 'reacting') return;
       this.startRun(program, true);
     } else {
@@ -151,6 +154,12 @@ export class LevelPlayer {
       this.hooks.speak(this.hooks.reaction(result), character);
       this.run = null;
       this.reset();
+      this.hooks.onFinish(result, program);
+      return;
+    }
+    if (this.hooks.sandbox) {
+      if (result.failure?.kind === 'bump') this.hooks.sound('oops');
+      this.setState({ status: 'done', activeIds: EMPTY });
       this.hooks.onFinish(result, program);
       return;
     }

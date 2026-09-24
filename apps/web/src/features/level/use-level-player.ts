@@ -19,8 +19,9 @@ export function useLevelPlayer(options: {
   stage: GridStage | null;
   speed: number;
   onFinish: (result: RunResult, program: ProgramDoc) => void;
+  sandbox?: boolean;
 }) {
-  const { level, markers, stage, speed, onFinish } = options;
+  const { level, markers, stage, speed, onFinish, sandbox = false } = options;
   const [state, setState] = useState<PlayerState>(INITIAL);
   const [player, setPlayer] = useState<LevelPlayer | null>(null);
   const finishRef = useRef(onFinish);
@@ -40,6 +41,7 @@ export function useLevelPlayer(options: {
       reaction: (result) => reactionLine(result, heroOf(level), attempt++),
       onState: setState,
       onFinish: (result, program) => finishRef.current(result, program),
+      sandbox,
     });
     setPlayer(created);
     return () => {
@@ -47,7 +49,7 @@ export function useLevelPlayer(options: {
       setPlayer(null);
       setState(INITIAL);
     };
-  }, [level, markers]);
+  }, [level, markers, sandbox]);
 
   useEffect(() => {
     player?.attach(stage);

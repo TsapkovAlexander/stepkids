@@ -12,6 +12,7 @@ import { ArrowLeft, ArrowRight, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { KidButton } from '@/components/kid/kid-button';
 import { KidDialog } from '@/components/kid/kid-dialog';
+import { rovingRadioKeyDown } from '@/components/kid/roving';
 import { blockIcon } from '@/lib/icons';
 import { cn } from '@/lib/utils';
 import { voice } from '@/lib/voice/voice';
@@ -205,34 +206,9 @@ function PhrasePicker({
   );
 }
 
-/** Radio group with arrow/Home/End navigation; the selected (or first) option is the tab stop. */
 function Choices({ label, children }: { label: string; children: React.ReactNode }) {
-  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const radios = [...event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="radio"]')];
-    const current = radios.indexOf(document.activeElement as HTMLButtonElement);
-    const last = radios.length - 1;
-    const next =
-      event.key === 'ArrowRight' || event.key === 'ArrowDown'
-        ? (current + 1) % radios.length
-        : event.key === 'ArrowLeft' || event.key === 'ArrowUp'
-          ? (current - 1 + radios.length) % radios.length
-          : event.key === 'Home'
-            ? 0
-            : event.key === 'End'
-              ? last
-              : null;
-    if (next === null) return;
-    event.preventDefault();
-    radios[next]?.focus();
-    radios[next]?.click();
-  };
   return (
-    <div
-      role="radiogroup"
-      aria-label={label}
-      onKeyDown={onKeyDown}
-      className="flex flex-wrap justify-center gap-2"
-    >
+    <div role="radiogroup" aria-label={label} onKeyDown={rovingRadioKeyDown} className="flex flex-wrap justify-center gap-2">
       {children}
     </div>
   );
