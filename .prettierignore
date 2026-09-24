@@ -1,0 +1,8 @@
+pnpm-lock.yaml
+**/.next/**
+**/coverage/**
+**/dist/**
+**/node_modules/**
+**/playwright-report/**
+**/test-results/**
+supabase/**/*.sql
