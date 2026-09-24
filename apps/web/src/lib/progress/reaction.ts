@@ -1,5 +1,11 @@
 import type { RunResult } from '@stepkids/engine';
-import { BUMP_LINES, REACTION_LINES, characterById, pickLine, type ReactionKey } from '@stepkids/content';
+import {
+  BUMP_LINES,
+  REACTION_LINES,
+  characterById,
+  pickLine,
+  type ReactionKey,
+} from '@stepkids/content';
 
 /** What the hero says after a run: praise or a friendly explanation of what happened. */
 export function reactionLine(result: RunResult, heroId: string, seed: number): string {

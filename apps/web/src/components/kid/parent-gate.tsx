@@ -21,7 +21,10 @@ interface GateState {
  */
 export function useParentGate(): { requestPass: (onPass: () => void) => void; gate: ReactNode } {
   const [state, setState] = useState<GateState | null>(null);
-  const requestPass = useCallback((onPass: () => void) => setState({ onPass, challenge: createChallenge() }), []);
+  const requestPass = useCallback(
+    (onPass: () => void) => setState({ onPass, challenge: createChallenge() }),
+    [],
+  );
   const gate = state ? (
     <ParentGateDialog
       key={`${state.challenge.a}x${state.challenge.b}`}
@@ -37,7 +40,15 @@ export function useParentGate(): { requestPass: (onPass: () => void) => void; ga
   return { requestPass, gate };
 }
 
-function ParentGateDialog({ challenge, onClose, onPass }: { challenge: Challenge; onClose: () => void; onPass: () => void }) {
+function ParentGateDialog({
+  challenge,
+  onClose,
+  onPass,
+}: {
+  challenge: Challenge;
+  onClose: () => void;
+  onPass: () => void;
+}) {
   const pin = useLiveQuery(() => getPin(), [], undefined);
   const [value, setValue] = useState('');
   const [wrong, setWrong] = useState(false);
@@ -61,7 +72,9 @@ function ParentGateDialog({ challenge, onClose, onPass }: { challenge: Challenge
     >
       <p className="mb-4 text-center text-lg font-bold text-ink-soft" aria-live="polite">
         {usesPin ? 'Введите PIN-код' : `Сколько будет ${challenge.a} × ${challenge.b}?`}
-        {wrong ? <span className="mt-1 block text-base text-ink">Неверно, попробуйте ещё раз</span> : null}
+        {wrong ? (
+          <span className="mt-1 block text-base text-ink">Неверно, попробуйте ещё раз</span>
+        ) : null}
       </p>
       <NumberPad
         value={value}
@@ -74,7 +87,16 @@ function ParentGateDialog({ challenge, onClose, onPass }: { challenge: Challenge
         label={usesPin ? 'PIN-код' : 'Ответ'}
       />
       <div className="mt-5 flex justify-center">
-        <KidButton voiceLabel="Готово" tone="go" size="lg" icon={Check} caption="Готово" silent disabled={!value} onClick={() => void submit()} />
+        <KidButton
+          voiceLabel="Готово"
+          tone="go"
+          size="lg"
+          icon={Check}
+          caption="Готово"
+          silent
+          disabled={!value}
+          onClick={() => void submit()}
+        />
       </div>
     </KidDialog>
   );

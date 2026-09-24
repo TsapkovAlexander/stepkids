@@ -7,11 +7,16 @@ import { Lightbulb } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { KidButton } from '@/components/kid/kid-button';
-import { sfx } from '@/lib/audio/sfx';
-import { SEED_LEVEL_VERSION, levelById, nextLevelId, withHero, type LevelRef } from '@/lib/content/catalog';
+import {
+  SEED_LEVEL_VERSION,
+  levelById,
+  nextLevelId,
+  programmableActors,
+  withHero,
+  type LevelRef,
+} from '@/lib/content/catalog';
 import { failureCode } from '@/lib/progress/reaction';
 import { isWorldCompleted, toProgressMap } from '@/lib/progress/unlocks';
-import { insertBlock, ribbonBlocks } from '@/lib/ribbon/ops';
 import { useDeviceSettings } from '@/lib/settings';
 import { progressOf, recordAttempt } from '@/lib/storage/progress';
 import type { Profile } from '@/lib/storage/types';
@@ -33,7 +38,12 @@ export function LevelScreen({ levelId }: { levelId: string }) {
   if (!ref) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <KidButton voiceLabel="На карту" caption="Такого задания нет — на карту" tone="brand" onClick={() => router.push('/play/map')} />
+        <KidButton
+          voiceLabel="На карту"
+          caption="Такого задания нет — на карту"
+          tone="brand"
+          onClick={() => router.push('/play/map')}
+        />
       </div>
     );
   }
@@ -47,7 +57,10 @@ function markersOf(level: LevelContent): StageMarkers {
   if (level.scene.kind !== 'grid') return markers;
   const items = level.scene.items;
   for (const goal of level.goals) {
-    if (goal.kind === 'reach' && !items.some((item) => item.kind === 'flag' && item.x === goal.x && item.y === goal.y)) {
+    if (
+      goal.kind === 'reach' &&
+      !items.some((item) => item.kind === 'flag' && item.x === goal.x && item.y === goal.y)
+    ) {
       (markers.reach ??= []).push({ x: goal.x, y: goal.y });
     }
     if (goal.kind === 'drawShape') markers.shape = goal.cells;
@@ -57,13 +70,27 @@ function markersOf(level: LevelContent): StageMarkers {
 
 function LevelPlay({ levelRef, profile }: { levelRef: LevelRef; profile: Profile }) {
   const router = useRouter();
-  const level = useMemo(() => withHero(levelRef.content, profile.heroId), [levelRef.content, profile.heroId]);
+  const level = useMemo(
+    () => withHero(levelRef.content, profile.heroId),
+    [levelRef.content, profile.heroId],
+  );
   const markers = useMemo(() => markersOf(level), [level]);
   const { speed } = useDeviceSettings();
   const [stage, setStage] = useState<GridStage | null>(null);
-  const { program, setProgram, reset } = useLevelProgram(profile.id, levelRef.id, level.starterProgram);
+  const actors = useMemo(() => programmableActors(level), [level]);
+  const actorIds = useMemo(() => actors.map((actor) => actor.id), [actors]);
+  const { program, setProgram, reset } = useLevelProgram(
+    profile.id,
+    levelRef.id,
+    level.starterProgram,
+    actorIds,
+  );
   const hints = useHints(level, program);
-  const [victory, setVictory] = useState<{ stars: number; blocks: number; worldDone: boolean } | null>(null);
+  const [victory, setVictory] = useState<{
+    stars: number;
+    blocks: number;
+    worldDone: boolean;
+  } | null>(null);
   const openedAt = useRef(0);
   const hintsUsed = useRef(0);
 
@@ -108,33 +135,21 @@ function LevelPlay({ levelRef, profile }: { levelRef: LevelRef; profile: Profile
         return;
       }
       const progress = toProgressMap(await progressOf(profile.id));
-      setVictory({ stars: result.stars, blocks: result.blocks, worldDone: isWorldCompleted(levelRef.world, progress) && levelRef.index === levelRef.world.levels.length - 1 });
+      setVictory({
+        stars: result.stars,
+        blocks: result.blocks,
+        worldDone:
+          isWorldCompleted(levelRef.world, progress) &&
+          levelRef.index === levelRef.world.levels.length - 1,
+      });
     },
     [profile.id, levelRef, hints],
   );
 
   const { state, player } = useLevelPlayer({ level, markers, stage, speed, onFinish });
   const running = state.status !== 'idle';
-  const palette = useMemo(() => defaultCatalog.palette(level.allowedBlocks), [level.allowedBlocks]);
-  const blocks = program ? ribbonBlocks(program) : [];
-  const full = level.blockLimit !== undefined && blocks.length >= level.blockLimit;
+  const blocks = useMemo(() => defaultCatalog.palette(level.allowedBlocks), [level.allowedBlocks]);
   const next = nextLevelId(levelRef.id);
-
-  const addBlock = (type: string) => {
-    const def = defaultCatalog.get(type);
-    if (!def) return;
-    if (running) {
-      voice.say('Сначала нажми «Стоп»');
-      return;
-    }
-    if (full) {
-      voice.say(`Больше блоков нельзя. Здесь хватит ${level.blockLimit}.`);
-      return;
-    }
-    sfx.add();
-    voice.say(def.voice);
-    setProgram((current) => insertBlock(current, defaultCatalog.create(type)));
-  };
 
   return (
     <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)] grid-rows-[auto_minmax(0,1fr)_auto] gap-2 p-2 sm:gap-3 sm:p-3 side:grid-cols-[minmax(0,1fr)_minmax(360px,42%)] side:grid-rows-[auto_minmax(0,1fr)_auto]">
@@ -151,7 +166,10 @@ function LevelPlay({ levelRef, profile }: { levelRef: LevelRef; profile: Profile
         }}
         onHint={() => {
           const hint = hints.open();
-          if (hint) voice.say(hint.kind === 'say' ? hint.text : (hint.text ?? 'Смотри, я подсвечу нужный блок.'));
+          if (hint)
+            voice.say(
+              hint.kind === 'say' ? hint.text : (hint.text ?? 'Смотри, я подсвечу нужный блок.'),
+            );
         }}
       />
       <div className="relative min-h-[34dvh] side:row-span-2 side:min-h-0">
@@ -159,7 +177,7 @@ function LevelPlay({ levelRef, profile }: { levelRef: LevelRef; profile: Profile
           className="absolute inset-0 rounded-3xl"
           label={`Сцена: ${level.taskText}`}
           onReady={setStage}
-          onActorTap={() => undefined}
+          onActorTap={(actorId) => player?.tap(actorId)}
         />
         {hints.visible ? (
           <button
@@ -169,21 +187,23 @@ function LevelPlay({ levelRef, profile }: { levelRef: LevelRef; profile: Profile
             aria-label={`Подсказка: ${hints.visible.kind === 'say' ? hints.visible.text : (hints.visible.text ?? '')}. Закрыть`}
           >
             <Lightbulb aria-hidden className="shrink-0" />
-            {hints.visible.kind === 'say' ? hints.visible.text : (hints.visible.text ?? 'Смотри на подсвеченный блок')}
+            {hints.visible.kind === 'say'
+              ? hints.visible.text
+              : (hints.visible.text ?? 'Смотри на подсвеченный блок')}
           </button>
         ) : null}
       </div>
       <ProgramPanel
         program={program}
         setProgram={setProgram}
-        palette={palette}
+        blocks={blocks}
+        actors={actors}
         limit={level.blockLimit}
         running={running}
         activeIds={state.activeIds}
         oopsId={state.oopsId}
         ghost={hints.ghost}
         highlight={hints.highlight}
-        onPick={addBlock}
         controls={
           <RunControls
             status={state.status}
@@ -201,7 +221,9 @@ function LevelPlay({ levelRef, profile }: { levelRef: LevelRef; profile: Profile
           heroId={profile.heroId}
           hasNext={!!next}
           worldDone={victory.worldDone}
-          onNext={() => router.push(next ? `/play/level/${next}` : `/play/world/${levelRef.world.id}`)}
+          onNext={() =>
+            router.push(next ? `/play/level/${next}` : `/play/world/${levelRef.world.id}`)
+          }
           onRetry={() => {
             setVictory(null);
             player?.stop();

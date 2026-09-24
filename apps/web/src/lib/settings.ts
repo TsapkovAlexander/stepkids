@@ -10,7 +10,12 @@ export interface DeviceSettings {
   speed: 0.5 | 1 | 2;
 }
 
-export const DEFAULT_SETTINGS: DeviceSettings = { voiceVolume: 1, sfxVolume: 0.7, muted: false, speed: 1 };
+export const DEFAULT_SETTINGS: DeviceSettings = {
+  voiceVolume: 1,
+  sfxVolume: 0.7,
+  muted: false,
+  speed: 1,
+};
 
 const KEY = 'stepkids.device-settings';
 const listeners = new Set<() => void>();

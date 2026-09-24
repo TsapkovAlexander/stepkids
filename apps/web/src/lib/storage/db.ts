@@ -1,5 +1,13 @@
 import Dexie, { type EntityTable } from 'dexie';
-import type { AttemptRecord, Draft, FamilyLocal, LevelProgress, Profile, Project, SeenReward } from './types';
+import type {
+  AttemptRecord,
+  Draft,
+  FamilyLocal,
+  LevelProgress,
+  Profile,
+  Project,
+  SeenReward,
+} from './types';
 
 /** Everything the child app needs offline lives in IndexedDB on the device. */
 export class StepkidsDb extends Dexie {

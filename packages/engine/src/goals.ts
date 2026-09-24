@@ -8,6 +8,8 @@ export type GoalDetail =
   | 'shapeMismatch'
   | 'variableMismatch'
   | 'tooSlow'
+  | 'wrongCostume'
+  | 'wrongVisibility'
   | 'manual';
 
 export interface GoalStatus {
@@ -68,6 +70,16 @@ export function evaluateGoal(goal: Goal, state: GoalState): GoalStatus {
       const wanted = new Set(goal.cells.map(([x, y]) => `${x}:${y}`));
       const met = drawn.size === wanted.size && [...wanted].every((key) => drawn.has(key));
       return met ? { goal, met } : { goal, met, detail: 'shapeMismatch' };
+    }
+    case 'costume': {
+      const actorId = defaultActor(world, goal.actor);
+      const met = world.hasActor(actorId) && world.actor(actorId).costume === goal.costume;
+      return met ? { goal, met } : { goal, met, detail: 'wrongCostume' };
+    }
+    case 'hidden': {
+      const actorId = defaultActor(world, goal.actor);
+      const met = world.hasActor(actorId) && world.actor(actorId).hidden === goal.hidden;
+      return met ? { goal, met } : { goal, met, detail: 'wrongVisibility' };
     }
     case 'manual':
       return { goal, met: false, detail: 'manual' };

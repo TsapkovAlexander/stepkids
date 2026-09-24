@@ -17,7 +17,8 @@ export function useProject(id: string) {
   useEffect(() => {
     let cancelled = false;
     void getProject(id).then((loaded) => {
-      if (!cancelled) setProject(loaded ? { ...loaded, program: ensureRibbon(loaded.program) } : null);
+      if (!cancelled)
+        setProject(loaded ? { ...loaded, program: ensureRibbon(loaded.program) } : null);
     });
     return () => {
       cancelled = true;

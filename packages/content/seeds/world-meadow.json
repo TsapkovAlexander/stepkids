@@ -7,9 +7,7 @@
   "island": "meadow",
   "unlock": {},
   "reward": {
-    "characters": [
-      "bunny"
-    ]
+    "characters": ["bunny"]
   },
   "levels": [
     {
@@ -42,9 +40,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right"
-        ],
+        "allowedBlocks": ["motion_right"],
         "goals": [
           {
             "kind": "reach",
@@ -132,9 +128,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right"
-        ],
+        "allowedBlocks": ["motion_right"],
         "goals": [
           {
             "kind": "collectAll"
@@ -223,9 +217,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right"
-        ],
+        "allowedBlocks": ["motion_right"],
         "blockLimit": 1,
         "goals": [
           {
@@ -308,10 +300,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_down"
-        ],
+        "allowedBlocks": ["motion_right", "motion_down"],
         "goals": [
           {
             "kind": "reach",
@@ -412,10 +401,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_down"
-        ],
+        "allowedBlocks": ["motion_right", "motion_down"],
         "goals": [
           {
             "kind": "collectAll"
@@ -514,12 +500,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_left",
-          "motion_up",
-          "motion_down"
-        ],
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down"],
         "goals": [
           {
             "kind": "reach",
@@ -633,12 +614,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_left",
-          "motion_up",
-          "motion_down"
-        ],
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down"],
         "goals": [
           {
             "kind": "reach",
@@ -759,12 +735,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_left",
-          "motion_up",
-          "motion_down"
-        ],
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down"],
         "goals": [
           {
             "kind": "collectAll"
@@ -878,13 +849,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_left",
-          "motion_up",
-          "motion_down",
-          "looks_say"
-        ],
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down", "looks_say"],
         "goals": [
           {
             "kind": "reach",

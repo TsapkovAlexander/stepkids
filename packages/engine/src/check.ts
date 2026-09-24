@@ -64,7 +64,10 @@ export function checkLevel(level: LevelContent, options: LevelRunOptions = {}): 
       problems: [...problems, 'Свободная сцена пока не проверяется'],
     };
   }
-  const result = runHeadless(level, level.reference, options);
+  const result = runHeadless(level, level.reference, {
+    ...(level.inputs ? { inputs: level.inputs } : {}),
+    ...options,
+  });
   if (!result.success) problems.push('Эталон не достигает цели');
   else if (result.stars < 3) problems.push(`Эталон получает ${result.stars} зв. вместо 3`);
   return { ok: problems.length === 0, result, violations, problems };

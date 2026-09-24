@@ -3,7 +3,19 @@ import type { GridItemKind, GridSceneInput, GridTheme } from '@stepkids/blocks';
 /** What a tap on a cell does in the Workshop field editor. */
 export type WorkshopTool = 'hero' | 'eraser' | Exclude<GridItemKind, 'teleport'> | 'teleport';
 
-export const WORKSHOP_TOOLS: WorkshopTool[] = ['hero', 'star', 'rock', 'tree', 'water', 'flag', 'key', 'door', 'teleport', 'flower', 'eraser'];
+export const WORKSHOP_TOOLS: WorkshopTool[] = [
+  'hero',
+  'star',
+  'rock',
+  'tree',
+  'water',
+  'flag',
+  'key',
+  'door',
+  'teleport',
+  'flower',
+  'eraser',
+];
 
 export const WORKSHOP_SIZE = { cols: 8, rows: 6 } as const;
 
@@ -48,7 +60,12 @@ function clearCell(scene: GridSceneInput, cell: Cell): GridSceneInput {
   const doomed = scene.items.find((item) => same(item, cell));
   if (!doomed) return scene;
   const pair = doomed.kind === 'teleport' ? doomed.pair : undefined;
-  return { ...scene, items: scene.items.filter((item) => !same(item, cell) && !(pair && item.kind === 'teleport' && item.pair === pair)) };
+  return {
+    ...scene,
+    items: scene.items.filter(
+      (item) => !same(item, cell) && !(pair && item.kind === 'teleport' && item.pair === pair),
+    ),
+  };
 }
 
 /** Applies a tool to a cell. Pure: returns the new scene and pending portal. */
@@ -58,12 +75,22 @@ export function applyTool(state: EditState, tool: WorkshopTool, cell: Cell): Edi
   if (tool === 'hero') {
     const cleared = clearCell(scene, cell);
     return {
-      scene: { ...cleared, actors: cleared.actors.map((actor) => (actor.id === 'hero' ? { ...actor, x: cell.x, y: cell.y } : actor)) },
-      pendingPortal: state.pendingPortal && same(state.pendingPortal, cell) ? null : state.pendingPortal,
+      scene: {
+        ...cleared,
+        actors: cleared.actors.map((actor) =>
+          actor.id === 'hero' ? { ...actor, x: cell.x, y: cell.y } : actor,
+        ),
+      },
+      pendingPortal:
+        state.pendingPortal && same(state.pendingPortal, cell) ? null : state.pendingPortal,
     };
   }
   if (tool === 'eraser') {
-    return { scene: clearCell(scene, cell), pendingPortal: state.pendingPortal && same(state.pendingPortal, cell) ? null : state.pendingPortal };
+    return {
+      scene: clearCell(scene, cell),
+      pendingPortal:
+        state.pendingPortal && same(state.pendingPortal, cell) ? null : state.pendingPortal,
+    };
   }
   // Nothing is placed under the hero.
   if (hero && same(hero, cell)) return state;
@@ -88,8 +115,15 @@ export function applyTool(state: EditState, tool: WorkshopTool, cell: Cell): Edi
   const cleared = clearCell(scene, cell);
   const color = tool === 'key' || tool === 'door' ? { color: 'yellow' as const } : {};
   return {
-    scene: { ...cleared, items: [...cleared.items, { id: nextId(cleared, tool), kind: tool, x: cell.x, y: cell.y, ...color }] },
-    pendingPortal: state.pendingPortal && same(state.pendingPortal, cell) ? null : state.pendingPortal,
+    scene: {
+      ...cleared,
+      items: [
+        ...cleared.items,
+        { id: nextId(cleared, tool), kind: tool, x: cell.x, y: cell.y, ...color },
+      ],
+    },
+    pendingPortal:
+      state.pendingPortal && same(state.pendingPortal, cell) ? null : state.pendingPortal,
   };
 }
 

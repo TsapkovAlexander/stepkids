@@ -11,7 +11,21 @@ const SAVE_DELAY_MS = 400;
  * The child's program for a level: restored from the device draft, or the level's starter
  * program ("fix it" tasks), or an empty ribbon. Every change is saved as a draft.
  */
-export function useLevelProgram(profileId: string | undefined, levelId: string, starter: ProgramDoc | undefined) {
+export function useLevelProgram(
+  profileId: string | undefined,
+  levelId: string,
+  starter: ProgramDoc | undefined,
+  actorIds: readonly string[] = ['hero'],
+) {
+  // Every programmable actor gets its own "when start" ribbon.
+  const actorsKey = actorIds.join(',');
+  const prepare = useCallback(
+    (source: ProgramDoc | null | undefined) =>
+      actorsKey
+        .split(',')
+        .reduce((acc: ProgramDoc, id) => ensureRibbon(acc, id), ensureRibbon(source)),
+    [actorsKey],
+  );
   const [program, setProgramState] = useState<ProgramDoc | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -19,12 +33,13 @@ export function useLevelProgram(profileId: string | undefined, levelId: string, 
     if (!profileId) return;
     let cancelled = false;
     void getDraft(profileId, levelId).then((draft) => {
-      if (!cancelled) setProgramState(ensureRibbon(draft ?? (starter ? structuredClone(starter) : emptyRibbon())));
+      if (!cancelled)
+        setProgramState(prepare(draft ?? (starter ? structuredClone(starter) : emptyRibbon())));
     });
     return () => {
       cancelled = true;
     };
-  }, [profileId, levelId, starter]);
+  }, [profileId, levelId, starter, prepare]);
 
   useEffect(
     () => () => {
@@ -52,8 +67,8 @@ export function useLevelProgram(profileId: string | undefined, levelId: string, 
   const reset = useCallback(() => {
     if (timer.current) clearTimeout(timer.current);
     if (profileId) void clearDraft(profileId, levelId);
-    setProgramState(ensureRibbon(starter ? structuredClone(starter) : emptyRibbon()));
-  }, [profileId, levelId, starter]);
+    setProgramState(prepare(starter ? structuredClone(starter) : emptyRibbon()));
+  }, [profileId, levelId, starter, prepare]);
 
   return { program, setProgram, reset };
 }

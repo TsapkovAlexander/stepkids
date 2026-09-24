@@ -280,3 +280,36 @@ describe('checkLevel', () => {
     );
   });
 });
+
+describe('tier 2 goals and scripted taps', () => {
+  it('checks costumes and visibility', () => {
+    const w = new GridWorld(scene(), { costumes: () => ['default', 'party'] });
+    expect(
+      evaluateGoal({ kind: 'costume', costume: 'party' }, { world: w, timeMs: 0 }).detail,
+    ).toBe('wrongCostume');
+    w.setCostume('hero', 'party');
+    expect(evaluateGoal({ kind: 'costume', costume: 'party' }, { world: w, timeMs: 0 }).met).toBe(
+      true,
+    );
+    expect(evaluateGoal({ kind: 'hidden', hidden: true }, { world: w, timeMs: 0 }).detail).toBe(
+      'wrongVisibility',
+    );
+    w.setVisible('hero', false);
+    expect(evaluateGoal({ kind: 'hidden', hidden: true }, { world: w, timeMs: 0 }).met).toBe(true);
+    expect(
+      evaluateGoal({ kind: 'hidden', hidden: false, actor: 'ghost' }, { world: w, timeMs: 0 }).met,
+    ).toBe(false);
+  });
+
+  it('replays scripted taps in headless runs', () => {
+    const program = {
+      v: 1 as const,
+      targets: [{ target: 'hero', scripts: [{ id: 't', blocks: [block('event_tap'), right(1)] }] }],
+    };
+    const goal = level([{ kind: 'reach', x: 3, y: 0 }], {}, scene());
+    expect(runHeadless(goal, program).success).toBe(false);
+    const taps = [500, 1200, 1900].map((atMs) => ({ atMs, tap: 'hero' }));
+    expect(runHeadless(goal, program, { inputs: taps }).success).toBe(true);
+    expect(runHeadless(goal, program, { inputs: taps.slice(0, 2) }).failure?.kind).toBe('goal');
+  });
+});

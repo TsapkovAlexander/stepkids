@@ -1,13 +1,20 @@
 import { describe, expect, it } from 'vitest';
 import { pickRussianVoice, speechTimeoutMs } from '@/lib/voice/speech';
 
-const voice = (name: string, lang: string, localService = false) => ({ name, lang, localService }) as SpeechSynthesisVoice;
+const voice = (name: string, lang: string, localService = false) =>
+  ({ name, lang, localService }) as SpeechSynthesisVoice;
 
 describe('pickRussianVoice', () => {
   it('prefers well-known natural Russian voices', () => {
-    const voices = [voice('Alex', 'en-US'), voice('Some Russian', 'ru-RU', true), voice('Google русский', 'ru-RU')];
+    const voices = [
+      voice('Alex', 'en-US'),
+      voice('Some Russian', 'ru-RU', true),
+      voice('Google русский', 'ru-RU'),
+    ];
     expect(pickRussianVoice(voices)?.name).toBe('Google русский');
-    expect(pickRussianVoice([voice('Milena', 'ru_RU'), voice('Other', 'ru-RU')])?.name).toBe('Milena');
+    expect(pickRussianVoice([voice('Milena', 'ru_RU'), voice('Other', 'ru-RU')])?.name).toBe(
+      'Milena',
+    );
   });
 
   it('falls back to any Russian voice or none', () => {

@@ -15,7 +15,10 @@ function sameBlock(a: BlockNode, b: BlockNode): boolean {
  * Third hint: the first reference block the child's ribbon does not match yet.
  * Returns null when the ribbon already starts like the reference all the way through.
  */
-export function nextStepHint(program: ProgramDoc, reference: ProgramDoc | undefined): NextStepHint | null {
+export function nextStepHint(
+  program: ProgramDoc,
+  reference: ProgramDoc | undefined,
+): NextStepHint | null {
   if (!reference) return null;
   const mine = ribbonBlocks(program);
   const wanted = ribbonBlocks(reference);

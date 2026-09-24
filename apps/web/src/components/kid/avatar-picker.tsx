@@ -7,11 +7,22 @@ import { Avatar } from './art-image';
 import { radioTabIndex, rovingRadioKeyDown } from './roving';
 
 /** Radio group of avatars with roving focus (arrows, Home, End). */
-export function AvatarPicker({ value, onChange }: { value: string; onChange: (id: string) => void }) {
+export function AvatarPicker({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (id: string) => void;
+}) {
   const index = AVATARS.findIndex((avatar) => avatar.id === value);
 
   return (
-    <div role="radiogroup" aria-label="Аватар" className="grid grid-cols-4 gap-3" onKeyDown={rovingRadioKeyDown}>
+    <div
+      role="radiogroup"
+      aria-label="Аватар"
+      className="grid grid-cols-4 gap-3"
+      onKeyDown={rovingRadioKeyDown}
+    >
       {AVATARS.map((avatar, i) => {
         const selected = avatar.id === value;
         return (

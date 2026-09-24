@@ -1,0 +1,2063 @@
+{
+  "id": "candy",
+  "tier": 2,
+  "order": 3,
+  "title": "Конфетная страна",
+  "voice": "Конфетная страна. Здесь играют два друга, и у каждого своя программа.",
+  "island": "candy",
+  "unlock": {
+    "minStars": 35
+  },
+  "reward": {
+    "themes": ["candy"]
+  },
+  "levels": [
+    {
+      "id": "candy-01",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 2,
+        "taskText": "Помоги обоим друзьям дойти до своих флажков!",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 4,
+          "theme": "candy",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            },
+            {
+              "id": "friend",
+              "character": "bunny",
+              "x": 0,
+              "y": 3,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 5,
+              "y": 0
+            },
+            {
+              "id": "flag2",
+              "kind": "flag",
+              "x": 5,
+              "y": 3
+            }
+          ]
+        },
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down"],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 5,
+            "y": 0,
+            "actor": "hero"
+          },
+          {
+            "kind": "reach",
+            "x": 5,
+            "y": 3,
+            "actor": "friend"
+          }
+        ],
+        "stars": {
+          "three": {
+            "maxBlocks": 2
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми на друга над программой — у каждого героя своя программа."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_right",
+            "text": "Каждому — стрелка вправо на пять."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 5
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "friend",
+              "scripts": [
+                {
+                  "id": "friend-s1",
+                  "blocks": [
+                    {
+                      "id": "friend-s1-hat",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 5
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "candy-02",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 2,
+        "taskText": "Пусть друзья встретятся, а когда коснутся — друг скажет «Привет!»",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 3,
+          "theme": "candy",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            },
+            {
+              "id": "friend",
+              "character": "bunny",
+              "x": 5,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": []
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "looks_say",
+          "event_touch"
+        ],
+        "goals": [
+          {
+            "kind": "say",
+            "text": "Привет!",
+            "actor": "friend"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 5
+          },
+          "three": {
+            "maxBlocks": 4
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми на друга над программой — у каждого героя своя программа."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "looks_say",
+            "text": "У друга программа «Касается друга», а в ней «Скажи: Привет!»"
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "friend",
+              "scripts": [
+                {
+                  "id": "friend-s1",
+                  "blocks": [
+                    {
+                      "id": "friend-s1-hat",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_left",
+                      "args": {
+                        "count": 3
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "friend-s2",
+                  "blocks": [
+                    {
+                      "id": "friend-s2-hat",
+                      "type": "event_touch",
+                      "args": {
+                        "what": "actor"
+                      }
+                    },
+                    {
+                      "id": "b3",
+                      "type": "looks_say",
+                      "args": {
+                        "text": "Привет!"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "candy-03",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "collect",
+        "tier": 2,
+        "taskText": "Соберите все звёзды вдвоём: каждый — на своей дорожке.",
+        "scene": {
+          "kind": "grid",
+          "cols": 7,
+          "rows": 4,
+          "theme": "candy",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            },
+            {
+              "id": "friend",
+              "character": "bunny",
+              "x": 0,
+              "y": 3,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "star1",
+              "kind": "star",
+              "x": 2,
+              "y": 0
+            },
+            {
+              "id": "star2",
+              "kind": "star",
+              "x": 4,
+              "y": 0
+            },
+            {
+              "id": "star3",
+              "kind": "star",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "tree1",
+              "kind": "tree",
+              "x": 0,
+              "y": 1
+            },
+            {
+              "id": "tree2",
+              "kind": "tree",
+              "x": 1,
+              "y": 1
+            },
+            {
+              "id": "tree3",
+              "kind": "tree",
+              "x": 2,
+              "y": 1
+            },
+            {
+              "id": "tree4",
+              "kind": "tree",
+              "x": 3,
+              "y": 1
+            },
+            {
+              "id": "tree5",
+              "kind": "tree",
+              "x": 4,
+              "y": 1
+            },
+            {
+              "id": "tree6",
+              "kind": "tree",
+              "x": 5,
+              "y": 1
+            },
+            {
+              "id": "tree7",
+              "kind": "tree",
+              "x": 6,
+              "y": 1
+            },
+            {
+              "id": "tree8",
+              "kind": "tree",
+              "x": 0,
+              "y": 2
+            },
+            {
+              "id": "tree9",
+              "kind": "tree",
+              "x": 1,
+              "y": 2
+            },
+            {
+              "id": "tree10",
+              "kind": "tree",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "tree11",
+              "kind": "tree",
+              "x": 3,
+              "y": 2
+            },
+            {
+              "id": "tree12",
+              "kind": "tree",
+              "x": 4,
+              "y": 2
+            },
+            {
+              "id": "tree13",
+              "kind": "tree",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "tree14",
+              "kind": "tree",
+              "x": 6,
+              "y": 2
+            },
+            {
+              "id": "star4",
+              "kind": "star",
+              "x": 2,
+              "y": 3
+            },
+            {
+              "id": "star5",
+              "kind": "star",
+              "x": 4,
+              "y": 3
+            },
+            {
+              "id": "star6",
+              "kind": "star",
+              "x": 6,
+              "y": 3
+            }
+          ]
+        },
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down"],
+        "goals": [
+          {
+            "kind": "collectAll"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 4
+          },
+          "three": {
+            "maxBlocks": 2
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми на друга над программой — у каждого героя своя программа."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_right"
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 6
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "friend",
+              "scripts": [
+                {
+                  "id": "friend-s1",
+                  "blocks": [
+                    {
+                      "id": "friend-s1-hat",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 6
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "candy-04",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 2,
+        "taskText": "Один друг поднимается, другой спускается. Обоим пригодится «Повтори»!",
+        "scene": {
+          "kind": "grid",
+          "cols": 10,
+          "rows": 5,
+          "theme": "candy",
+          "actors": [
+            {
+              "id": "friend",
+              "character": "bunny",
+              "x": 5,
+              "y": 0,
+              "dir": "right"
+            },
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 4,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "tree1",
+              "kind": "tree",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "id": "tree2",
+              "kind": "tree",
+              "x": 1,
+              "y": 0
+            },
+            {
+              "id": "tree3",
+              "kind": "tree",
+              "x": 2,
+              "y": 0
+            },
+            {
+              "id": "tree4",
+              "kind": "tree",
+              "x": 3,
+              "y": 0
+            },
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 4,
+              "y": 0
+            },
+            {
+              "id": "tree5",
+              "kind": "tree",
+              "x": 7,
+              "y": 0
+            },
+            {
+              "id": "tree6",
+              "kind": "tree",
+              "x": 8,
+              "y": 0
+            },
+            {
+              "id": "tree7",
+              "kind": "tree",
+              "x": 9,
+              "y": 0
+            },
+            {
+              "id": "tree8",
+              "kind": "tree",
+              "x": 0,
+              "y": 1
+            },
+            {
+              "id": "tree9",
+              "kind": "tree",
+              "x": 1,
+              "y": 1
+            },
+            {
+              "id": "tree10",
+              "kind": "tree",
+              "x": 2,
+              "y": 1
+            },
+            {
+              "id": "tree11",
+              "kind": "tree",
+              "x": 5,
+              "y": 1
+            },
+            {
+              "id": "tree12",
+              "kind": "tree",
+              "x": 8,
+              "y": 1
+            },
+            {
+              "id": "tree13",
+              "kind": "tree",
+              "x": 9,
+              "y": 1
+            },
+            {
+              "id": "tree14",
+              "kind": "tree",
+              "x": 0,
+              "y": 2
+            },
+            {
+              "id": "tree15",
+              "kind": "tree",
+              "x": 1,
+              "y": 2
+            },
+            {
+              "id": "tree16",
+              "kind": "tree",
+              "x": 4,
+              "y": 2
+            },
+            {
+              "id": "tree17",
+              "kind": "tree",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "tree18",
+              "kind": "tree",
+              "x": 6,
+              "y": 2
+            },
+            {
+              "id": "tree19",
+              "kind": "tree",
+              "x": 9,
+              "y": 2
+            },
+            {
+              "id": "tree20",
+              "kind": "tree",
+              "x": 0,
+              "y": 3
+            },
+            {
+              "id": "tree21",
+              "kind": "tree",
+              "x": 3,
+              "y": 3
+            },
+            {
+              "id": "tree22",
+              "kind": "tree",
+              "x": 4,
+              "y": 3
+            },
+            {
+              "id": "tree23",
+              "kind": "tree",
+              "x": 5,
+              "y": 3
+            },
+            {
+              "id": "tree24",
+              "kind": "tree",
+              "x": 6,
+              "y": 3
+            },
+            {
+              "id": "tree25",
+              "kind": "tree",
+              "x": 7,
+              "y": 3
+            },
+            {
+              "id": "tree26",
+              "kind": "tree",
+              "x": 2,
+              "y": 4
+            },
+            {
+              "id": "tree27",
+              "kind": "tree",
+              "x": 3,
+              "y": 4
+            },
+            {
+              "id": "tree28",
+              "kind": "tree",
+              "x": 4,
+              "y": 4
+            },
+            {
+              "id": "tree29",
+              "kind": "tree",
+              "x": 5,
+              "y": 4
+            },
+            {
+              "id": "tree30",
+              "kind": "tree",
+              "x": 6,
+              "y": 4
+            },
+            {
+              "id": "tree31",
+              "kind": "tree",
+              "x": 7,
+              "y": 4
+            },
+            {
+              "id": "tree32",
+              "kind": "tree",
+              "x": 8,
+              "y": 4
+            },
+            {
+              "id": "flag2",
+              "kind": "flag",
+              "x": 9,
+              "y": 4
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "control_repeat"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 4,
+            "y": 0,
+            "actor": "hero"
+          },
+          {
+            "kind": "reach",
+            "x": 9,
+            "y": 4,
+            "actor": "friend"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 8
+          },
+          "three": {
+            "maxBlocks": 6
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми на друга над программой — у каждого героя своя программа."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "control_repeat",
+            "text": "У каждого своё «Повтори» четыре раза."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "control_repeat",
+                      "args": {
+                        "times": 4
+                      },
+                      "stacks": {
+                        "DO": [
+                          {
+                            "id": "b2",
+                            "type": "motion_right",
+                            "args": {
+                              "count": 1
+                            }
+                          },
+                          {
+                            "id": "b3",
+                            "type": "motion_up",
+                            "args": {
+                              "count": 1
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "friend",
+              "scripts": [
+                {
+                  "id": "friend-s1",
+                  "blocks": [
+                    {
+                      "id": "friend-s1-hat",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b4",
+                      "type": "control_repeat",
+                      "args": {
+                        "times": 4
+                      },
+                      "stacks": {
+                        "DO": [
+                          {
+                            "id": "b5",
+                            "type": "motion_right",
+                            "args": {
+                              "count": 1
+                            }
+                          },
+                          {
+                            "id": "b6",
+                            "type": "motion_down",
+                            "args": {
+                              "count": 1
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "candy-05",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 2,
+        "taskText": "Герой идёт сам, а друг — когда на него нажмёшь.",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 3,
+          "theme": "candy",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            },
+            {
+              "id": "friend",
+              "character": "bunny",
+              "x": 0,
+              "y": 2,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 4,
+              "y": 0
+            },
+            {
+              "id": "flag2",
+              "kind": "flag",
+              "x": 4,
+              "y": 2
+            }
+          ]
+        },
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down", "event_tap"],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 4,
+            "y": 0,
+            "actor": "hero"
+          },
+          {
+            "kind": "reach",
+            "x": 4,
+            "y": 2,
+            "actor": "friend"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 4
+          },
+          "three": {
+            "maxBlocks": 3
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми на друга над программой — у каждого героя своя программа."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_right",
+            "text": "Другу добавь программу «Когда тап»."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "friend",
+              "scripts": [
+                {
+                  "id": "friend-s1",
+                  "blocks": [
+                    {
+                      "id": "friend-s1-hat",
+                      "type": "event_start"
+                    }
+                  ]
+                },
+                {
+                  "id": "friend-s2",
+                  "blocks": [
+                    {
+                      "id": "friend-s2-hat",
+                      "type": "event_tap"
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "inputs": [
+          {
+            "atMs": 400,
+            "tap": "friend"
+          }
+        ]
+      }
+    },
+    {
+      "id": "candy-06",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 2,
+        "taskText": "Играем в прятки: когда герой найдёт друга, друг прячется!",
+        "scene": {
+          "kind": "grid",
+          "cols": 5,
+          "rows": 3,
+          "theme": "candy",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            },
+            {
+              "id": "friend",
+              "character": "bunny",
+              "x": 3,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": []
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "looks_hide",
+          "looks_show",
+          "event_touch"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 3,
+            "y": 1,
+            "actor": "hero"
+          },
+          {
+            "kind": "hidden",
+            "hidden": true,
+            "actor": "friend"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 4
+          },
+          "three": {
+            "maxBlocks": 3
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми на друга над программой — у каждого героя своя программа."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "looks_hide",
+            "text": "У друга: «Касается друга» и «Спрятаться»."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 3
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "friend",
+              "scripts": [
+                {
+                  "id": "friend-s1",
+                  "blocks": [
+                    {
+                      "id": "friend-s1-hat",
+                      "type": "event_start"
+                    }
+                  ]
+                },
+                {
+                  "id": "friend-s2",
+                  "blocks": [
+                    {
+                      "id": "friend-s2-hat",
+                      "type": "event_touch",
+                      "args": {
+                        "what": "actor"
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "looks_hide"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "candy-07",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 2,
+        "taskText": "Праздник! Оба друга надевают колпаки и идут к флажкам.",
+        "scene": {
+          "kind": "grid",
+          "cols": 5,
+          "rows": 3,
+          "theme": "candy",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            },
+            {
+              "id": "friend",
+              "character": "bunny",
+              "x": 0,
+              "y": 2,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 4,
+              "y": 0
+            },
+            {
+              "id": "flag2",
+              "kind": "flag",
+              "x": 4,
+              "y": 2
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "looks_costume"
+        ],
+        "goals": [
+          {
+            "kind": "costume",
+            "costume": "party",
+            "actor": "hero"
+          },
+          {
+            "kind": "costume",
+            "costume": "party",
+            "actor": "friend"
+          },
+          {
+            "kind": "reach",
+            "x": 4,
+            "y": 0,
+            "actor": "hero"
+          },
+          {
+            "kind": "reach",
+            "x": 4,
+            "y": 2,
+            "actor": "friend"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 5
+          },
+          "three": {
+            "maxBlocks": 4
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми на друга над программой — у каждого героя своя программа."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "looks_costume"
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "looks_costume",
+                      "args": {
+                        "costume": "party"
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "friend",
+              "scripts": [
+                {
+                  "id": "friend-s1",
+                  "blocks": [
+                    {
+                      "id": "friend-s1-hat",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b3",
+                      "type": "looks_costume",
+                      "args": {
+                        "costume": "party"
+                      }
+                    },
+                    {
+                      "id": "b4",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "candy-08",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 2,
+        "taskText": "Эстафета! Добеги до друга — и он побежит к флажку.",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 3,
+          "theme": "candy",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            },
+            {
+              "id": "friend",
+              "character": "bunny",
+              "x": 2,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 5,
+              "y": 1
+            }
+          ]
+        },
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down", "event_touch"],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 5,
+            "y": 1,
+            "actor": "friend"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 4
+          },
+          "three": {
+            "maxBlocks": 3
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми на друга над программой — у каждого героя своя программа."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_right",
+            "text": "У друга программа «Касается друга» со стрелкой вправо."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "friend",
+              "scripts": [
+                {
+                  "id": "friend-s1",
+                  "blocks": [
+                    {
+                      "id": "friend-s1-hat",
+                      "type": "event_start"
+                    }
+                  ]
+                },
+                {
+                  "id": "friend-s2",
+                  "blocks": [
+                    {
+                      "id": "friend-s2-hat",
+                      "type": "event_touch",
+                      "args": {
+                        "what": "actor"
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 3
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "candy-09",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "collect",
+        "tier": 2,
+        "taskText": "Два друга бегают по кругу всегда. Соберите все звёзды!",
+        "scene": {
+          "kind": "grid",
+          "cols": 8,
+          "rows": 3,
+          "theme": "candy",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            },
+            {
+              "id": "friend",
+              "character": "bunny",
+              "x": 4,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "star1",
+              "kind": "star",
+              "x": 2,
+              "y": 0
+            },
+            {
+              "id": "star2",
+              "kind": "star",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "water1",
+              "kind": "water",
+              "x": 1,
+              "y": 1
+            },
+            {
+              "id": "water2",
+              "kind": "water",
+              "x": 2,
+              "y": 1
+            },
+            {
+              "id": "water3",
+              "kind": "water",
+              "x": 5,
+              "y": 1
+            },
+            {
+              "id": "water4",
+              "kind": "water",
+              "x": 6,
+              "y": 1
+            },
+            {
+              "id": "star3",
+              "kind": "star",
+              "x": 0,
+              "y": 2
+            },
+            {
+              "id": "star4",
+              "kind": "star",
+              "x": 4,
+              "y": 2
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "control_forever"
+        ],
+        "goals": [
+          {
+            "kind": "collectAll"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 12
+          },
+          "three": {
+            "maxBlocks": 10
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми на друга над программой — у каждого героя своя программа."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "control_forever",
+            "text": "У каждого «Всегда»: вправо, вниз, влево, вверх."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "control_forever",
+                      "stacks": {
+                        "DO": [
+                          {
+                            "id": "b2",
+                            "type": "motion_right",
+                            "args": {
+                              "count": 3
+                            }
+                          },
+                          {
+                            "id": "b3",
+                            "type": "motion_down",
+                            "args": {
+                              "count": 2
+                            }
+                          },
+                          {
+                            "id": "b4",
+                            "type": "motion_left",
+                            "args": {
+                              "count": 3
+                            }
+                          },
+                          {
+                            "id": "b5",
+                            "type": "motion_up",
+                            "args": {
+                              "count": 2
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "friend",
+              "scripts": [
+                {
+                  "id": "friend-s1",
+                  "blocks": [
+                    {
+                      "id": "friend-s1-hat",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b6",
+                      "type": "control_forever",
+                      "stacks": {
+                        "DO": [
+                          {
+                            "id": "b7",
+                            "type": "motion_right",
+                            "args": {
+                              "count": 3
+                            }
+                          },
+                          {
+                            "id": "b8",
+                            "type": "motion_down",
+                            "args": {
+                              "count": 2
+                            }
+                          },
+                          {
+                            "id": "b9",
+                            "type": "motion_left",
+                            "args": {
+                              "count": 3
+                            }
+                          },
+                          {
+                            "id": "b10",
+                            "type": "motion_up",
+                            "args": {
+                              "count": 2
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "candy-10",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "collect",
+        "tier": 2,
+        "taskText": "Финал! Поднимись к другу по лесенке — он крикнет «Ура!» и побежит к флажку.",
+        "scene": {
+          "kind": "grid",
+          "cols": 8,
+          "rows": 6,
+          "theme": "candy",
+          "actors": [
+            {
+              "id": "friend",
+              "character": "bunny",
+              "x": 3,
+              "y": 2,
+              "dir": "right"
+            },
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 5,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "tree1",
+              "kind": "tree",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "id": "tree2",
+              "kind": "tree",
+              "x": 1,
+              "y": 0
+            },
+            {
+              "id": "tree3",
+              "kind": "tree",
+              "x": 2,
+              "y": 0
+            },
+            {
+              "id": "tree4",
+              "kind": "tree",
+              "x": 3,
+              "y": 0
+            },
+            {
+              "id": "tree5",
+              "kind": "tree",
+              "x": 4,
+              "y": 0
+            },
+            {
+              "id": "tree6",
+              "kind": "tree",
+              "x": 5,
+              "y": 0
+            },
+            {
+              "id": "tree7",
+              "kind": "tree",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "tree8",
+              "kind": "tree",
+              "x": 7,
+              "y": 0
+            },
+            {
+              "id": "tree9",
+              "kind": "tree",
+              "x": 0,
+              "y": 1
+            },
+            {
+              "id": "tree10",
+              "kind": "tree",
+              "x": 1,
+              "y": 1
+            },
+            {
+              "id": "tree11",
+              "kind": "tree",
+              "x": 2,
+              "y": 1
+            },
+            {
+              "id": "tree12",
+              "kind": "tree",
+              "x": 3,
+              "y": 1
+            },
+            {
+              "id": "tree13",
+              "kind": "tree",
+              "x": 4,
+              "y": 1
+            },
+            {
+              "id": "tree14",
+              "kind": "tree",
+              "x": 5,
+              "y": 1
+            },
+            {
+              "id": "tree15",
+              "kind": "tree",
+              "x": 6,
+              "y": 1
+            },
+            {
+              "id": "tree16",
+              "kind": "tree",
+              "x": 7,
+              "y": 1
+            },
+            {
+              "id": "tree17",
+              "kind": "tree",
+              "x": 0,
+              "y": 2
+            },
+            {
+              "id": "tree18",
+              "kind": "tree",
+              "x": 1,
+              "y": 2
+            },
+            {
+              "id": "tree19",
+              "kind": "tree",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 7,
+              "y": 2
+            },
+            {
+              "id": "tree20",
+              "kind": "tree",
+              "x": 0,
+              "y": 3
+            },
+            {
+              "id": "tree21",
+              "kind": "tree",
+              "x": 1,
+              "y": 3
+            },
+            {
+              "id": "star1",
+              "kind": "star",
+              "x": 2,
+              "y": 3
+            },
+            {
+              "id": "tree22",
+              "kind": "tree",
+              "x": 4,
+              "y": 3
+            },
+            {
+              "id": "tree23",
+              "kind": "tree",
+              "x": 5,
+              "y": 3
+            },
+            {
+              "id": "tree24",
+              "kind": "tree",
+              "x": 6,
+              "y": 3
+            },
+            {
+              "id": "tree25",
+              "kind": "tree",
+              "x": 7,
+              "y": 3
+            },
+            {
+              "id": "tree26",
+              "kind": "tree",
+              "x": 0,
+              "y": 4
+            },
+            {
+              "id": "star2",
+              "kind": "star",
+              "x": 1,
+              "y": 4
+            },
+            {
+              "id": "tree27",
+              "kind": "tree",
+              "x": 3,
+              "y": 4
+            },
+            {
+              "id": "tree28",
+              "kind": "tree",
+              "x": 4,
+              "y": 4
+            },
+            {
+              "id": "tree29",
+              "kind": "tree",
+              "x": 5,
+              "y": 4
+            },
+            {
+              "id": "tree30",
+              "kind": "tree",
+              "x": 6,
+              "y": 4
+            },
+            {
+              "id": "tree31",
+              "kind": "tree",
+              "x": 7,
+              "y": 4
+            },
+            {
+              "id": "tree32",
+              "kind": "tree",
+              "x": 2,
+              "y": 5
+            },
+            {
+              "id": "tree33",
+              "kind": "tree",
+              "x": 3,
+              "y": 5
+            },
+            {
+              "id": "tree34",
+              "kind": "tree",
+              "x": 4,
+              "y": 5
+            },
+            {
+              "id": "tree35",
+              "kind": "tree",
+              "x": 5,
+              "y": 5
+            },
+            {
+              "id": "tree36",
+              "kind": "tree",
+              "x": 6,
+              "y": 5
+            },
+            {
+              "id": "tree37",
+              "kind": "tree",
+              "x": 7,
+              "y": 5
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "control_repeat",
+          "looks_say",
+          "event_touch"
+        ],
+        "goals": [
+          {
+            "kind": "collectAll"
+          },
+          {
+            "kind": "reach",
+            "x": 7,
+            "y": 2,
+            "actor": "friend"
+          },
+          {
+            "kind": "say",
+            "text": "Ура!",
+            "actor": "friend"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 8
+          },
+          "three": {
+            "maxBlocks": 6
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Герою — лесенка с «Повтори». Другу — программа «Касается друга»."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "event_touch"
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "control_repeat",
+                      "args": {
+                        "times": 3
+                      },
+                      "stacks": {
+                        "DO": [
+                          {
+                            "id": "b2",
+                            "type": "motion_right",
+                            "args": {
+                              "count": 1
+                            }
+                          },
+                          {
+                            "id": "b3",
+                            "type": "motion_up",
+                            "args": {
+                              "count": 1
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "target": "friend",
+              "scripts": [
+                {
+                  "id": "friend-s1",
+                  "blocks": [
+                    {
+                      "id": "friend-s1-hat",
+                      "type": "event_start"
+                    }
+                  ]
+                },
+                {
+                  "id": "friend-s2",
+                  "blocks": [
+                    {
+                      "id": "friend-s2-hat",
+                      "type": "event_touch",
+                      "args": {
+                        "what": "actor"
+                      }
+                    },
+                    {
+                      "id": "b4",
+                      "type": "looks_say",
+                      "args": {
+                        "text": "Ура!"
+                      }
+                    },
+                    {
+                      "id": "b5",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

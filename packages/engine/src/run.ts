@@ -4,6 +4,7 @@ import {
   walkProgram,
   type Goal,
   type SceneInput,
+  type LevelInput,
   type ProgramDoc,
   type StarsRule,
 } from '@stepkids/blocks';
@@ -43,6 +44,8 @@ export interface RunnableLevel {
 export interface LevelRunOptions extends RuntimeOptions, GridWorldOptions {
   /** Hard stop for runs that never finish (headless checks). */
   maxTimeMs?: number;
+  /** Scripted taps for headless runs of interactive levels. */
+  inputs?: readonly LevelInput[];
 }
 
 interface LevelRunEvents {
@@ -62,6 +65,8 @@ export class LevelRun {
   readonly events = new Emitter<LevelRunEvents>();
   readonly blocks: number;
   result: RunResult | null = null;
+  /** While true, an idle program with "when tapped" scripts waits for the child instead of ending. */
+  acceptsInput = true;
   private readonly continuous: boolean;
   private readonly maxTimeMs: number;
   private firstBump: Extract<Failure, { kind: 'bump' }> | null = null;
@@ -141,7 +146,7 @@ export class LevelRun {
     const manual = this.level.goals.some((goal) => goal.kind === 'manual');
     const idle = this.runtime.isIdle();
     const actorsAlive = [...this.world.actors.values()].some((actor) => !actor.stopped);
-    const waitingForInput = this.runtime.hasInteractiveHats() && actorsAlive;
+    const waitingForInput = this.acceptsInput && this.runtime.hasInteractiveHats() && actorsAlive;
 
     if (goals.met && (idle || this.continuous)) {
       this.finish(true, null, goals.statuses);
@@ -184,7 +189,17 @@ export function runHeadless(
   options: LevelRunOptions = {},
 ): RunResult {
   const run = new LevelRun(level, program, { maxTimeMs: 120_000, ...options });
+  const inputs = [...(options.inputs ?? [])].sort((a, b) => a.atMs - b.atMs);
+  // Without scripted taps nobody will ever tap: an idle program is simply finished.
+  run.acceptsInput = inputs.length > 0;
   run.start();
-  while (!run.result && run.runtime.status === 'running') run.advance(TIMING.tickMs);
+  while (!run.result && run.runtime.status === 'running') {
+    while (inputs[0] && inputs[0].atMs <= run.timeMs) {
+      const input = inputs.shift();
+      if (input && run.world.hasActor(input.tap)) run.runtime.tap(input.tap);
+    }
+    if (inputs.length === 0) run.acceptsInput = false;
+    run.advance(TIMING.tickMs);
+  }
   return run.result ?? run.abort({ kind: 'timeout' });
 }

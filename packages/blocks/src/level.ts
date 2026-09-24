@@ -41,6 +41,14 @@ export const goalSchema = z.discriminatedUnion('kind', [
     cells: z.array(cell).min(1),
     actor: z.string().optional(),
   }),
+  /** The actor wears the costume when the program ends. */
+  z.object({
+    kind: z.literal('costume'),
+    costume: z.string().min(1).max(40),
+    actor: z.string().optional(),
+  }),
+  /** The actor is hidden (or visible) when the program ends. */
+  z.object({ kind: z.literal('hidden'), hidden: z.boolean(), actor: z.string().optional() }),
   /** Free task checked by a parent. */
   z.object({ kind: z.literal('manual') }),
 ]);
@@ -79,6 +87,12 @@ export type LevelKind = z.infer<typeof levelKindSchema>;
 
 export const TASK_TEXT_LIMIT_YOUNG = 80;
 
+export const levelInputSchema = z.object({
+  atMs: z.number().int().min(0).max(120_000),
+  tap: z.string().min(1).max(40),
+});
+export type LevelInput = z.infer<typeof levelInputSchema>;
+
 /** One immutable version of a level — what `level_versions` stores. */
 export const levelContentSchema = z
   .object({
@@ -97,6 +111,8 @@ export const levelContentSchema = z
     hints: z.array(hintSchema).max(3),
     /** Reference solution for the backoffice pass check; never shown to the child. */
     reference: programSchema.optional(),
+    /** Taps the headless check performs for interactive tasks ("tap the hero to jump"). */
+    inputs: z.array(levelInputSchema).max(20).optional(),
   })
   .superRefine((level, ctx) => {
     if (level.tier <= 2 && level.taskText.length > TASK_TEXT_LIMIT_YOUNG) {

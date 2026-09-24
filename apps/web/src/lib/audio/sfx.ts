@@ -59,7 +59,9 @@ let context: AudioContext | null = null;
 
 function ctx(): AudioContext | null {
   if (typeof window === 'undefined') return null;
-  const Ctor = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+  const Ctor =
+    window.AudioContext ??
+    (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
   if (!Ctor) return null;
   context ??= new Ctor();
   // Autoplay policies: resume inside the first user gesture.
@@ -74,7 +76,14 @@ function volume(): number {
 
 const freq = (midi: number) => 440 * 2 ** ((midi - 69) / 12);
 
-function tone(at: number, frequency: number, duration: number, wave: Wave, gain = 0.25, slideTo?: number): void {
+function tone(
+  at: number,
+  frequency: number,
+  duration: number,
+  wave: Wave,
+  gain = 0.25,
+  slideTo?: number,
+): void {
   const audio = ctx();
   const level = volume() * gain;
   if (!audio || level <= 0) return;
@@ -173,7 +182,14 @@ export const sfx = {
     const beat = 60 / melody.bpm;
     let at = t;
     for (const note of melody.notes) {
-      if (note.midi > 0) tone(at, freq(note.midi), note.beats * beat * 0.95, melody.wave, melody.wave === 'square' ? 0.1 : 0.2);
+      if (note.midi > 0)
+        tone(
+          at,
+          freq(note.midi),
+          note.beats * beat * 0.95,
+          melody.wave,
+          melody.wave === 'square' ? 0.1 : 0.2,
+        );
       at += note.beats * beat;
     }
   },

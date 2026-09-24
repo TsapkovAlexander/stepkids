@@ -1,0 +1,1384 @@
+{
+  "id": "beach",
+  "tier": 2,
+  "order": 2,
+  "title": "Солнечный пляж",
+  "voice": "Солнечный пляж. Здесь герои слушаются нажатий и делают несколько дел сразу.",
+  "island": "beach",
+  "unlock": {
+    "minStars": 15
+  },
+  "reward": {
+    "themes": ["beach"]
+  },
+  "levels": [
+    {
+      "id": "beach-01",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 2,
+        "taskText": "Добавь программу «Когда тап», нажми «Запуск», а потом — на героя!",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 3,
+          "theme": "beach",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 4,
+              "y": 1
+            }
+          ]
+        },
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down", "event_tap"],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 4,
+            "y": 1
+          }
+        ],
+        "stars": {},
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми «Ещё программа» и выбери, когда она начнётся."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_right",
+            "text": "В программу «Когда тап» положи стрелку вправо и выбери четыре."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    }
+                  ]
+                },
+                {
+                  "id": "hero-s2",
+                  "blocks": [
+                    {
+                      "id": "hero-s2-hat",
+                      "type": "event_tap"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "inputs": [
+          {
+            "atMs": 400,
+            "tap": "hero"
+          }
+        ]
+      }
+    },
+    {
+      "id": "beach-02",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 2,
+        "taskText": "Каждое нажатие на героя — один шаг. Дойди до флажка!",
+        "scene": {
+          "kind": "grid",
+          "cols": 7,
+          "rows": 3,
+          "theme": "beach",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 6,
+              "y": 1
+            }
+          ]
+        },
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down", "event_tap"],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 6,
+            "y": 1
+          }
+        ],
+        "stars": {
+          "three": {
+            "maxBlocks": 2
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми «Ещё программа» и выбери, когда она начнётся."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_right",
+            "text": "В «Когда тап» — один шаг вправо. А потом нажимай на героя!"
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    }
+                  ]
+                },
+                {
+                  "id": "hero-s2",
+                  "blocks": [
+                    {
+                      "id": "hero-s2-hat",
+                      "type": "event_tap"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 1
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "inputs": [
+          {
+            "atMs": 400,
+            "tap": "hero"
+          },
+          {
+            "atMs": 1100,
+            "tap": "hero"
+          },
+          {
+            "atMs": 1800,
+            "tap": "hero"
+          },
+          {
+            "atMs": 2500,
+            "tap": "hero"
+          },
+          {
+            "atMs": 3200,
+            "tap": "hero"
+          },
+          {
+            "atMs": 3900,
+            "tap": "hero"
+          }
+        ]
+      }
+    },
+    {
+      "id": "beach-03",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "collect",
+        "tier": 2,
+        "taskText": "Бегай вокруг озера всегда! Собери все звёзды.",
+        "scene": {
+          "kind": "grid",
+          "cols": 5,
+          "rows": 4,
+          "theme": "beach",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "star1",
+              "kind": "star",
+              "x": 2,
+              "y": 0
+            },
+            {
+              "id": "water1",
+              "kind": "water",
+              "x": 1,
+              "y": 1
+            },
+            {
+              "id": "water2",
+              "kind": "water",
+              "x": 2,
+              "y": 1
+            },
+            {
+              "id": "water3",
+              "kind": "water",
+              "x": 3,
+              "y": 1
+            },
+            {
+              "id": "star2",
+              "kind": "star",
+              "x": 4,
+              "y": 1
+            },
+            {
+              "id": "star3",
+              "kind": "star",
+              "x": 0,
+              "y": 2
+            },
+            {
+              "id": "water4",
+              "kind": "water",
+              "x": 1,
+              "y": 2
+            },
+            {
+              "id": "water5",
+              "kind": "water",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "water6",
+              "kind": "water",
+              "x": 3,
+              "y": 2
+            },
+            {
+              "id": "star4",
+              "kind": "star",
+              "x": 2,
+              "y": 3
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "control_forever"
+        ],
+        "goals": [
+          {
+            "kind": "collectAll"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 7
+          },
+          "three": {
+            "maxBlocks": 5
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Блок «Всегда» повторяет без конца. Положи в него круг вокруг озера."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "control_forever"
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "control_forever",
+                      "stacks": {
+                        "DO": [
+                          {
+                            "id": "b2",
+                            "type": "motion_right",
+                            "args": {
+                              "count": 4
+                            }
+                          },
+                          {
+                            "id": "b3",
+                            "type": "motion_down",
+                            "args": {
+                              "count": 3
+                            }
+                          },
+                          {
+                            "id": "b4",
+                            "type": "motion_left",
+                            "args": {
+                              "count": 4
+                            }
+                          },
+                          {
+                            "id": "b5",
+                            "type": "motion_up",
+                            "args": {
+                              "count": 3
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "beach-04",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "collect",
+        "tier": 2,
+        "taskText": "Когда герой коснётся звезды, пусть скажет «Ура!» Дойди до флажка.",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 3,
+          "theme": "beach",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "star1",
+              "kind": "star",
+              "x": 3,
+              "y": 1
+            },
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 5,
+              "y": 1
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "looks_say",
+          "event_touch"
+        ],
+        "goals": [
+          {
+            "kind": "collectAll"
+          },
+          {
+            "kind": "reach",
+            "x": 5,
+            "y": 1
+          },
+          {
+            "kind": "say",
+            "text": "Ура!"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 4
+          },
+          "three": {
+            "maxBlocks": 3
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми «Ещё программа» и выбери, когда она начнётся."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "looks_say",
+            "text": "В программу «Касается звезды» положи «Скажи: Ура!»"
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 5
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "hero-s2",
+                  "blocks": [
+                    {
+                      "id": "hero-s2-hat",
+                      "type": "event_touch",
+                      "args": {
+                        "what": "star"
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "looks_say",
+                      "args": {
+                        "text": "Ура!"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "beach-05",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 2,
+        "taskText": "Надень праздничный колпак и иди на праздник к флажку!",
+        "scene": {
+          "kind": "grid",
+          "cols": 5,
+          "rows": 3,
+          "theme": "beach",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 4,
+              "y": 1
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "looks_costume"
+        ],
+        "goals": [
+          {
+            "kind": "costume",
+            "costume": "party"
+          },
+          {
+            "kind": "reach",
+            "x": 4,
+            "y": 1
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 3
+          },
+          "three": {
+            "maxBlocks": 2
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Блок «Костюм» переодевает героя."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "looks_costume",
+            "text": "Нажми на «Костюм» и выбери «Праздник»."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "looks_costume",
+                      "args": {
+                        "costume": "party"
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "beach-06",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 2,
+        "taskText": "Дойди до пальмы и спрячься за ней!",
+        "scene": {
+          "kind": "grid",
+          "cols": 5,
+          "rows": 3,
+          "theme": "beach",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "tree1",
+              "kind": "tree",
+              "x": 3,
+              "y": 1
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "looks_hide",
+          "looks_show"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 2,
+            "y": 1
+          },
+          {
+            "kind": "hidden",
+            "hidden": true
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 3
+          },
+          "three": {
+            "maxBlocks": 2
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Подойди к пальме вплотную, а потом добавь «Спрятаться»."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "looks_hide"
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "looks_hide"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "beach-07",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 2,
+        "taskText": "Иди к флажку и одновременно пой «Ля-ля-ля!». Нужны две программы!",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 3,
+          "theme": "beach",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 5,
+              "y": 1
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "looks_say",
+          "event_start"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 5,
+            "y": 1
+          },
+          {
+            "kind": "say",
+            "text": "Ля-ля-ля!"
+          },
+          {
+            "kind": "withinTime",
+            "seconds": 2.5
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 3
+          },
+          "three": {
+            "maxBlocks": 2
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Если петь, а потом идти, не успеешь. Пусть две программы работают вместе!"
+          },
+          {
+            "kind": "highlight",
+            "blockType": "looks_say",
+            "text": "Добавь ещё одну программу «Когда старт» и положи туда «Скажи»."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 5
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "hero-s2",
+                  "blocks": [
+                    {
+                      "id": "hero-s2-hat",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b2",
+                      "type": "looks_say",
+                      "args": {
+                        "text": "Ля-ля-ля!"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "beach-08",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 2,
+        "taskText": "Когда дойдёшь до флажка, переоденься в праздничный костюм!",
+        "scene": {
+          "kind": "grid",
+          "cols": 5,
+          "rows": 3,
+          "theme": "beach",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 4,
+              "y": 1
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "looks_costume",
+          "event_touch"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 4,
+            "y": 1
+          },
+          {
+            "kind": "costume",
+            "costume": "party"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 4
+          },
+          "three": {
+            "maxBlocks": 3
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми «Ещё программа» и выбери, когда она начнётся."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "looks_costume",
+            "text": "Программа «Касается флажка», а в ней — «Костюм: праздник»."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 4
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "hero-s2",
+                  "blocks": [
+                    {
+                      "id": "hero-s2-hat",
+                      "type": "event_touch",
+                      "args": {
+                        "what": "flag"
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "looks_costume",
+                      "args": {
+                        "costume": "party"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "beach-09",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 2,
+        "taskText": "Каждый тап — две ступеньки. Нажимай на героя, пока он не поднимется!",
+        "scene": {
+          "kind": "grid",
+          "cols": 5,
+          "rows": 5,
+          "theme": "beach",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 4,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "water1",
+              "kind": "water",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "id": "water2",
+              "kind": "water",
+              "x": 1,
+              "y": 0
+            },
+            {
+              "id": "water3",
+              "kind": "water",
+              "x": 2,
+              "y": 0
+            },
+            {
+              "id": "water4",
+              "kind": "water",
+              "x": 3,
+              "y": 0
+            },
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 4,
+              "y": 0
+            },
+            {
+              "id": "water5",
+              "kind": "water",
+              "x": 0,
+              "y": 1
+            },
+            {
+              "id": "water6",
+              "kind": "water",
+              "x": 1,
+              "y": 1
+            },
+            {
+              "id": "water7",
+              "kind": "water",
+              "x": 2,
+              "y": 1
+            },
+            {
+              "id": "water8",
+              "kind": "water",
+              "x": 0,
+              "y": 2
+            },
+            {
+              "id": "water9",
+              "kind": "water",
+              "x": 1,
+              "y": 2
+            },
+            {
+              "id": "water10",
+              "kind": "water",
+              "x": 4,
+              "y": 2
+            },
+            {
+              "id": "water11",
+              "kind": "water",
+              "x": 0,
+              "y": 3
+            },
+            {
+              "id": "water12",
+              "kind": "water",
+              "x": 3,
+              "y": 3
+            },
+            {
+              "id": "water13",
+              "kind": "water",
+              "x": 4,
+              "y": 3
+            },
+            {
+              "id": "water14",
+              "kind": "water",
+              "x": 2,
+              "y": 4
+            },
+            {
+              "id": "water15",
+              "kind": "water",
+              "x": 3,
+              "y": 4
+            },
+            {
+              "id": "water16",
+              "kind": "water",
+              "x": 4,
+              "y": 4
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "control_repeat",
+          "event_tap"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 4,
+            "y": 0
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 6
+          },
+          "three": {
+            "maxBlocks": 4
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми «Ещё программа» и выбери, когда она начнётся."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "control_repeat",
+            "text": "В «Когда тап» положи «Повтори два раза»: вправо и вверх."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    }
+                  ]
+                },
+                {
+                  "id": "hero-s2",
+                  "blocks": [
+                    {
+                      "id": "hero-s2-hat",
+                      "type": "event_tap"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "control_repeat",
+                      "args": {
+                        "times": 2
+                      },
+                      "stacks": {
+                        "DO": [
+                          {
+                            "id": "b2",
+                            "type": "motion_right",
+                            "args": {
+                              "count": 1
+                            }
+                          },
+                          {
+                            "id": "b3",
+                            "type": "motion_up",
+                            "args": {
+                              "count": 1
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "inputs": [
+          {
+            "atMs": 400,
+            "tap": "hero"
+          },
+          {
+            "atMs": 2400,
+            "tap": "hero"
+          }
+        ]
+      }
+    },
+    {
+      "id": "beach-10",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "collect",
+        "tier": 2,
+        "taskText": "Бегай вокруг лужи всегда, а у каждой звезды кричи «Звезда!»",
+        "scene": {
+          "kind": "grid",
+          "cols": 4,
+          "rows": 3,
+          "theme": "beach",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "star1",
+              "kind": "star",
+              "x": 1,
+              "y": 0
+            },
+            {
+              "id": "water1",
+              "kind": "water",
+              "x": 1,
+              "y": 1
+            },
+            {
+              "id": "water2",
+              "kind": "water",
+              "x": 2,
+              "y": 1
+            },
+            {
+              "id": "star2",
+              "kind": "star",
+              "x": 3,
+              "y": 1
+            },
+            {
+              "id": "star3",
+              "kind": "star",
+              "x": 2,
+              "y": 2
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "control_forever",
+          "looks_say",
+          "event_touch"
+        ],
+        "goals": [
+          {
+            "kind": "collectAll"
+          },
+          {
+            "kind": "say",
+            "text": "Звезда!"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 9
+          },
+          "three": {
+            "maxBlocks": 7
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Одна программа бегает по кругу, другая кричит, когда герой касается звезды."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "control_forever"
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "control_forever",
+                      "stacks": {
+                        "DO": [
+                          {
+                            "id": "b2",
+                            "type": "motion_right",
+                            "args": {
+                              "count": 3
+                            }
+                          },
+                          {
+                            "id": "b3",
+                            "type": "motion_down",
+                            "args": {
+                              "count": 2
+                            }
+                          },
+                          {
+                            "id": "b4",
+                            "type": "motion_left",
+                            "args": {
+                              "count": 3
+                            }
+                          },
+                          {
+                            "id": "b5",
+                            "type": "motion_up",
+                            "args": {
+                              "count": 2
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "hero-s2",
+                  "blocks": [
+                    {
+                      "id": "hero-s2-hat",
+                      "type": "event_touch",
+                      "args": {
+                        "what": "star"
+                      }
+                    },
+                    {
+                      "id": "b6",
+                      "type": "looks_say",
+                      "args": {
+                        "text": "Звезда!"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

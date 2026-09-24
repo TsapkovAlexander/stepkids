@@ -23,7 +23,9 @@ import {
   Star,
   Users,
   type LucideIcon,
+  type LucideProps,
 } from 'lucide-react';
+import { createElement } from 'react';
 
 /** Block icons are named in the catalog (lucide kebab names); this maps them to components. */
 export const BLOCK_ICONS: Record<string, LucideIcon> = {
@@ -54,4 +56,9 @@ export const BLOCK_ICONS: Record<string, LucideIcon> = {
 
 export function blockIcon(name: string): LucideIcon {
   return BLOCK_ICONS[name] ?? Hash;
+}
+
+/** Renders a catalog icon by name (a lookup, so no component is created during render). */
+export function BlockIcon({ name, ...props }: LucideProps & { name: string }) {
+  return createElement(blockIcon(name), props);
 }

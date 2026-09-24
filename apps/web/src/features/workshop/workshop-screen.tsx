@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { KidButton } from '@/components/kid/kid-button';
 import { sfx } from '@/lib/audio/sfx';
-import { insertBlock } from '@/lib/ribbon/ops';
 import { useDeviceSettings } from '@/lib/settings';
 import { useRequireProfile } from '@/lib/use-require-profile';
 import { cn } from '@/lib/utils';
@@ -34,19 +33,37 @@ export function WorkshopScreen({ projectId }: { projectId: string }) {
   const { speed } = useDeviceSettings();
 
   const tier = profile?.currentTier ?? 1;
-  const palette = useMemo(() => defaultCatalog.upToTier(tier === 1 ? 1 : 2).filter((def) => def.shape !== 'hat'), [tier]);
+  const palette = useMemo(() => defaultCatalog.upToTier(tier === 1 ? 1 : 2), [tier]);
   const scene = project?.scene;
-  const level = useMemo(() => (scene ? sandboxLevel(scene, palette.map((def) => def.type)) : null), [scene, palette]);
-  const markers = useMemo<StageMarkers>(() => (pendingPortal ? { reach: [pendingPortal] } : {}), [pendingPortal]);
+  const level = useMemo(
+    () =>
+      scene
+        ? sandboxLevel(
+            scene,
+            palette.map((def) => def.type),
+          )
+        : null,
+    [scene, palette],
+  );
+  const markers = useMemo<StageMarkers>(
+    () => (pendingPortal ? { reach: [pendingPortal] } : {}),
+    [pendingPortal],
+  );
 
   if (project === null) {
     return (
       <div className="flex flex-1 items-center justify-center">
-        <KidButton voiceLabel="Мои проекты" caption="Проект не найден" tone="brand" onClick={() => router.push('/play/projects')} />
+        <KidButton
+          voiceLabel="Мои проекты"
+          caption="Проект не найден"
+          tone="brand"
+          onClick={() => router.push('/play/projects')}
+        />
       </div>
     );
   }
-  if (!profile || !project || !level || !scene) return <div className="flex-1 animate-pulse bg-white/30" aria-busy />;
+  if (!profile || !project || !level || !scene)
+    return <div className="flex-1 animate-pulse bg-white/30" aria-busy />;
 
   return (
     <WorkshopBody
@@ -113,7 +130,14 @@ interface BodyProps {
 
 function WorkshopBody(props: BodyProps) {
   const { level, markers, stage, speed, mode, program, setProgram } = props;
-  const { state, player } = useLevelPlayer({ level, markers, stage, speed, onFinish: () => undefined, sandbox: true });
+  const { state, player } = useLevelPlayer({
+    level,
+    markers,
+    stage,
+    speed,
+    onFinish: () => undefined,
+    sandbox: true,
+  });
   const running = state.status !== 'idle';
 
   return (
@@ -121,7 +145,11 @@ function WorkshopBody(props: BodyProps) {
       <header className="flex flex-wrap items-center gap-2 side:col-span-2">
         <KidButton voiceLabel="На карту" icon={MapIcon} round onClick={props.onBack} />
         <h1 className="min-w-0 flex-1 truncate text-2xl font-black">{props.title}</h1>
-        <div role="tablist" aria-label="Что делаем" className="flex gap-1 rounded-full bg-white/70 p-1">
+        <div
+          role="tablist"
+          aria-label="Что делаем"
+          className="flex gap-1 rounded-full bg-white/70 p-1"
+        >
           {(
             [
               { id: 'field', label: 'Поле', icon: Grid3x3 },
@@ -144,8 +172,20 @@ function WorkshopBody(props: BodyProps) {
             />
           ))}
         </div>
-        <KidButton voiceLabel={props.shared ? 'Уже отправлено родителю' : 'Отправить родителю'} icon={Send} round tone={props.shared ? 'surface' : 'sun'} silent onClick={props.onShare} />
-        <KidButton voiceLabel="Показать на весь экран" icon={Maximize2} round onClick={props.onShow} />
+        <KidButton
+          voiceLabel={props.shared ? 'Уже отправлено родителю' : 'Отправить родителю'}
+          icon={Send}
+          round
+          tone={props.shared ? 'surface' : 'sun'}
+          silent
+          onClick={props.onShare}
+        />
+        <KidButton
+          voiceLabel="Показать на весь экран"
+          icon={Maximize2}
+          round
+          onClick={props.onShow}
+        />
       </header>
       <div className="relative min-h-[34dvh] side:row-span-2 side:min-h-0">
         <StageView
@@ -156,6 +196,7 @@ function WorkshopBody(props: BodyProps) {
             if (running) return;
             props.onCell(cell);
           }}
+          onActorTap={(actorId) => player?.tap(actorId)}
         />
         {mode === 'field' ? (
           <p className="pointer-events-none absolute top-2 left-2 rounded-full bg-white/85 px-3 py-1 text-base font-extrabold">
@@ -164,31 +205,36 @@ function WorkshopBody(props: BodyProps) {
         ) : null}
       </div>
       {mode === 'field' ? (
-        <section aria-label="Предметы" className="min-h-0 overflow-y-auto side:col-start-2 side:row-span-2 side:row-start-2">
-          <ToolPalette tool={props.tool} onTool={props.setTool} theme={props.scene.theme ?? 'meadow'} onTheme={props.onTheme} heroId={props.heroId} />
+        <section
+          aria-label="Предметы"
+          className="min-h-0 overflow-y-auto side:col-start-2 side:row-span-2 side:row-start-2"
+        >
+          <ToolPalette
+            tool={props.tool}
+            onTool={props.setTool}
+            theme={props.scene.theme ?? 'meadow'}
+            onTheme={props.onTheme}
+            heroId={props.heroId}
+          />
         </section>
       ) : (
         <ProgramPanel
           program={program}
           setProgram={setProgram}
-          palette={props.palette}
+          blocks={props.palette}
+          actors={[{ id: 'hero', character: props.heroId, name: 'Герой' }]}
           running={running}
           activeIds={state.activeIds}
           oopsId={state.oopsId}
           ghost={null}
           highlight={null}
-          onPick={(type) => {
-            if (running) {
-              voice.say('Сначала нажми «Стоп»');
-              return;
-            }
-            const def = defaultCatalog.get(type);
-            sfx.add();
-            if (def) voice.say(def.voice);
-            setProgram((current) => insertBlock(current, defaultCatalog.create(type)));
-          }}
           controls={
-            <RunControls status={state.status} onPlay={() => player?.play(program)} onStop={() => player?.stop()} onStep={() => player?.step(program)} />
+            <RunControls
+              status={state.status}
+              onPlay={() => player?.play(program)}
+              onStop={() => player?.stop()}
+              onStep={() => player?.step(program)}
+            />
           }
         />
       )}

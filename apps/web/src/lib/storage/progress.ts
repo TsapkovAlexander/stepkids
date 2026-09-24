@@ -9,7 +9,12 @@ export type NewAttempt = Omit<AttemptRecord, 'clientId' | 'createdAt' | 'synced'
 /** Stores an attempt (queued for sync) and folds it into the level progress atomically. */
 export async function recordAttempt(input: NewAttempt): Promise<LevelProgress> {
   const d = db();
-  const attempt: AttemptRecord = { ...input, clientId: randomId(), createdAt: Date.now(), synced: 0 };
+  const attempt: AttemptRecord = {
+    ...input,
+    clientId: randomId(),
+    createdAt: Date.now(),
+    synced: 0,
+  };
   return d.transaction('rw', ['attempts', 'progress'], async () => {
     await d.attempts.add(attempt);
     const previous = await d.progress.get([attempt.profileId, attempt.levelId]);
@@ -38,7 +43,11 @@ export async function getDraft(profileId: string, levelId: string): Promise<Prog
   return (await db().drafts.get([profileId, levelId]))?.program ?? null;
 }
 
-export async function saveDraft(profileId: string, levelId: string, program: ProgramDoc): Promise<void> {
+export async function saveDraft(
+  profileId: string,
+  levelId: string,
+  program: ProgramDoc,
+): Promise<void> {
   await db().drafts.put({ profileId, levelId, program, updatedAt: Date.now() });
 }
 

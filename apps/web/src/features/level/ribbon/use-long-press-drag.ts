@@ -13,19 +13,24 @@ export interface DragState {
 
 /**
  * Long press lifts a block, then it follows the finger; a short tap stays a tap.
- * `resolveIndex` maps a pointer position to the drop index.
+ * `resolve` maps a pointer position to a drop target (a lane and an index) or null.
  */
-export function useLongPressDrag(options: {
+export function useLongPressDrag<T>(options: {
   enabled: boolean;
   onTap: (id: string) => void;
-  onDrop: (id: string, index: number) => void;
-  resolveIndex: (x: number, y: number) => number;
+  onDrop: (id: string, target: T) => void;
+  resolve: (x: number, y: number) => T | null;
   onLift?: (id: string) => void;
 }) {
-  const { enabled, onTap, onDrop, resolveIndex, onLift } = options;
+  const { enabled, onTap, onDrop, resolve, onLift } = options;
   const [drag, setDrag] = useState<DragState | null>(null);
-  const [dropIndex, setDropIndex] = useState<number | null>(null);
-  const pending = useRef<{ id: string; x: number; y: number; timer: ReturnType<typeof setTimeout>; pointerId: number } | null>(null);
+  const [target, setTarget] = useState<T | null>(null);
+  const pending = useRef<{
+    id: string;
+    x: number;
+    y: number;
+    timer: ReturnType<typeof setTimeout>;
+  } | null>(null);
   const lifted = useRef(false);
 
   const cancel = () => {
@@ -33,59 +38,65 @@ export function useLongPressDrag(options: {
     pending.current = null;
   };
 
+  const finish = () => {
+    lifted.current = false;
+    setDrag(null);
+    setTarget(null);
+  };
+
   const bind = useCallback(
     (id: string) => ({
       onPointerDown: (event: PointerEvent<HTMLElement>) => {
         if (!enabled || event.button !== 0) return;
+        // Nested blocks sit inside wrapper blocks: only the innermost one reacts.
+        event.stopPropagation();
         lifted.current = false;
-        const target = event.currentTarget;
+        const element = event.currentTarget;
         const { clientX: x, clientY: y, pointerId } = event;
         const timer = setTimeout(() => {
           lifted.current = true;
           try {
-            target.setPointerCapture(pointerId);
+            element.setPointerCapture(pointerId);
           } catch {
             // The pointer may already be gone.
           }
           setDrag({ id, x, y });
-          setDropIndex(resolveIndex(x, y));
+          setTarget(resolve(x, y));
           onLift?.(id);
         }, HOLD_MS);
-        pending.current = { id, x, y, timer, pointerId };
+        pending.current = { id, x, y, timer };
       },
       onPointerMove: (event: PointerEvent<HTMLElement>) => {
         const start = pending.current;
-        if (!start) return;
+        if (!start || start.id !== id) return;
         if (!lifted.current) {
           if (Math.hypot(event.clientX - start.x, event.clientY - start.y) > SLOP_PX) cancel();
           return;
         }
-        setDrag({ id: start.id, x: event.clientX, y: event.clientY });
-        setDropIndex(resolveIndex(event.clientX, event.clientY));
+        setDrag({ id, x: event.clientX, y: event.clientY });
+        setTarget(resolve(event.clientX, event.clientY));
       },
       onPointerUp: (event: PointerEvent<HTMLElement>) => {
         const start = pending.current;
+        if (!start || start.id !== id) return;
+        event.stopPropagation();
         cancel();
-        if (!start) return;
         if (lifted.current) {
-          onDrop(start.id, resolveIndex(event.clientX, event.clientY));
-          setDrag(null);
-          setDropIndex(null);
+          const drop = resolve(event.clientX, event.clientY);
+          if (drop) onDrop(id, drop);
+          finish();
         } else {
-          onTap(start.id);
+          onTap(id);
         }
-        lifted.current = false;
       },
       onPointerCancel: () => {
         cancel();
-        lifted.current = false;
-        setDrag(null);
-        setDropIndex(null);
+        finish();
       },
       onContextMenu: (event: { preventDefault: () => void }) => event.preventDefault(),
     }),
-    [enabled, onTap, onDrop, resolveIndex, onLift],
+    [enabled, onTap, onDrop, resolve, onLift],
   );
 
-  return { drag, dropIndex, bind };
+  return { drag, target, bind };
 }

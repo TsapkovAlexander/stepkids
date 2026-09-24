@@ -5,7 +5,11 @@ import type { KeyboardEvent } from 'react';
  * Home/End jump. Put it on the element with role="radiogroup".
  */
 export function rovingRadioKeyDown(event: KeyboardEvent<HTMLElement>): void {
-  const radios = [...event.currentTarget.querySelectorAll<HTMLElement>('[role="radio"]:not([aria-disabled="true"])')];
+  const radios = [
+    ...event.currentTarget.querySelectorAll<HTMLElement>(
+      '[role="radio"]:not([aria-disabled="true"])',
+    ),
+  ];
   if (radios.length === 0) return;
   const current = radios.indexOf(document.activeElement as HTMLElement);
   const last = radios.length - 1;

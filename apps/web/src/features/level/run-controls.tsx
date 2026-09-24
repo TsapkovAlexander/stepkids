@@ -46,8 +46,24 @@ export function RunControls({ status, onPlay, onStop, onStep, className }: RunCo
         disabled={busy || status === 'won'}
         onClick={onPlay}
       />
-      <KidButton voiceLabel="Стоп" icon={Square} tone="calm" size="lg" round iconClassName="fill-white" disabled={!active} onClick={onStop} />
-      <KidButton voiceLabel="Шаг" icon={StepForward} size="lg" round disabled={status === 'reacting' || status === 'won'} onClick={onStep} />
+      <KidButton
+        voiceLabel="Стоп"
+        icon={Square}
+        tone="calm"
+        size="lg"
+        round
+        iconClassName="fill-white"
+        disabled={!active}
+        onClick={onStop}
+      />
+      <KidButton
+        voiceLabel="Шаг"
+        icon={StepForward}
+        size="lg"
+        round
+        disabled={status === 'reacting' || status === 'won'}
+        onClick={onStep}
+      />
       <KidButton
         voiceLabel={`Скорость: ${current.label}`}
         icon={current.icon}

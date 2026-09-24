@@ -154,6 +154,8 @@ export class Runtime {
       if (this.status !== 'running') return;
     }
     this.threads = this.threads.filter((thread) => !thread.done);
+    // Touches made during this tick start their scripts now, so the run is not taken for finished.
+    this.fireTouchHats();
     const idleNow = this.threads.length === 0;
     if (idleNow && !this.idle) this.events.emit('idle', { time: this.now });
     this.idle = idleNow;

@@ -47,6 +47,7 @@ begin
   assert public._valid_goals('[{"kind":"collectAll"},{"kind":"reach","x":1,"y":2}]'), 'goals are valid';
   assert not public._valid_goals('[]'), 'at least one goal';
   assert not public._valid_goals('[{"kind":"fly"}]'), 'unknown goal';
+  assert public._valid_goals('[{"kind":"costume","costume":"party"},{"kind":"hidden","hidden":true}]'), 'tier 2 goals';
   assert not public._valid_goals('[{"x":1}]'), 'goal kind is required';
   assert not public._valid_goals('{"kind":"reach"}'), 'goals are an array';
 end $$;

@@ -27,12 +27,21 @@ export function MapScreen() {
   const router = useRouter();
   const profile = useRequireProfile();
   const progress = useProgress(profile?.id);
-  const seen = useLiveQuery(async (): Promise<string[]> => (profile ? seenRewards(profile.id) : []), [profile?.id], undefined);
+  const seen = useLiveQuery(
+    async (): Promise<string[]> => (profile ? seenRewards(profile.id) : []),
+    [profile?.id],
+    undefined,
+  );
   const [heroOpen, setHeroOpen] = useState(false);
   const worlds = allWorlds();
 
-  const heroes = useMemo(() => (progress ? unlockedHeroes(worlds, progress) : []), [progress, worlds]);
-  const newHero = seen ? heroes.find((hero) => hero.unlockedBy && !seen.includes(`hero:${hero.id}`)) : undefined;
+  const heroes = useMemo(
+    () => (progress ? unlockedHeroes(worlds, progress) : []),
+    [progress, worlds],
+  );
+  const newHero = seen
+    ? heroes.find((hero) => hero.unlockedBy && !seen.includes(`hero:${hero.id}`))
+    : undefined;
 
   if (!profile || !progress) {
     return <div className="flex-1 animate-pulse bg-white/30" aria-busy />;
@@ -48,7 +57,11 @@ export function MapScreen() {
           const tierWorlds = worldsOfTier(tier.id, worlds);
           const open = isTierUnlocked(tier.id, worlds, progress, profile) && tierWorlds.length > 0;
           return (
-            <section key={tier.id} aria-label={`Ступень ${tier.id}: ${tier.title}`} className="mb-6">
+            <section
+              key={tier.id}
+              aria-label={`Ступень ${tier.id}: ${tier.title}`}
+              className="mb-6"
+            >
               <h2 className="mb-2 flex items-center gap-2 text-2xl font-black text-ink">
                 <span className="rounded-full bg-brand px-3 py-0.5 text-white">{tier.id}</span>
                 {tier.title}
@@ -71,10 +84,18 @@ export function MapScreen() {
                             voice.say(world.voice ?? world.title);
                             router.push(`/play/world/${world.id}`);
                           } else if (lock.starsNeeded > 0) {
-                            voice.say(`${world.title}. Чтобы открыть этот мир, собери ещё ${lock.starsNeeded} звёзд.`);
+                            voice.say(
+                              `${world.title}. Чтобы открыть этот мир, собери ещё ${lock.starsNeeded} звёзд.`,
+                            );
                           } else {
-                            const after = lock.afterWorld ? worldById(lock.afterWorld)?.title : null;
-                            voice.say(after ? `Сначала пройди мир ${after}.` : `${world.title} скоро откроется.`);
+                            const after = lock.afterWorld
+                              ? worldById(lock.afterWorld)?.title
+                              : null;
+                            voice.say(
+                              after
+                                ? `Сначала пройди мир ${after}.`
+                                : `${world.title} скоро откроется.`,
+                            );
                           }
                         }}
                       />

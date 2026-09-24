@@ -35,12 +35,17 @@ export function useActiveProfileId(): string | null {
   return useSyncExternalStore(subscribe, read, () => null);
 }
 
-export type ProfileState = { status: 'loading' } | { status: 'none' } | { status: 'ready'; profile: Profile };
+export type ProfileState =
+  { status: 'loading' } | { status: 'none' } | { status: 'ready'; profile: Profile };
 
 /** The child currently playing on this device. */
 export function useActiveProfile(): ProfileState {
   const id = useActiveProfileId();
-  const profile = useLiveQuery(async () => (id ? ((await db().profiles.get(id)) ?? null) : null), [id], undefined);
+  const profile = useLiveQuery(
+    async () => (id ? ((await db().profiles.get(id)) ?? null) : null),
+    [id],
+    undefined,
+  );
   if (profile === undefined) return { status: 'loading' };
   if (profile === null) return { status: 'none' };
   return { status: 'ready', profile };

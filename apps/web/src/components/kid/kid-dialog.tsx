@@ -19,7 +19,15 @@ export interface KidDialogProps {
 }
 
 /** Big friendly modal with a focus trap and Escape to close. */
-export function KidDialog({ open, onOpenChange, title, description, children, className, hideClose }: KidDialogProps) {
+export function KidDialog({
+  open,
+  onOpenChange,
+  title,
+  description,
+  children,
+  className,
+  hideClose,
+}: KidDialogProps) {
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -32,7 +40,9 @@ export function KidDialog({ open, onOpenChange, title, description, children, cl
           {...(description ? {} : { 'aria-describedby': undefined })}
         >
           <Dialog.Title className="pr-14 text-2xl font-black text-ink">{title}</Dialog.Title>
-          {description ? <Dialog.Description className="sr-only">{description}</Dialog.Description> : null}
+          {description ? (
+            <Dialog.Description className="sr-only">{description}</Dialog.Description>
+          ) : null}
           {!hideClose ? (
             <Dialog.Close asChild>
               <KidButton voiceLabel="Закрыть" icon={X} round className="absolute top-4 right-4" />

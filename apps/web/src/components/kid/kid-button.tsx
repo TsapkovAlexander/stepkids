@@ -31,7 +31,8 @@ const kidButton = cva(
 );
 
 export interface KidButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label'>,
+  extends
+    Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label'>,
     VariantProps<typeof kidButton> {
   /** Spoken on every tap and used as the accessible name. */
   voiceLabel: string;
@@ -44,7 +45,21 @@ export interface KidButtonProps
 }
 
 export const KidButton = forwardRef<HTMLButtonElement, KidButtonProps>(function KidButton(
-  { voiceLabel, icon: Icon, caption, silent, tone, size, round, className, iconClassName, onClick, children, style, ...rest },
+  {
+    voiceLabel,
+    icon: Icon,
+    caption,
+    silent,
+    tone,
+    size,
+    round,
+    className,
+    iconClassName,
+    onClick,
+    children,
+    style,
+    ...rest
+  },
   ref,
 ) {
   const iconSize = size === 'xl' ? 44 : size === 'lg' ? 34 : 28;
@@ -63,7 +78,9 @@ export const KidButton = forwardRef<HTMLButtonElement, KidButtonProps>(function 
       }}
       {...rest}
     >
-      {Icon ? <Icon aria-hidden size={iconSize} strokeWidth={2.75} className={iconClassName} /> : null}
+      {Icon ? (
+        <Icon aria-hidden size={iconSize} strokeWidth={2.75} className={iconClassName} />
+      ) : null}
       {caption ? <span className="leading-none">{caption}</span> : null}
       {children}
     </button>

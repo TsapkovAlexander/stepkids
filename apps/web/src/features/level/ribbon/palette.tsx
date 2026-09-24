@@ -15,7 +15,11 @@ export interface PaletteProps {
 /** Blocks available in this level; a tap adds the block to the end of the program. */
 export function Palette({ blocks, onPick, highlight, disabled, className }: PaletteProps) {
   return (
-    <div role="toolbar" aria-label="Блоки" className={cn('flex flex-wrap items-center justify-center gap-3 p-2', className)}>
+    <div
+      role="toolbar"
+      aria-label="Блоки"
+      className={cn('flex flex-wrap items-center justify-center gap-3 p-2', className)}
+    >
       {blocks.map((def) => (
         <BlockTile
           key={def.type}

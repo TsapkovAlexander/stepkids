@@ -18,7 +18,12 @@ export function NewProject() {
     started.current = true;
     void (async () => {
       const count = (await listProjects(profile.id)).length;
-      const project = await createProject(profile.id, defaultWorkshopScene(profile.heroId), emptyRibbon(), `Проект ${count + 1}`);
+      const project = await createProject(
+        profile.id,
+        defaultWorkshopScene(profile.heroId),
+        emptyRibbon(),
+        `Проект ${count + 1}`,
+      );
       router.replace(`/play/workshop/${project.id}`);
     })();
   }, [profile, router]);

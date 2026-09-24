@@ -55,5 +55,12 @@ export function StageView({
     };
   }, []);
 
-  return <div ref={host} role="img" aria-label={label} className={cn('relative min-h-0 overflow-hidden', className)} />;
+  return (
+    <div
+      ref={host}
+      role="img"
+      aria-label={label}
+      className={cn('relative min-h-0 overflow-hidden', className)}
+    />
+  );
 }

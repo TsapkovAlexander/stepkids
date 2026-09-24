@@ -1,14 +1,18 @@
 import nextVitals from 'eslint-config-next/core-web-vitals';
-import base from '../../eslint.config.mjs';
+import nextTs from 'eslint-config-next/typescript';
 
 export default [
-  ...base,
   ...nextVitals,
+  ...nextTs,
   {
-    ignores: ['.next/**', 'playwright-report/**', 'test-results/**', 'next-env.d.ts'],
+    ignores: ['.next/**', 'playwright-report/**', 'test-results/**', 'next-env.d.ts', 'public/sw.js'],
   },
   {
     rules: {
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      '@typescript-eslint/consistent-type-imports': 'error',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
       // Native selects/checkboxes/radios are banned in product UI (see CLAUDE.md).
       'no-restricted-syntax': [
         'error',

@@ -76,10 +76,18 @@ export function ToolPalette({
   onTheme: (theme: GridTheme) => void;
   heroId: string;
 }) {
-  const arts = useMemo(() => Object.fromEntries(WORKSHOP_TOOLS.map((entry) => [entry, toolArt(entry, theme, heroId)])), [theme, heroId]);
+  const arts = useMemo(
+    () => Object.fromEntries(WORKSHOP_TOOLS.map((entry) => [entry, toolArt(entry, theme, heroId)])),
+    [theme, heroId],
+  );
   return (
     <div className="flex flex-col gap-3">
-      <div role="radiogroup" aria-label="Что поставить" onKeyDown={rovingRadioKeyDown} className="flex flex-wrap justify-center gap-2 rounded-3xl bg-white/60 p-2">
+      <div
+        role="radiogroup"
+        aria-label="Что поставить"
+        onKeyDown={rovingRadioKeyDown}
+        className="flex flex-wrap justify-center gap-2 rounded-3xl bg-white/60 p-2"
+      >
         {WORKSHOP_TOOLS.map((entry, index) => {
           const art = arts[entry];
           return (
@@ -100,12 +108,21 @@ export function ToolPalette({
               )}
             >
               {/* eslint-disable-next-line @next/next/no-img-element -- inline SVG art */}
-              {art ? <img src={art} alt="" className="h-12 w-12" draggable={false} /> : <Eraser aria-hidden size={34} />}
+              {art ? (
+                <img src={art} alt="" className="h-12 w-12" draggable={false} />
+              ) : (
+                <Eraser aria-hidden size={34} />
+              )}
             </button>
           );
         })}
       </div>
-      <div role="radiogroup" aria-label="Фон" onKeyDown={rovingRadioKeyDown} className="flex flex-wrap justify-center gap-2">
+      <div
+        role="radiogroup"
+        aria-label="Фон"
+        onKeyDown={rovingRadioKeyDown}
+        className="flex flex-wrap justify-center gap-2"
+      >
         {GRID_THEMES.map((entry, index) => (
           <button
             key={entry}
@@ -118,8 +135,13 @@ export function ToolPalette({
               voice.say(THEME_NAMES[entry]);
               onTheme(entry);
             }}
-            className={cn('h-target w-target rounded-full border-4', theme === entry ? 'border-brand' : 'border-white')}
-            style={{ background: `linear-gradient(135deg, ${THEMES[entry].tileA} 50%, ${THEMES[entry].board} 50%)` }}
+            className={cn(
+              'h-target w-target rounded-full border-4',
+              theme === entry ? 'border-brand' : 'border-white',
+            )}
+            style={{
+              background: `linear-gradient(135deg, ${THEMES[entry].tileA} 50%, ${THEMES[entry].board} 50%)`,
+            }}
           />
         ))}
       </div>

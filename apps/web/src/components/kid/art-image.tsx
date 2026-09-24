@@ -16,7 +16,15 @@ export function CharacterArt({
 }) {
   const src = useMemo(() => svgDataUrl(characterSvg(character, costume)), [character, costume]);
   // eslint-disable-next-line @next/next/no-img-element -- inline SVG data, nothing to optimise
-  return <img src={src} alt={alt} aria-hidden={alt ? undefined : true} draggable={false} className={cn('select-none', className)} />;
+  return (
+    <img
+      src={src}
+      alt={alt}
+      aria-hidden={alt ? undefined : true}
+      draggable={false}
+      className={cn('select-none', className)}
+    />
+  );
 }
 
 export function Avatar({ avatarId, className }: { avatarId: string; className?: string }) {
@@ -24,7 +32,10 @@ export function Avatar({ avatarId, className }: { avatarId: string; className?: 
   return (
     <span
       aria-hidden
-      className={cn('inline-flex items-center justify-center overflow-hidden rounded-full', className)}
+      className={cn(
+        'inline-flex items-center justify-center overflow-hidden rounded-full',
+        className,
+      )}
       style={{ background: avatarBackground(avatarId) }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element -- inline SVG data */}

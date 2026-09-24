@@ -64,5 +64,9 @@ export function useLevelPlayer(options: {
 
 function heroOf(level: LevelContent): string {
   if (level.scene.kind !== 'grid') return 'kitten';
-  return level.scene.actors.find((actor) => actor.id === 'hero')?.character ?? level.scene.actors[0]?.character ?? 'kitten';
+  return (
+    level.scene.actors.find((actor) => actor.id === 'hero')?.character ??
+    level.scene.actors[0]?.character ??
+    'kitten'
+  );
 }

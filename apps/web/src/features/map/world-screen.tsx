@@ -23,7 +23,13 @@ export function WorldScreen({ worldId }: { worldId: string }) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
         <p className="text-2xl font-black">Такого мира нет</p>
-        <KidButton voiceLabel="На карту" icon={MapIcon} caption="На карту" tone="brand" onClick={() => router.push('/play/map')} />
+        <KidButton
+          voiceLabel="На карту"
+          icon={MapIcon}
+          caption="На карту"
+          tone="brand"
+          onClick={() => router.push('/play/map')}
+        />
       </div>
     );
   }
@@ -34,17 +40,35 @@ export function WorldScreen({ worldId }: { worldId: string }) {
   const theme = THEMES[world.island as keyof typeof THEMES] ?? THEMES.meadow;
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col" style={{ background: `linear-gradient(${theme.sky}, ${theme.tileA})` }}>
+    <div
+      className="flex min-h-0 flex-1 flex-col"
+      style={{ background: `linear-gradient(${theme.sky}, ${theme.tileA})` }}
+    >
       <header className="flex items-center gap-3 p-3 sm:p-4">
-        <KidButton voiceLabel="На карту" icon={MapIcon} round tone="surface" onClick={() => router.push('/play/map')} />
+        <KidButton
+          voiceLabel="На карту"
+          icon={MapIcon}
+          round
+          tone="surface"
+          onClick={() => router.push('/play/map')}
+        />
         <h1 className="text-3xl font-black">{world.title}</h1>
-        <KidButton voiceLabel={world.voice ?? world.title} icon={Volume2} round silent onClick={() => voice.say(world.voice ?? world.title)} />
+        <KidButton
+          voiceLabel={world.voice ?? world.title}
+          icon={Volume2}
+          round
+          silent
+          onClick={() => voice.say(world.voice ?? world.title)}
+        />
       </header>
       <main className="min-h-0 flex-1 overflow-y-auto px-4 pb-10">
         {!lock.unlocked ? (
           <p className="mt-10 text-center text-2xl font-black">Этот мир пока закрыт</p>
         ) : (
-          <ol className="mx-auto grid max-w-3xl grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-5" aria-label="Задания">
+          <ol
+            className="mx-auto grid max-w-3xl grid-cols-3 gap-x-4 gap-y-6 sm:grid-cols-5"
+            aria-label="Задания"
+          >
             {world.levels.map((level, index) => {
               const open = isLevelUnlocked(world, index, progress, profile);
               const entry = progress.get(level.id);
@@ -75,7 +99,12 @@ export function WorldScreen({ worldId }: { worldId: string }) {
                   >
                     {open ? index + 1 : <Lock aria-hidden size={30} />}
                     {solved ? (
-                      <Check aria-hidden size={22} strokeWidth={4} className="absolute -top-1 -right-1 rounded-full bg-sun p-0.5 text-ink" />
+                      <Check
+                        aria-hidden
+                        size={22}
+                        strokeWidth={4}
+                        className="absolute -top-1 -right-1 rounded-full bg-sun p-0.5 text-ink"
+                      />
                     ) : null}
                   </button>
                   <Stars count={entry?.bestStars ?? 0} size={18} />

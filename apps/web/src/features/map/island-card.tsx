@@ -22,17 +22,27 @@ export function IslandCard({ world, lock, stars, maxStars, onOpen, className }: 
     <button
       type="button"
       onClick={onOpen}
-      aria-label={lock.unlocked ? `${world.title}. Звёзд ${stars} из ${maxStars}` : `${world.title}. Закрыто`}
-      className={cn('group relative flex w-full max-w-80 flex-col items-center rounded-[32px] p-2 transition active:scale-95', className)}
+      aria-label={
+        lock.unlocked ? `${world.title}. Звёзд ${stars} из ${maxStars}` : `${world.title}. Закрыто`
+      }
+      className={cn(
+        'group relative flex w-full max-w-80 flex-col items-center rounded-[32px] p-2 transition active:scale-95',
+        className,
+      )}
     >
       {/* eslint-disable-next-line @next/next/no-img-element -- inline SVG art */}
       <img
         src={src}
         alt=""
         draggable={false}
-        className={cn('w-full select-none drop-shadow-lg', lock.unlocked ? 'animate-float' : 'opacity-60 grayscale-[0.7]')}
+        className={cn(
+          'w-full select-none drop-shadow-lg',
+          lock.unlocked ? 'animate-float' : 'opacity-60 grayscale-[0.7]',
+        )}
       />
-      <span className="-mt-3 rounded-full bg-surface px-4 py-1.5 text-xl font-black shadow-md">{world.title}</span>
+      <span className="-mt-3 rounded-full bg-surface px-4 py-1.5 text-xl font-black shadow-md">
+        {world.title}
+      </span>
       <span className="mt-2 flex items-center gap-1 rounded-full bg-white/80 px-3 py-1 text-lg font-extrabold">
         {lock.unlocked ? (
           <>
@@ -44,7 +54,8 @@ export function IslandCard({ world, lock, stars, maxStars, onOpen, className }: 
             <Lock aria-hidden size={20} />
             {lock.starsNeeded > 0 ? (
               <>
-                ещё {lock.starsNeeded} <Star aria-hidden size={20} className="fill-sun text-sun-dark" />
+                ещё {lock.starsNeeded}{' '}
+                <Star aria-hidden size={20} className="fill-sun text-sun-dark" />
               </>
             ) : (
               'скоро'

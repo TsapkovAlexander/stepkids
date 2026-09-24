@@ -47,8 +47,13 @@ export function HeroPicker({ open, onOpenChange, current, unlocked, onPick }: He
                   hero.id === current ? 'border-brand' : 'border-transparent',
                 )}
               >
-                <CharacterArt character={hero.id} className={cn('h-28 w-28', !available && 'opacity-30 grayscale')} />
-                <span className="text-center text-base leading-tight font-extrabold">{hero.name}</span>
+                <CharacterArt
+                  character={hero.id}
+                  className={cn('h-28 w-28', !available && 'opacity-30 grayscale')}
+                />
+                <span className="text-center text-base leading-tight font-extrabold">
+                  {hero.name}
+                </span>
                 {!available ? (
                   <>
                     <Lock aria-hidden className="absolute top-3 right-3 text-ink-soft" size={28} />

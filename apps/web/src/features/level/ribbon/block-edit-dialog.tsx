@@ -5,27 +5,39 @@ import {
   speakNumber,
   type BlockDef,
   type BlockNode,
+  type ChoiceOption,
   type ParamDef,
   type Primitive,
 } from '@stepkids/blocks';
-import { ArrowLeft, ArrowRight, Trash2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CornerLeftUp, CornerRightDown, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { KidButton } from '@/components/kid/kid-button';
 import { KidDialog } from '@/components/kid/kid-dialog';
 import { rovingRadioKeyDown } from '@/components/kid/roving';
-import { blockIcon } from '@/lib/icons';
+import { BlockIcon } from '@/lib/icons';
 import { cn } from '@/lib/utils';
 import { voice } from '@/lib/voice/voice';
 import { categoryStyle } from './block-style';
 
+/** What can be done with the block where it sits; null hides the button. */
+export interface EditActions {
+  moveLeft?: (() => void) | null;
+  moveRight?: (() => void) | null;
+  /** Into the wrapper right before the block (spec: button «положить внутрь»). */
+  putInside?: (() => void) | null;
+  /** Out of the wrapper the block is in. */
+  takeOut?: (() => void) | null;
+  remove: (() => void) | null;
+  removeLabel?: string;
+}
+
 export interface BlockEditDialogProps {
   def: BlockDef;
   block: BlockNode;
-  canMoveLeft: boolean;
-  canMoveRight: boolean;
+  actions: EditActions;
+  /** Options of scene-dependent parameters (the actor's costumes). */
+  dynamicOptions?: (param: ParamDef) => ChoiceOption[];
   onChange: (name: string, value: Primitive) => void;
-  onMove: (delta: -1 | 1) => void;
-  onDelete: () => void;
   onClose: () => void;
 }
 
@@ -33,13 +45,12 @@ export interface BlockEditDialogProps {
 export function BlockEditDialog({
   def,
   block,
-  canMoveLeft,
-  canMoveRight,
+  actions,
+  dynamicOptions,
   onChange,
-  onMove,
-  onDelete,
   onClose,
 }: BlockEditDialogProps) {
+  const removeLabel = actions.removeLabel ?? 'Убрать блок';
   return (
     <KidDialog
       open
@@ -52,7 +63,11 @@ export function BlockEditDialog({
           <ParamPicker
             key={param.name}
             def={def}
-            param={param}
+            param={
+              param.kind === 'dynamic' && dynamicOptions
+                ? { ...param, kind: 'choice', options: dynamicOptions(param) }
+                : param
+            }
             value={block.args?.[param.name]}
             onChange={(value) => {
               onChange(param.name, value);
@@ -62,27 +77,55 @@ export function BlockEditDialog({
             }}
           />
         ))}
+        {actions.putInside || actions.takeOut ? (
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {actions.putInside ? (
+              <KidButton
+                voiceLabel="Положить внутрь повтора"
+                icon={CornerRightDown}
+                caption="Внутрь"
+                tone="sun"
+                onClick={actions.putInside}
+              />
+            ) : null}
+            {actions.takeOut ? (
+              <KidButton
+                voiceLabel="Вынуть наружу"
+                icon={CornerLeftUp}
+                caption="Наружу"
+                tone="sun"
+                onClick={actions.takeOut}
+              />
+            ) : null}
+          </div>
+        ) : null}
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <KidButton
-            voiceLabel="Сдвинуть влево"
-            icon={ArrowLeft}
-            disabled={!canMoveLeft}
-            onClick={() => onMove(-1)}
-          />
-          <KidButton
-            voiceLabel="Убрать блок"
-            icon={Trash2}
-            caption="Убрать"
-            tone="calm"
-            size="lg"
-            onClick={onDelete}
-          />
-          <KidButton
-            voiceLabel="Сдвинуть вправо"
-            icon={ArrowRight}
-            disabled={!canMoveRight}
-            onClick={() => onMove(1)}
-          />
+          {actions.moveLeft !== undefined ? (
+            <KidButton
+              voiceLabel="Сдвинуть влево"
+              icon={ArrowLeft}
+              disabled={!actions.moveLeft}
+              onClick={() => actions.moveLeft?.()}
+            />
+          ) : null}
+          {actions.remove ? (
+            <KidButton
+              voiceLabel={removeLabel}
+              icon={Trash2}
+              caption="Убрать"
+              tone="calm"
+              size="lg"
+              onClick={actions.remove}
+            />
+          ) : null}
+          {actions.moveRight !== undefined ? (
+            <KidButton
+              voiceLabel="Сдвинуть вправо"
+              icon={ArrowRight}
+              disabled={!actions.moveRight}
+              onClick={() => actions.moveRight?.()}
+            />
+          ) : null}
         </div>
       </div>
     </KidDialog>
@@ -125,7 +168,6 @@ function ParamPicker({
       return (
         <Choices label={param.voice}>
           {param.options.map((option, i) => {
-            const Icon = blockIcon(option.icon);
             return (
               <Choice
                 key={option.value}
@@ -136,7 +178,7 @@ function ParamPicker({
                 style={categoryStyle(def.category)}
                 wide
               >
-                <Icon aria-hidden size={30} strokeWidth={3} />
+                <BlockIcon name={option.icon} aria-hidden size={30} strokeWidth={3} />
                 <span className="text-sm font-extrabold">{option.label}</span>
               </Choice>
             );
@@ -208,7 +250,12 @@ function PhrasePicker({
 
 function Choices({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div role="radiogroup" aria-label={label} onKeyDown={rovingRadioKeyDown} className="flex flex-wrap justify-center gap-2">
+    <div
+      role="radiogroup"
+      aria-label={label}
+      onKeyDown={rovingRadioKeyDown}
+      className="flex flex-wrap justify-center gap-2"
+    >
       {children}
     </div>
   );

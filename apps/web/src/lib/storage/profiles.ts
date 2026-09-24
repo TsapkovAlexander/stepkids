@@ -32,7 +32,10 @@ export async function createProfile(input: { name: string; avatarId: string }): 
   return profile;
 }
 
-export async function updateProfile(id: string, patch: Partial<Omit<Profile, 'id' | 'createdAt'>>): Promise<void> {
+export async function updateProfile(
+  id: string,
+  patch: Partial<Omit<Profile, 'id' | 'createdAt'>>,
+): Promise<void> {
   const next = { ...patch, updatedAt: Date.now() };
   if (next.name !== undefined) {
     next.name = normalizeName(next.name);
@@ -45,12 +48,16 @@ export async function updateProfile(id: string, patch: Partial<Omit<Profile, 'id
 export async function deleteProfile(id: string): Promise<void> {
   const d = db();
   // Table names as strings: Dexie's typed overload recurses into the program AST types.
-  await d.transaction('rw', ['profiles', 'progress', 'attempts', 'drafts', 'projects', 'seenRewards'], async () => {
-    await d.progress.where('profileId').equals(id).delete();
-    await d.attempts.where('profileId').equals(id).delete();
-    await d.drafts.filter((draft) => draft.profileId === id).delete();
-    await d.projects.where('profileId').equals(id).delete();
-    await d.seenRewards.where('profileId').equals(id).delete();
-    await d.profiles.delete(id);
-  });
+  await d.transaction(
+    'rw',
+    ['profiles', 'progress', 'attempts', 'drafts', 'projects', 'seenRewards'],
+    async () => {
+      await d.progress.where('profileId').equals(id).delete();
+      await d.attempts.where('profileId').equals(id).delete();
+      await d.drafts.filter((draft) => draft.profileId === id).delete();
+      await d.projects.where('profileId').equals(id).delete();
+      await d.seenRewards.where('profileId').equals(id).delete();
+      await d.profiles.delete(id);
+    },
+  );
 }

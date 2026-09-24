@@ -9,9 +9,7 @@
     "minStars": 15
   },
   "reward": {
-    "characters": [
-      "robot"
-    ]
+    "characters": ["robot"]
   },
   "levels": [
     {
@@ -194,12 +192,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_left",
-          "motion_up",
-          "motion_down"
-        ],
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down"],
         "goals": [
           {
             "kind": "reach",
@@ -340,12 +333,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_left",
-          "motion_up",
-          "motion_down"
-        ],
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down"],
         "starterProgram": {
           "v": 1,
           "targets": [
@@ -536,12 +524,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_left",
-          "motion_up",
-          "motion_down"
-        ],
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down"],
         "goals": [
           {
             "kind": "reach",
@@ -699,12 +682,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_left",
-          "motion_up",
-          "motion_down"
-        ],
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down"],
         "goals": [
           {
             "kind": "reach",
@@ -863,12 +841,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_left",
-          "motion_up",
-          "motion_down"
-        ],
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down"],
         "goals": [
           {
             "kind": "reach",
@@ -981,12 +954,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_left",
-          "motion_up",
-          "motion_down"
-        ],
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down"],
         "starterProgram": {
           "v": 1,
           "targets": [
@@ -1157,48 +1125,19 @@
           ],
           "trail": true
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_left",
-          "motion_up",
-          "motion_down"
-        ],
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down"],
         "goals": [
           {
             "kind": "drawShape",
             "cells": [
-              [
-                0,
-                0
-              ],
-              [
-                1,
-                0
-              ],
-              [
-                2,
-                0
-              ],
-              [
-                0,
-                1
-              ],
-              [
-                2,
-                1
-              ],
-              [
-                0,
-                2
-              ],
-              [
-                1,
-                2
-              ],
-              [
-                2,
-                2
-              ]
+              [0, 0],
+              [1, 0],
+              [2, 0],
+              [0, 1],
+              [2, 1],
+              [0, 2],
+              [1, 2],
+              [2, 2]
             ]
           }
         ],
@@ -1364,13 +1303,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_left",
-          "motion_up",
-          "motion_down",
-          "looks_say"
-        ],
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down", "looks_say"],
         "goals": [
           {
             "kind": "collectAll"
@@ -1562,12 +1495,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_left",
-          "motion_up",
-          "motion_down"
-        ],
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down"],
         "goals": [
           {
             "kind": "collectAll"
@@ -1807,12 +1735,7 @@
             }
           ]
         },
-        "allowedBlocks": [
-          "motion_right",
-          "motion_left",
-          "motion_up",
-          "motion_down"
-        ],
+        "allowedBlocks": ["motion_right", "motion_left", "motion_up", "motion_down"],
         "goals": [
           {
             "kind": "collectAll"

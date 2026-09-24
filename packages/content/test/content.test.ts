@@ -15,10 +15,13 @@ describe('seed worlds', () => {
     );
   });
 
-  it('give tier 1 two worlds of ten levels', () => {
-    expect(SEED_WORLDS.map((world) => [world.id, world.levels.length])).toEqual([
-      ['meadow', 10],
-      ['forest', 10],
+  it('give tier 1 two worlds and tier 2 three worlds of ten levels', () => {
+    expect(SEED_WORLDS.map((world) => [world.id, world.tier, world.levels.length])).toEqual([
+      ['meadow', 1, 10],
+      ['forest', 1, 10],
+      ['snow', 2, 10],
+      ['beach', 2, 10],
+      ['candy', 2, 10],
     ]);
     expect(seedWorld('forest')?.title).toBe('Волшебный лес');
     expect(seedWorld('nope')).toBeUndefined();

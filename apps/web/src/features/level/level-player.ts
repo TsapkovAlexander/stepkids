@@ -16,7 +16,10 @@ export interface PlayerHooks {
   costumes: (character: string) => string[];
   /** Speaks a phrase in a character's voice; returns a promise for its end or null if silent. */
   speak: (text: string, character: string) => Promise<void> | null;
-  sound: (event: 'melody' | 'collect' | 'bump' | 'teleport' | 'win' | 'oops', detail?: string) => void;
+  sound: (
+    event: 'melody' | 'collect' | 'bump' | 'teleport' | 'win' | 'oops' | 'tap',
+    detail?: string,
+  ) => void;
   /** Reaction line for a finished run. */
   reaction: (result: RunResult) => string;
   onState: (state: PlayerState) => void;
@@ -82,7 +85,13 @@ export class LevelPlayer {
   }
 
   step(program: ProgramDoc): void {
-    if (!this.run || this.run.finished || this.state.status === 'idle' || this.state.status === 'won' || this.state.status === 'done') {
+    if (
+      !this.run ||
+      this.run.finished ||
+      this.state.status === 'idle' ||
+      this.state.status === 'won' ||
+      this.state.status === 'done'
+    ) {
       if (this.state.status === 'reacting') return;
       this.startRun(program, true);
     } else {
@@ -90,6 +99,15 @@ export class LevelPlayer {
       this.setState({ status: 'stepping' });
     }
     this.run?.runtime.grantStep();
+  }
+
+  /** "When the hero is tapped" scripts react only while a program runs. */
+  tap(actorId: string): void {
+    const run = this.run;
+    if (!run || run.finished || this.state.status !== 'running') return;
+    if (!run.world.hasActor(actorId)) return;
+    this.hooks.sound('tap');
+    run.runtime.tap(actorId);
   }
 
   stop(): void {
@@ -108,7 +126,8 @@ export class LevelPlayer {
   }
 
   private freshWorld(): GridWorld {
-    if (this.level.scene.kind !== 'grid') throw new Error('Only grid scenes are playable in the ribbon');
+    if (this.level.scene.kind !== 'grid')
+      throw new Error('Only grid scenes are playable in the ribbon');
     return new GridWorld(this.level.scene, { costumes: this.hooks.costumes });
   }
 
@@ -207,7 +226,11 @@ export class LevelPlayer {
     const dt = this.last ? Math.min(MAX_FRAME_MS, timestamp - this.last) : 0;
     this.last = timestamp;
     const run = this.run;
-    if (run && !run.finished && (this.state.status === 'running' || this.state.status === 'stepping')) {
+    if (
+      run &&
+      !run.finished &&
+      (this.state.status === 'running' || this.state.status === 'stepping')
+    ) {
       run.advance(dt * this.speed);
       this.displayTime = run.timeMs;
       const active = run.runtime.activeBlockIds();

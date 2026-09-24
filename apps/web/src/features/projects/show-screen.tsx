@@ -27,7 +27,11 @@ export function ShowScreen({ projectId }: { projectId: string }) {
 
   return (
     <div className="relative flex min-h-0 flex-1 flex-col bg-ink/90">
-      {project ? <ShowBody project={project} /> : <div className="flex-1" aria-busy={project === undefined} />}
+      {project ? (
+        <ShowBody project={project} />
+      ) : (
+        <div className="flex-1" aria-busy={project === undefined} />
+      )}
       <div className="absolute top-3 right-3">
         <KidButton voiceLabel="Закрыть показ" icon={X} round onClick={() => router.back()} />
       </div>
@@ -38,13 +42,33 @@ export function ShowScreen({ projectId }: { projectId: string }) {
 function ShowBody({ project }: { project: Project }) {
   const [stage, setStage] = useState<GridStage | null>(null);
   const { speed } = useDeviceSettings();
-  const level = useMemo(() => sandboxLevel(project.scene, defaultCatalog.all().map((def) => def.type), project.title), [project]);
-  const { state, player } = useLevelPlayer({ level, markers: NO_MARKERS, stage, speed, onFinish: () => undefined, sandbox: true });
+  const level = useMemo(
+    () =>
+      sandboxLevel(
+        project.scene,
+        defaultCatalog.all().map((def) => def.type),
+        project.title,
+      ),
+    [project],
+  );
+  const { state, player } = useLevelPlayer({
+    level,
+    markers: NO_MARKERS,
+    stage,
+    speed,
+    onFinish: () => undefined,
+    sandbox: true,
+  });
   return (
     <>
       <StageView className="min-h-0 flex-1" label={project.title} onReady={setStage} />
       <div className="p-3">
-        <RunControls status={state.status} onPlay={() => player?.play(project.program)} onStop={() => player?.stop()} onStep={() => player?.step(project.program)} />
+        <RunControls
+          status={state.status}
+          onPlay={() => player?.play(project.program)}
+          onStop={() => player?.stop()}
+          onStep={() => player?.step(project.program)}
+        />
       </div>
     </>
   );

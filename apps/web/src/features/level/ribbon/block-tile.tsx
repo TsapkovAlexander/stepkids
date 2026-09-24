@@ -2,11 +2,14 @@
 
 import type { BlockDef, BlockNode } from '@stepkids/blocks';
 import { forwardRef, type ButtonHTMLAttributes } from 'react';
-import { blockIcon } from '@/lib/icons';
+import { BlockIcon } from '@/lib/icons';
 import { cn } from '@/lib/utils';
 import { categoryStyle } from './block-style';
 
-export interface BlockTileProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label'> {
+export interface BlockTileProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  'aria-label'
+> {
   def: BlockDef;
   /** A placed block shows its arguments; palette tiles do not. */
   block?: BlockNode;
@@ -24,7 +27,6 @@ export const BlockTile = forwardRef<HTMLButtonElement, BlockTileProps>(function 
   { def, block, label, active, oops, glow, ghost, lifted, compact, className, style, ...rest },
   ref,
 ) {
-  const Icon = blockIcon(def.icon);
   const param = def.params[0];
   const value = block && param ? block.args?.[param.name] : undefined;
   const size = compact ? 'h-16 w-16' : 'h-block w-block';
@@ -46,8 +48,10 @@ export const BlockTile = forwardRef<HTMLButtonElement, BlockTileProps>(function 
       style={{ ...categoryStyle(def.category), ...style }}
       {...rest}
     >
-      <Icon aria-hidden size={compact ? 28 : 34} strokeWidth={3} />
-      <span className="max-w-full truncate px-1 text-[13px] leading-none font-extrabold">{def.label}</span>
+      <BlockIcon name={def.icon} aria-hidden size={compact ? 28 : 34} strokeWidth={3} />
+      <span className="max-w-full truncate px-1 text-[13px] leading-none font-extrabold">
+        {def.label}
+      </span>
       {typeof value === 'number' ? (
         <span className="absolute -top-2 -right-2 flex h-8 min-w-8 items-center justify-center rounded-full border-[3px] border-ink bg-white px-1 text-lg leading-none font-black">
           {value}
@@ -58,18 +62,25 @@ export const BlockTile = forwardRef<HTMLButtonElement, BlockTileProps>(function 
           {value}
         </span>
       ) : null}
-      {param?.kind === 'choice' && typeof value === 'string' ? <ChoiceBadge options={param.options} value={value} /> : null}
+      {param?.kind === 'choice' && typeof value === 'string' ? (
+        <ChoiceBadge options={param.options} value={value} />
+      ) : null}
     </button>
   );
 });
 
-function ChoiceBadge({ options, value }: { options: Array<{ value: string; icon: string }>; value: string }) {
+function ChoiceBadge({
+  options,
+  value,
+}: {
+  options: Array<{ value: string; icon: string }>;
+  value: string;
+}) {
   const option = options.find((entry) => entry.value === value);
   if (!option) return null;
-  const Icon = blockIcon(option.icon);
   return (
     <span className="absolute -top-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full border-[3px] border-ink bg-white">
-      <Icon aria-hidden size={18} strokeWidth={3} />
+      <BlockIcon name={option.icon} aria-hidden size={18} strokeWidth={3} />
     </span>
   );
 }

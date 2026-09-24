@@ -25,7 +25,11 @@ export const voice = {
     const settings = getSettings();
     if (settings.muted || settings.voiceVolume <= 0) return null;
     const profile = (options.character && characterById(options.character)?.voice) || NARRATOR;
-    return speech.speak(text, { pitch: profile.pitch, rate: profile.rate, volume: settings.voiceVolume });
+    return speech.speak(text, {
+      pitch: profile.pitch,
+      rate: profile.rate,
+      volume: settings.voiceVolume,
+    });
   },
 
   stop(): void {

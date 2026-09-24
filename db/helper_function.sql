@@ -166,7 +166,9 @@ as $$
       from jsonb_array_elements(p_goals) as goal
       where jsonb_typeof(goal) is distinct from 'object'
         or goal ->> 'kind' is null
-        or goal ->> 'kind' not in ('collectAll', 'reach', 'say', 'varEquals', 'withinTime', 'drawShape', 'manual')
+        or goal ->> 'kind' not in (
+          'collectAll', 'reach', 'say', 'varEquals', 'withinTime', 'drawShape', 'costume', 'hidden', 'manual'
+        )
     );
 $$;
 

@@ -35,9 +35,21 @@ export function ProfilePicker() {
       <header className="flex items-center justify-between gap-3 p-4">
         <div className="flex items-center gap-3">
           <h1 className="text-3xl font-black text-ink sm:text-4xl">{TITLE}</h1>
-          <KidButton voiceLabel={TITLE} icon={Volume2} round silent onClick={() => voice.say(TITLE)} />
+          <KidButton
+            voiceLabel={TITLE}
+            icon={Volume2}
+            round
+            silent
+            onClick={() => voice.say(TITLE)}
+          />
         </div>
-        <KidButton voiceLabel="Для взрослых" icon={Lock} round tone="surface" onClick={() => requestPass(() => router.push('/family'))} />
+        <KidButton
+          voiceLabel="Для взрослых"
+          icon={Lock}
+          round
+          tone="surface"
+          onClick={() => requestPass(() => router.push('/family'))}
+        />
       </header>
 
       <main className="min-h-0 flex-1 overflow-y-auto px-4 pb-6" aria-busy={profiles === undefined}>

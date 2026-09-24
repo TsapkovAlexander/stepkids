@@ -13,6 +13,8 @@ export type ReactionKey =
   | 'shapeMismatch'
   | 'variableMismatch'
   | 'tooSlow'
+  | 'wrongCostume'
+  | 'wrongVisibility'
   | 'empty'
   | 'timeout'
   | 'error'
@@ -36,6 +38,8 @@ export const REACTION_LINES: Record<ReactionKey, string[]> = {
   shapeMismatch: ['Рисунок получился другой.', 'Посмотри на картинку ещё раз.'],
   variableMismatch: ['Число получилось другое.'],
   tooSlow: ['Я не успел! Попробуем быстрее.'],
+  wrongCostume: ['Я не в том костюме!', 'Надо переодеться.'],
+  wrongVisibility: ['Ой, меня видно! А надо было спрятаться.', 'Меня не видно! Покажись.'],
   empty: ['Добавь блоки в программу!', 'Программа пустая. Нажми на блок внизу!'],
   timeout: ['Я устал ходить. Давай попробуем по-другому.'],
   error: ['Что-то пошло не так. Попробуем ещё раз!'],

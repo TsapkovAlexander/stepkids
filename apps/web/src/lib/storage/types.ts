@@ -32,7 +32,9 @@ export interface AttemptRecord {
   levelId: string;
   levelVersion: number;
   program: ProgramDoc;
-  result: Pick<RunResult, 'success' | 'blocks' | 'steps' | 'bumps' | 'timeMs'> & { failure: string | null };
+  result: Pick<RunResult, 'success' | 'blocks' | 'steps' | 'bumps' | 'timeMs'> & {
+    failure: string | null;
+  };
   stars: number;
   hintsUsed: number;
   durationMs: number;

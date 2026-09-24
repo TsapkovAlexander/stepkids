@@ -12,8 +12,14 @@ export function islandSvg(island: string): string {
   const tree = treeSvg(palette.tree);
   const decorations =
     theme === 'forest'
-      ? nested(tree, 38, 22, 52) + nested(tree, 70, 10, 60) + nested(tree, 112, 24, 50) + nested(rockSvg(), 140, 60, 30)
-      : nested(tree, 44, 18, 54) + nested(flowerSvg(), 104, 52, 34) + nested(flowerSvg(), 62, 62, 28) + nested(flagSvg(), 118, 14, 52);
+      ? nested(tree, 38, 22, 52) +
+        nested(tree, 70, 10, 60) +
+        nested(tree, 112, 24, 50) +
+        nested(rockSvg(), 140, 60, 30)
+      : nested(tree, 44, 18, 54) +
+        nested(flowerSvg(), 104, 52, 34) +
+        nested(flowerSvg(), 62, 62, 28) +
+        nested(flagSvg(), 118, 14, 52);
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150" stroke-linejoin="round">` +
     `<ellipse cx="100" cy="112" rx="94" ry="30" fill="#8fd6ff" opacity="0.7"/>` +

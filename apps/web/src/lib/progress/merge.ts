@@ -9,7 +9,10 @@ export interface AttemptSummary {
 }
 
 /** Folds one attempt into the level summary: best stars, first solve, counters. */
-export function mergeProgress(previous: LevelProgress | undefined, attempt: AttemptSummary): LevelProgress {
+export function mergeProgress(
+  previous: LevelProgress | undefined,
+  attempt: AttemptSummary,
+): LevelProgress {
   const solved = attempt.stars > 0;
   if (!previous) {
     return {

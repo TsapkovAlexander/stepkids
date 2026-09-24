@@ -15,10 +15,20 @@ export interface SpeechHandle {
   cancel(): void;
 }
 
-const PREFERRED = [/google/i, /milena/i, /yandex/i, /irina|svetlana|dariya|ekaterina/i, /premium|enhanced|natural/i];
+const PREFERRED = [
+  /google/i,
+  /milena/i,
+  /yandex/i,
+  /irina|svetlana|dariya|ekaterina/i,
+  /premium|enhanced|natural/i,
+];
 
-export function pickRussianVoice(voices: readonly SpeechSynthesisVoice[]): SpeechSynthesisVoice | null {
-  const russian = voices.filter((voice) => voice.lang.toLowerCase().replace('_', '-').startsWith('ru'));
+export function pickRussianVoice(
+  voices: readonly SpeechSynthesisVoice[],
+): SpeechSynthesisVoice | null {
+  const russian = voices.filter((voice) =>
+    voice.lang.toLowerCase().replace('_', '-').startsWith('ru'),
+  );
   if (russian.length === 0) return null;
   for (const pattern of PREFERRED) {
     const match = russian.find((voice) => pattern.test(voice.name));
@@ -38,7 +48,9 @@ class SpeechService {
   private initialised = false;
 
   private get synth(): SpeechSynthesis | null {
-    return typeof window !== 'undefined' && 'speechSynthesis' in window ? window.speechSynthesis : null;
+    return typeof window !== 'undefined' && 'speechSynthesis' in window
+      ? window.speechSynthesis
+      : null;
   }
 
   private init(): void {

@@ -12,14 +12,32 @@ export async function getProject(id: string): Promise<Project | undefined> {
   return db().projects.get(id);
 }
 
-export async function createProject(profileId: string, scene: GridSceneInput, program: ProgramDoc, title: string): Promise<Project> {
+export async function createProject(
+  profileId: string,
+  scene: GridSceneInput,
+  program: ProgramDoc,
+  title: string,
+): Promise<Project> {
   const now = Date.now();
-  const project: Project = { id: randomId(), profileId, title, scene, program, createdAt: now, updatedAt: now, sharedAt: null, synced: 0 };
+  const project: Project = {
+    id: randomId(),
+    profileId,
+    title,
+    scene,
+    program,
+    createdAt: now,
+    updatedAt: now,
+    sharedAt: null,
+    synced: 0,
+  };
   await db().projects.add(project);
   return project;
 }
 
-export async function saveProject(id: string, patch: Partial<Pick<Project, 'title' | 'scene' | 'program' | 'sharedAt'>>): Promise<void> {
+export async function saveProject(
+  id: string,
+  patch: Partial<Pick<Project, 'title' | 'scene' | 'program' | 'sharedAt'>>,
+): Promise<void> {
   const d = db();
   // Read-modify-write instead of update(): Dexie's key-path typing recurses into the program AST.
   await d.transaction('rw', 'projects', async () => {

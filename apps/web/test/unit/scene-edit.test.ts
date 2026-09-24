@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { gridSceneSchema } from '@stepkids/blocks';
-import { applyTool, defaultWorkshopScene, setTheme, type EditState } from '@/lib/workshop/scene-edit';
+import {
+  applyTool,
+  defaultWorkshopScene,
+  setTheme,
+  type EditState,
+} from '@/lib/workshop/scene-edit';
 
 const start = (): EditState => ({ scene: defaultWorkshopScene('bunny'), pendingPortal: null });
 

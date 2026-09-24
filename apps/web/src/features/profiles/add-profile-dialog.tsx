@@ -9,7 +9,15 @@ import { PROFILE_NAME_MAX, createProfile } from '@/lib/storage/profiles';
 import type { Profile } from '@/lib/storage/types';
 
 /** Parents add a child: a name and an avatar — no e-mail, no password. */
-export function AddProfileDialog({ open, onOpenChange, onCreated }: { open: boolean; onOpenChange: (open: boolean) => void; onCreated: (profile: Profile) => void }) {
+export function AddProfileDialog({
+  open,
+  onOpenChange,
+  onCreated,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onCreated: (profile: Profile) => void;
+}) {
   const [name, setName] = useState('');
   const [avatarId, setAvatarId] = useState('kitten');
   const [error, setError] = useState<string | null>(null);
@@ -30,7 +38,12 @@ export function AddProfileDialog({ open, onOpenChange, onCreated }: { open: bool
   };
 
   return (
-    <KidDialog open={open} onOpenChange={onOpenChange} title="Новый игрок" description="Имя и аватар ребёнка">
+    <KidDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      title="Новый игрок"
+      description="Имя и аватар ребёнка"
+    >
       <form
         className="flex flex-col gap-5"
         onSubmit={(event) => {
@@ -59,7 +72,17 @@ export function AddProfileDialog({ open, onOpenChange, onCreated }: { open: bool
             {error}
           </p>
         ) : null}
-        <KidButton type="submit" voiceLabel="Готово" tone="go" size="lg" icon={Check} caption="Готово" silent disabled={busy || !name.trim()} className="self-center" />
+        <KidButton
+          type="submit"
+          voiceLabel="Готово"
+          tone="go"
+          size="lg"
+          icon={Check}
+          caption="Готово"
+          silent
+          disabled={busy || !name.trim()}
+          className="self-center"
+        />
       </form>
     </KidDialog>
   );
