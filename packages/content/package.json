@@ -12,7 +12,8 @@
     "build:seeds": "tsx scripts/build-seeds.ts",
     "lint": "eslint src test scripts",
     "typecheck": "tsc -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run",
+    "build:sql-seed": "tsx scripts/build-sql-seed.ts"
   },
   "dependencies": {
     "@stepkids/blocks": "workspace:*"
