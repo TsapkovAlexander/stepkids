@@ -25,7 +25,7 @@ export const TIMING = {
   sayPerCharMs: 70,
   /** Bubble lingers a bit after the voice ends. */
   sayTailMs: 400,
-  melodyMs: 1600,
+  melodyMs: 2000,
   /** Fixed tick used by the headless checker (60 Hz). */
   tickMs: 1000 / 60,
 } as const;

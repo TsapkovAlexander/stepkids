@@ -1,0 +1,57 @@
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Bell,
+  Drum,
+  Eye,
+  EyeOff,
+  Flag,
+  Hand,
+  Hash,
+  Hourglass,
+  Infinity as InfinityIcon,
+  KeyRound,
+  MessageCircle,
+  Moon,
+  Music,
+  PartyPopper,
+  Pointer,
+  Repeat,
+  Shirt,
+  Star,
+  Users,
+  type LucideIcon,
+} from 'lucide-react';
+
+/** Block icons are named in the catalog (lucide kebab names); this maps them to components. */
+export const BLOCK_ICONS: Record<string, LucideIcon> = {
+  'arrow-right': ArrowRight,
+  'arrow-left': ArrowLeft,
+  'arrow-up': ArrowUp,
+  'arrow-down': ArrowDown,
+  bell: Bell,
+  drum: Drum,
+  eye: Eye,
+  'eye-off': EyeOff,
+  flag: Flag,
+  hand: Hand,
+  hash: Hash,
+  hourglass: Hourglass,
+  infinity: InfinityIcon,
+  'key-round': KeyRound,
+  'message-circle': MessageCircle,
+  moon: Moon,
+  music: Music,
+  'party-popper': PartyPopper,
+  pointer: Pointer,
+  repeat: Repeat,
+  shirt: Shirt,
+  star: Star,
+  users: Users,
+};
+
+export function blockIcon(name: string): LucideIcon {
+  return BLOCK_ICONS[name] ?? Hash;
+}
