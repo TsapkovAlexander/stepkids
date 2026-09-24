@@ -1,7 +1,5 @@
--- Migration: 00004_triggers
--- Date: 2026-09-24
--- Affects: function, trigger
--- -------------------------------------------------------
+-- Aggregate: trigger functions and triggers
+-- Source of truth for the current schema state; changes arrive through db/migrations.
 
 create or replace function public._touch_updated_at()
 returns trigger

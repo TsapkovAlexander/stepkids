@@ -1,4 +1,4 @@
--- Migration: 00002_core_schema
+-- Migration: 00003_core_schema
 -- Date: 2026-09-24
 -- Affects: table
 -- -------------------------------------------------------
@@ -26,7 +26,7 @@ create table public.families (
 
 create table public.family_members (
   family_id uuid not null references public.families (id) on delete cascade,
-  user_id uuid not null references auth.users (id) on delete cascade,
+  user_id uuid not null references public.users (id) on delete cascade,
   role public.family_role not null default 'parent',
   created_at timestamptz not null default now(),
   primary key (family_id, user_id)
@@ -34,7 +34,7 @@ create table public.family_members (
 create index family_members_user_idx on public.family_members (user_id);
 
 create table public.platform_roles (
-  user_id uuid primary key references auth.users (id) on delete cascade,
+  user_id uuid primary key references public.users (id) on delete cascade,
   role public.platform_role not null,
   granted_at timestamptz not null default now()
 );
@@ -56,6 +56,8 @@ create index child_profiles_family_idx on public.child_profiles (family_id);
 
 -- Content --------------------------------------------------------------------
 
+-- Files live on the server disk under STORAGE_DIR/<bucket>/<storage_path>; the web app serves
+-- them only after reading this row under RLS (family files) or publicly (content files).
 create table public.assets (
   id uuid primary key default gen_random_uuid(),
   kind public.asset_kind not null,
@@ -63,7 +65,7 @@ create table public.assets (
   storage_path text not null check (char_length(storage_path) between 1 and 300),
   owner_family_id uuid references public.families (id) on delete cascade,
   meta jsonb not null default '{}'::jsonb,
-  created_by uuid references auth.users (id) on delete set null,
+  created_by uuid references public.users (id) on delete set null,
   created_at timestamptz not null default now(),
   unique (bucket, storage_path),
   -- Family files live in the private bucket under the family folder.
@@ -118,7 +120,7 @@ create table public.levels (
   "order" integer not null default 0,
   status public.content_status not null default 'draft',
   current_version integer,
-  created_by uuid references auth.users (id) on delete set null,
+  created_by uuid references public.users (id) on delete set null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -141,7 +143,7 @@ create table public.level_versions (
   reference_solution jsonb check (reference_solution is null or public._valid_program(reference_solution)),
   -- Result of the headless pass check computed by the server: { ok, blocks, steps, stars, problems }
   check_result jsonb,
-  created_by uuid references auth.users (id) on delete set null,
+  created_by uuid references public.users (id) on delete set null,
   created_at timestamptz not null default now(),
   primary key (level_id, version)
 );

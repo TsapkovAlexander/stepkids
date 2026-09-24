@@ -1,5 +1,63 @@
--- Aggregate: tables, enums
--- Source of truth for the current schema state; changes arrive through supabase/migrations.
+-- Aggregate: roles, tables, enums
+-- Source of truth for the current schema state; changes arrive through db/migrations.
+
+do $$
+begin
+  if not exists (select 1 from pg_roles where rolname = 'stepkids_app') then
+    create role stepkids_app nologin noinherit nobypassrls;
+  end if;
+end $$;
+
+grant usage on schema public to stepkids_app;
+alter default privileges in schema public grant select, insert, update, delete on tables to stepkids_app;
+alter default privileges in schema public grant usage, select on sequences to stepkids_app;
+alter default privileges in schema public grant execute on functions to stepkids_app;
+
+create or replace function public._current_user_id()
+returns uuid
+language sql
+stable
+set search_path to 'public'
+as $$
+  select nullif(current_setting('app.user_id', true), '')::uuid;
+$$;
+
+create table public.users (
+  id uuid primary key default gen_random_uuid(),
+  email text not null check (email = lower(email) and email ~ '^[^@\s]+@[^@\s]+\.[^@\s]+$' and char_length(email) <= 254),
+  -- scrypt$N$r$p$salt$hash (see apps/web/src/server/auth/password.ts)
+  password_hash text not null,
+  display_name text check (char_length(display_name) <= 60),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  last_login_at timestamptz,
+  disabled_at timestamptz,
+  unique (email)
+);
+
+-- Opaque session tokens live only in the httpOnly cookie; the database keeps their SHA-256.
+create table public.sessions (
+  id uuid primary key default gen_random_uuid(),
+  token_hash bytea not null unique,
+  user_id uuid not null references public.users (id) on delete cascade,
+  created_at timestamptz not null default now(),
+  expires_at timestamptz not null,
+  last_seen_at timestamptz not null default now(),
+  user_agent text check (char_length(user_agent) <= 300)
+);
+create index sessions_user_idx on public.sessions (user_id);
+create index sessions_expires_idx on public.sessions (expires_at);
+
+-- Brute-force protection for sign-in: attempts per e-mail and per client address.
+create table public.login_attempts (
+  id bigint generated always as identity primary key,
+  email text not null,
+  ip text,
+  succeeded boolean not null,
+  created_at timestamptz not null default now()
+);
+create index login_attempts_email_idx on public.login_attempts (email, created_at desc);
+create index login_attempts_ip_idx on public.login_attempts (ip, created_at desc);
 
 create type public.family_role as enum ('owner', 'parent');
 create type public.platform_role as enum ('editor', 'admin');
@@ -21,7 +79,7 @@ create table public.families (
 
 create table public.family_members (
   family_id uuid not null references public.families (id) on delete cascade,
-  user_id uuid not null references auth.users (id) on delete cascade,
+  user_id uuid not null references public.users (id) on delete cascade,
   role public.family_role not null default 'parent',
   created_at timestamptz not null default now(),
   primary key (family_id, user_id)
@@ -29,7 +87,7 @@ create table public.family_members (
 create index family_members_user_idx on public.family_members (user_id);
 
 create table public.platform_roles (
-  user_id uuid primary key references auth.users (id) on delete cascade,
+  user_id uuid primary key references public.users (id) on delete cascade,
   role public.platform_role not null,
   granted_at timestamptz not null default now()
 );
@@ -51,6 +109,8 @@ create index child_profiles_family_idx on public.child_profiles (family_id);
 
 -- Content --------------------------------------------------------------------
 
+-- Files live on the server disk under STORAGE_DIR/<bucket>/<storage_path>; the web app serves
+-- them only after reading this row under RLS (family files) or publicly (content files).
 create table public.assets (
   id uuid primary key default gen_random_uuid(),
   kind public.asset_kind not null,
@@ -58,7 +118,7 @@ create table public.assets (
   storage_path text not null check (char_length(storage_path) between 1 and 300),
   owner_family_id uuid references public.families (id) on delete cascade,
   meta jsonb not null default '{}'::jsonb,
-  created_by uuid references auth.users (id) on delete set null,
+  created_by uuid references public.users (id) on delete set null,
   created_at timestamptz not null default now(),
   unique (bucket, storage_path),
   -- Family files live in the private bucket under the family folder.
@@ -113,7 +173,7 @@ create table public.levels (
   "order" integer not null default 0,
   status public.content_status not null default 'draft',
   current_version integer,
-  created_by uuid references auth.users (id) on delete set null,
+  created_by uuid references public.users (id) on delete set null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -136,7 +196,7 @@ create table public.level_versions (
   reference_solution jsonb check (reference_solution is null or public._valid_program(reference_solution)),
   -- Result of the headless pass check computed by the server: { ok, blocks, steps, stars, problems }
   check_result jsonb,
-  created_by uuid references auth.users (id) on delete set null,
+  created_by uuid references public.users (id) on delete set null,
   created_at timestamptz not null default now(),
   primary key (level_id, version)
 );

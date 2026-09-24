@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Applies the Supabase migrations and seed to a scratch Postgres and runs supabase/tests/*.sql.
+# Applies the database migrations and seed to a scratch Postgres and runs db/tests/*.sql.
 # Uses $DATABASE_URL when set (CI service container); otherwise starts a temporary local cluster.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -25,12 +25,12 @@ psql "$DATABASE_URL" -qX -v ON_ERROR_STOP=1 -c "drop database if exists stepkids
 TEST_URL="${DATABASE_URL%/*}/stepkids_test"
 run() { psql "$TEST_URL" -qX -v ON_ERROR_STOP=1 --set=VERBOSITY=terse -o /dev/null -f "$1"; }
 
-run supabase/tests/_shim.sql
-for migration in supabase/migrations/*.sql; do run "$migration"; done
-if [[ -f supabase/seed.sql ]]; then run supabase/seed.sql; fi
+for migration in db/migrations/*.sql; do run "$migration"; done
+run db/seed.sql
+run db/tests/_shim.sql
 
 status=0
-for test in supabase/tests/[0-9]*.sql; do
+for test in db/tests/[0-9]*.sql; do
   if run "$test"; then echo "ok   $test"; else echo "FAIL $test"; status=1; fi
 done
 exit $status

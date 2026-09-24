@@ -10,7 +10,7 @@ insert into public.platform_roles (user_id, role) values
   (tests.id('admin'), 'admin');
 
 -- Editor drafts a platform world with a level.
-set local role authenticated;
+set local role stepkids_app;
 select tests.login('editor');
 insert into public.worlds (id, tier_id, "order", title) values ('test-draft', 1, 9, 'Черновик');
 insert into public.levels (id, world_id, "order") values ('test-draft-01', 'test-draft', 1);
@@ -47,7 +47,7 @@ do $$ begin
   exception when check_violation then null;
   end;
 end $$;
-set local role authenticated;
+set local role stepkids_app;
 select tests.login('editor');
 do $$ begin
   assert (select count(*) from public.worlds where id = 'test-draft') = 1, 'editor sees the draft world';
@@ -61,7 +61,7 @@ end $$;
 reset role;
 
 -- Families see published platform worlds, not drafts; they cannot create platform content.
-set local role authenticated;
+set local role stepkids_app;
 select tests.login('alice');
 select tests.remember('fam_a', public.ensure_family('Семья Алисы'));
 do $$ begin
@@ -94,7 +94,7 @@ do $$ begin
 end $$;
 reset role;
 
-set local role authenticated;
+set local role stepkids_app;
 select tests.login('bob');
 select public.ensure_family('Семья Боба');
 do $$
@@ -114,7 +114,7 @@ end $$;
 reset role;
 
 -- Admin manages roles and the block catalog.
-set local role authenticated;
+set local role stepkids_app;
 select tests.login('admin');
 select public.set_platform_role('bob@example.com', 'editor');
 update public.block_types set enabled = false where id = 'sound_music';
@@ -125,7 +125,7 @@ end $$;
 select public.set_platform_role('bob@example.com', null);
 reset role;
 
-set local role authenticated;
+set local role stepkids_app;
 select tests.login('alice');
 do $$ begin
   assert not exists (select 1 from public.block_types where id = 'sound_music'), 'disabled blocks are hidden';

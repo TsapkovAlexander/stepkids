@@ -1,5 +1,5 @@
 -- Aggregate: helper functions (prefix _)
--- Source of truth for the current schema state; changes arrive through supabase/migrations.
+-- Source of truth for the current schema state; changes arrive through db/migrations.
 
 -- Number of blocks in a stack (with nested stacks and reporters), or -1 if malformed.
 create or replace function public._count_valid_blocks(p_blocks jsonb, p_depth integer)
@@ -179,7 +179,7 @@ stable
 security definer
 set search_path to 'public'
 as $$
-  select exists (select 1 from public.platform_roles where user_id = auth.uid() and role = 'admin');
+  select exists (select 1 from public.platform_roles where user_id = public._current_user_id() and role = 'admin');
 $$;
 
 create or replace function public._is_editor()
@@ -189,7 +189,7 @@ stable
 security definer
 set search_path to 'public'
 as $$
-  select exists (select 1 from public.platform_roles where user_id = auth.uid() and role in ('editor', 'admin'));
+  select exists (select 1 from public.platform_roles where user_id = public._current_user_id() and role in ('editor', 'admin'));
 $$;
 
 create or replace function public._is_family_member(p_family_id uuid)
@@ -200,7 +200,7 @@ security definer
 set search_path to 'public'
 as $$
   select exists (
-    select 1 from public.family_members where family_id = p_family_id and user_id = auth.uid()
+    select 1 from public.family_members where family_id = p_family_id and user_id = public._current_user_id()
   );
 $$;
 
@@ -213,7 +213,7 @@ set search_path to 'public'
 as $$
   select exists (
     select 1 from public.family_members
-    where family_id = p_family_id and user_id = auth.uid() and role = 'owner'
+    where family_id = p_family_id and user_id = public._current_user_id() and role = 'owner'
   );
 $$;
 
@@ -228,7 +228,7 @@ as $$
     select 1
     from public.child_profiles c
     join public.family_members m on m.family_id = c.family_id
-    where c.id = p_child_id and m.user_id = auth.uid()
+    where c.id = p_child_id and m.user_id = public._current_user_id()
   );
 $$;
 
@@ -267,26 +267,9 @@ as $$
   );
 $$;
 
--- First folder of a storage path as a family id; null when it is not a uuid.
-create or replace function public._family_folder(p_name text)
-returns uuid
-language plpgsql
-immutable
-set search_path to 'public'
-as $$
-declare
-  v_folder text := split_part(p_name, '/', 1);
-begin
-  if v_folder ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' then
-    return v_folder::uuid;
-  end if;
-  return null;
-end;
-$$;
-
 revoke execute on function public._is_admin(), public._is_editor(), public._is_family_member(uuid),
   public._is_family_owner(uuid), public._owns_child(uuid), public._can_read_world(text),
-  public._can_edit_world(text) from public, anon;
+  public._can_edit_world(text) from public;
 grant execute on function public._is_admin(), public._is_editor(), public._is_family_member(uuid),
   public._is_family_owner(uuid), public._owns_child(uuid), public._can_read_world(text),
-  public._can_edit_world(text) to authenticated, service_role;
+  public._can_edit_world(text) to stepkids_app;

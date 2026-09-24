@@ -1,5 +1,7 @@
--- Aggregate: trigger functions and triggers
--- Source of truth for the current schema state; changes arrive through supabase/migrations.
+-- Migration: 00005_triggers
+-- Date: 2026-09-24
+-- Affects: function, trigger
+-- -------------------------------------------------------
 
 create or replace function public._touch_updated_at()
 returns trigger

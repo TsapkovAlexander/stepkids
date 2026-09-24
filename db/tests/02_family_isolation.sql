@@ -7,7 +7,7 @@ select tests.remember('editor', tests.create_user('editor@example.com'));
 insert into public.platform_roles (user_id, role) values (tests.id('editor'), 'editor');
 
 -- Alice: family, child, attempt, project, family asset and a voice override.
-set local role authenticated;
+set local role stepkids_app;
 select tests.login('alice');
 select tests.remember('fam_a', public.ensure_family('Семья Алисы'));
 do $$ begin
@@ -32,25 +32,23 @@ do $$ begin
 end $$;
 reset role;
 insert into public.voice_lines (key, text) values ('task.meadow-01', 'Помоги котёнку дойти до флажка!');
-set local role authenticated;
+set local role stepkids_app;
 select tests.login('alice');
 insert into public.voice_overrides (family_id, voice_line_id, asset_id)
 select tests.id('fam_a'), v.id, a.id
 from public.voice_lines v, public.assets a
 where v.key = 'task.meadow-01' and a.owner_family_id = tests.id('fam_a');
-insert into storage.objects (bucket_id, name) values ('family', tests.id('fam_a')::text || '/voice/one.webm');
 
 do $$ begin
   assert (select count(*) from public.child_profiles) = 1, 'alice sees her child';
   assert (select best_stars from public.level_progress where child_id = tests.id('masha') and level_id = 'meadow-01') = 3,
     'progress is derived from attempts';
   assert (select count(*) from public.voice_overrides) = 1, 'alice sees her override';
-  assert (select count(*) from storage.objects where bucket_id = 'family') = 1, 'alice sees her file';
 end $$;
 reset role;
 
 -- Bob: his own family sees nothing of Alice's.
-set local role authenticated;
+set local role stepkids_app;
 select tests.login('bob');
 select tests.remember('fam_b', public.ensure_family('Семья Боба'));
 do $$
@@ -66,7 +64,6 @@ begin
   assert (select count(*) from public.projects) = 0, 'bob does not see projects';
   assert (select count(*) from public.assets where owner_family_id is not null) = 0, 'bob does not see family assets';
   assert (select count(*) from public.voice_overrides) = 0, 'bob does not see overrides';
-  assert (select count(*) from storage.objects where bucket_id = 'family') = 0, 'bob does not see files';
 
   update public.child_profiles set name = 'Взлом' where id = tests.id('masha');
   get diagnostics v_rows = row_count;
@@ -87,8 +84,9 @@ begin
   exception when insufficient_privilege then null;
   end;
   begin
-    insert into storage.objects (bucket_id, name) values ('family', tests.id('fam_a')::text || '/voice/evil.webm');
-    raise exception 'bob uploaded into alice''s folder';
+    insert into public.assets (kind, bucket, storage_path, owner_family_id)
+    values ('voice', 'family', tests.id('fam_a')::text || '/voice/evil.webm', tests.id('fam_a'));
+    raise exception 'bob registered a file in alice''s folder';
   exception when insufficient_privilege then null;
   end;
   begin
@@ -100,26 +98,30 @@ end $$;
 reset role;
 
 -- The content editor manages content but never sees family data.
-set local role authenticated;
+set local role stepkids_app;
 select tests.login('editor');
 do $$ begin
   assert (select count(*) from public.child_profiles) = 0, 'editor does not see children';
   assert (select count(*) from public.attempts) = 0, 'editor does not see attempts';
   assert (select count(*) from public.projects) = 0, 'editor does not see projects';
   assert (select count(*) from public.voice_overrides) = 0, 'editor does not see overrides';
-  assert (select count(*) from storage.objects where bucket_id = 'family') = 0, 'editor does not see family files';
+  assert (select count(*) from public.assets where owner_family_id is not null) = 0, 'editor does not see family files';
 end $$;
 reset role;
 
--- Anonymous visitors see nothing at all.
-set local role anon;
-select set_config('request.jwt.claims', '', true);
+-- Requests without a signed-in user see nothing at all.
+set local role stepkids_app;
+select tests.logout();
 do $$ begin
-  assert (select count(*) from public.worlds) = 0, 'anon sees no worlds';
-  assert (select count(*) from public.child_profiles) = 0, 'anon sees no children';
+  -- Published platform content is public; everything else is not.
+  assert (select count(*) from public.worlds where owner_family_id is not null or status <> 'published') = 0,
+    'no user: only published platform worlds';
+  assert (select count(*) from public.families) = 0, 'no user: no families';
+  assert (select count(*) from public.attempts) = 0, 'no user: no attempts';
+  assert (select count(*) from public.child_profiles) = 0, 'no user: no children';
   begin
     perform public.ensure_family('x');
-    raise exception 'anon created a family';
+    raise exception 'a family was created without a user';
   exception when insufficient_privilege then null;
   end;
 end $$;
@@ -127,7 +129,7 @@ reset role;
 
 -- A second parent in Alice's family sees the same child; the last owner cannot leave.
 select tests.remember('dad', tests.create_user('dad@example.com'));
-set local role authenticated;
+set local role stepkids_app;
 select tests.login('alice');
 insert into public.family_members (family_id, user_id, role) values (tests.id('fam_a'), tests.id('dad'), 'parent');
 do $$

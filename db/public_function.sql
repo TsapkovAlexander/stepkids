@@ -1,5 +1,5 @@
--- Aggregate: public functions (RPC)
--- Source of truth for the current schema state; changes arrive through supabase/migrations.
+-- Aggregate: public functions
+-- Source of truth for the current schema state; changes arrive through db/migrations.
 
 -- Creates the caller's family on first sign-in (idempotent) and returns its id.
 create or replace function public.ensure_family(p_name text default 'Моя семья')
@@ -9,7 +9,7 @@ security definer
 set search_path to 'public'
 as $$
 declare
-  v_user uuid := auth.uid();
+  v_user uuid := public._current_user_id();
   v_family uuid;
 begin
   if v_user is null then
@@ -27,8 +27,8 @@ begin
 end;
 $$;
 
-revoke execute on function public.ensure_family(text) from public, anon;
-grant execute on function public.ensure_family(text) to authenticated, service_role;
+revoke execute on function public.ensure_family(text) from public;
+grant execute on function public.ensure_family(text) to stepkids_app;
 
 -- Administrators grant or revoke editor/admin roles by e-mail.
 create or replace function public.set_platform_role(p_email text, p_role public.platform_role)
@@ -43,7 +43,7 @@ begin
   if not public._is_admin() then
     raise exception 'only administrators can change roles' using errcode = 'insufficient_privilege';
   end if;
-  select id into v_user from auth.users where lower(email) = lower(btrim(p_email));
+  select id into v_user from public.users where lower(email) = lower(btrim(p_email));
   if v_user is null then
     raise exception 'user not found' using errcode = 'no_data_found';
   end if;
@@ -56,5 +56,5 @@ begin
 end;
 $$;
 
-revoke execute on function public.set_platform_role(text, public.platform_role) from public, anon;
-grant execute on function public.set_platform_role(text, public.platform_role) to authenticated, service_role;
+revoke execute on function public.set_platform_role(text, public.platform_role) from public;
+grant execute on function public.set_platform_role(text, public.platform_role) to stepkids_app;

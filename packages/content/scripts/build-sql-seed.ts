@@ -66,6 +66,6 @@ for (const world of SEED_WORLDS) {
 }
 
 lines.push('commit;', '');
-const target = fileURLToPath(new URL('../../../supabase/seed.sql', import.meta.url));
+const target = fileURLToPath(new URL('../../../db/seed.sql', import.meta.url));
 writeFileSync(target, lines.join('\n'));
 console.warn(`wrote ${target}`);
