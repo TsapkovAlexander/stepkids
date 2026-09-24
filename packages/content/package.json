@@ -1,0 +1,25 @@
+{
+  "name": "@stepkids/content",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./seeds/*": "./seeds/*"
+  },
+  "scripts": {
+    "build:seeds": "tsx scripts/build-seeds.ts",
+    "lint": "eslint src test scripts",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@stepkids/blocks": "workspace:*"
+  },
+  "devDependencies": {
+    "@stepkids/engine": "workspace:*",
+    "tsx": "^4.20.0",
+    "vitest": "^5.0.1"
+  }
+}

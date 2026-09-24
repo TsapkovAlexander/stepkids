@@ -1,0 +1,1139 @@
+{
+  "id": "meadow",
+  "tier": 1,
+  "order": 1,
+  "title": "Солнечная полянка",
+  "voice": "Солнечная полянка. Здесь котёнок учится ходить по клеточкам.",
+  "island": "meadow",
+  "unlock": {},
+  "reward": {
+    "characters": [
+      "bunny"
+    ]
+  },
+  "levels": [
+    {
+      "id": "meadow-01",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 1,
+        "taskText": "Помоги котёнку дойти до флажка!",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 4,
+          "theme": "meadow",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 2,
+              "y": 1
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 2,
+            "y": 1
+          }
+        ],
+        "stars": {},
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми на стрелку вправо внизу экрана. Она попадёт в программу."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_right",
+            "text": "Вот эта стрелка! Нажми на неё два раза, а потом на зелёную кнопку."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "meadow-02",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "collect",
+        "tier": 1,
+        "taskText": "Собери звёздочку и дойди до флажка.",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 4,
+          "theme": "meadow",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "star1",
+              "kind": "star",
+              "x": 2,
+              "y": 1
+            },
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 5,
+              "y": 1
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right"
+        ],
+        "goals": [
+          {
+            "kind": "collectAll"
+          },
+          {
+            "kind": "reach",
+            "x": 5,
+            "y": 1
+          }
+        ],
+        "stars": {
+          "three": {
+            "maxBlocks": 5
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Посчитай клеточки до флажка. Сколько раз нужно шагнуть вправо?"
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_right",
+            "text": "Нужно пять шагов вправо."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 5
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "meadow-03",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 1,
+        "taskText": "Дойди до флажка одним блоком! Нажми на блок и выбери число.",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 4,
+          "theme": "meadow",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 5,
+              "y": 1
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right"
+        ],
+        "blockLimit": 1,
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 5,
+            "y": 1
+          }
+        ],
+        "stars": {},
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Нажми на стрелку в программе. Появятся цифры — выбери, сколько шагов сделать."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_right",
+            "text": "Добавь одну стрелку, а потом нажми на неё в программе и выбери пять."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри: одна стрелка и цифра пять."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 5
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "meadow-04",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 1,
+        "taskText": "Спустись вниз к флажку.",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 4,
+          "theme": "meadow",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 1,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 1,
+              "y": 3
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_down"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 1,
+            "y": 3
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 3
+          },
+          "three": {
+            "maxBlocks": 1
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Флажок внизу. Нужна стрелка вниз!"
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_down",
+            "text": "Стрелка вниз. Сколько клеточек до флажка?"
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 3
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "meadow-05",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "collect",
+        "tier": 1,
+        "taskText": "Собери звёзды: сначала вправо, потом вниз.",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 4,
+          "theme": "meadow",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "star1",
+              "kind": "star",
+              "x": 3,
+              "y": 0
+            },
+            {
+              "id": "star2",
+              "kind": "star",
+              "x": 3,
+              "y": 2
+            },
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 3,
+              "y": 3
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_down"
+        ],
+        "goals": [
+          {
+            "kind": "collectAll"
+          },
+          {
+            "kind": "reach",
+            "x": 3,
+            "y": 3
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 4
+          },
+          "three": {
+            "maxBlocks": 2
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Сначала иди вправо до звезды, а потом вниз до флажка."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_right",
+            "text": "Три шага вправо, потом три шага вниз."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 3
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 3
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "meadow-06",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 1,
+        "taskText": "Флажок наверху. Поднимись и иди влево!",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 4,
+          "theme": "meadow",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 5,
+              "y": 3,
+              "dir": "left"
+            }
+          ],
+          "items": [
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 2,
+              "y": 0
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 2,
+            "y": 0
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 4
+          },
+          "three": {
+            "maxBlocks": 2
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Флажок выше и левее котёнка. Нужны стрелки вверх и влево."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_up",
+            "text": "Сначала три шага вверх."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_up",
+                      "args": {
+                        "count": 3
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_left",
+                      "args": {
+                        "count": 3
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "meadow-07",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 1,
+        "taskText": "На дороге камень. Обойди его!",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 4,
+          "theme": "meadow",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "rock1",
+              "kind": "rock",
+              "x": 2,
+              "y": 1
+            },
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 4,
+              "y": 1
+            },
+            {
+              "id": "flower1",
+              "kind": "flower",
+              "x": 0,
+              "y": 3
+            },
+            {
+              "id": "flower2",
+              "kind": "flower",
+              "x": 5,
+              "y": 3
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 4,
+            "y": 1
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 5
+          },
+          "three": {
+            "maxBlocks": 3
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Через камень пройти нельзя. Обойди его снизу или сверху."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_down",
+            "text": "Шагни вниз, пройди под камнем и поднимись к флажку."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 1
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 4
+                      }
+                    },
+                    {
+                      "id": "b3",
+                      "type": "motion_up",
+                      "args": {
+                        "count": 1
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "meadow-08",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "collect",
+        "tier": 1,
+        "taskText": "Собери все звёздочки!",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 4,
+          "theme": "meadow",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "star1",
+              "kind": "star",
+              "x": 2,
+              "y": 0
+            },
+            {
+              "id": "star2",
+              "kind": "star",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "star3",
+              "kind": "star",
+              "x": 4,
+              "y": 2
+            },
+            {
+              "id": "flower1",
+              "kind": "flower",
+              "x": 0,
+              "y": 3
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down"
+        ],
+        "goals": [
+          {
+            "kind": "collectAll"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 5
+          },
+          "three": {
+            "maxBlocks": 3
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Иди от звезды к звезде: вправо, вниз и снова вправо."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_down",
+            "text": "После первой звезды нужно спуститься вниз."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b3",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "meadow-09",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 1,
+        "taskText": "Подойди к ёжику и скажи «Привет!»",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 4,
+          "theme": "meadow",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            },
+            {
+              "id": "npc1",
+              "character": "hedgehog",
+              "x": 4,
+              "y": 1,
+              "dir": "left"
+            }
+          ],
+          "items": [
+            {
+              "id": "flower1",
+              "kind": "flower",
+              "x": 0,
+              "y": 0
+            },
+            {
+              "id": "flower2",
+              "kind": "flower",
+              "x": 5,
+              "y": 3
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "looks_say"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 3,
+            "y": 1
+          },
+          {
+            "kind": "say",
+            "text": "Привет!"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 3
+          },
+          "three": {
+            "maxBlocks": 2
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Подойди к ёжику вплотную, а потом добавь блок «Скажи»."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "looks_say",
+            "text": "Вот блок «Скажи». Он говорит «Привет!»"
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 3
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "looks_say",
+                      "args": {
+                        "text": "Привет!"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "meadow-10",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "collect",
+        "tier": 1,
+        "taskText": "Собери все звёзды и приходи к флажку на праздник!",
+        "scene": {
+          "kind": "grid",
+          "cols": 8,
+          "rows": 5,
+          "theme": "meadow",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "star1",
+              "kind": "star",
+              "x": 2,
+              "y": 0
+            },
+            {
+              "id": "rock1",
+              "kind": "rock",
+              "x": 3,
+              "y": 0
+            },
+            {
+              "id": "rock2",
+              "kind": "rock",
+              "x": 3,
+              "y": 1
+            },
+            {
+              "id": "star2",
+              "kind": "star",
+              "x": 5,
+              "y": 1
+            },
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 7,
+              "y": 1
+            },
+            {
+              "id": "flower1",
+              "kind": "flower",
+              "x": 1,
+              "y": 2
+            },
+            {
+              "id": "rock3",
+              "kind": "rock",
+              "x": 3,
+              "y": 2
+            },
+            {
+              "id": "star3",
+              "kind": "star",
+              "x": 4,
+              "y": 3
+            },
+            {
+              "id": "flower2",
+              "kind": "flower",
+              "x": 0,
+              "y": 4
+            },
+            {
+              "id": "flower3",
+              "kind": "flower",
+              "x": 6,
+              "y": 4
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "looks_say",
+          "sound_music"
+        ],
+        "goals": [
+          {
+            "kind": "collectAll"
+          },
+          {
+            "kind": "reach",
+            "x": 7,
+            "y": 1
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 7
+          },
+          "three": {
+            "maxBlocks": 5
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Камни стоят стеной. Обойди их снизу."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_down",
+            "text": "После первой звезды спускайся вниз на три клеточки."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 3
+                      }
+                    },
+                    {
+                      "id": "b3",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 3
+                      }
+                    },
+                    {
+                      "id": "b4",
+                      "type": "motion_up",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b5",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

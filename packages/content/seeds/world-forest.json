@@ -1,0 +1,1908 @@
+{
+  "id": "forest",
+  "tier": 1,
+  "order": 2,
+  "title": "Волшебный лес",
+  "voice": "Волшебный лес. Тут есть ключи, двери и волшебные окошки.",
+  "island": "forest",
+  "unlock": {
+    "minStars": 15
+  },
+  "reward": {
+    "characters": [
+      "robot"
+    ]
+  },
+  "levels": [
+    {
+      "id": "forest-01",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 1,
+        "taskText": "Пройди по лесной тропинке к флажку.",
+        "scene": {
+          "kind": "grid",
+          "cols": 7,
+          "rows": 5,
+          "theme": "forest",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "tree1",
+              "kind": "tree",
+              "x": 2,
+              "y": 0
+            },
+            {
+              "id": "tree2",
+              "kind": "tree",
+              "x": 3,
+              "y": 0
+            },
+            {
+              "id": "tree3",
+              "kind": "tree",
+              "x": 4,
+              "y": 0
+            },
+            {
+              "id": "tree4",
+              "kind": "tree",
+              "x": 5,
+              "y": 0
+            },
+            {
+              "id": "tree5",
+              "kind": "tree",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "tree6",
+              "kind": "tree",
+              "x": 0,
+              "y": 1
+            },
+            {
+              "id": "tree7",
+              "kind": "tree",
+              "x": 4,
+              "y": 1
+            },
+            {
+              "id": "tree8",
+              "kind": "tree",
+              "x": 5,
+              "y": 1
+            },
+            {
+              "id": "tree9",
+              "kind": "tree",
+              "x": 6,
+              "y": 1
+            },
+            {
+              "id": "tree10",
+              "kind": "tree",
+              "x": 0,
+              "y": 2
+            },
+            {
+              "id": "tree11",
+              "kind": "tree",
+              "x": 1,
+              "y": 2
+            },
+            {
+              "id": "tree12",
+              "kind": "tree",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "tree13",
+              "kind": "tree",
+              "x": 4,
+              "y": 2
+            },
+            {
+              "id": "tree14",
+              "kind": "tree",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "tree15",
+              "kind": "tree",
+              "x": 6,
+              "y": 2
+            },
+            {
+              "id": "tree16",
+              "kind": "tree",
+              "x": 0,
+              "y": 3
+            },
+            {
+              "id": "tree17",
+              "kind": "tree",
+              "x": 1,
+              "y": 3
+            },
+            {
+              "id": "tree18",
+              "kind": "tree",
+              "x": 2,
+              "y": 3
+            },
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 6,
+              "y": 3
+            },
+            {
+              "id": "tree19",
+              "kind": "tree",
+              "x": 0,
+              "y": 4
+            },
+            {
+              "id": "tree20",
+              "kind": "tree",
+              "x": 1,
+              "y": 4
+            },
+            {
+              "id": "tree21",
+              "kind": "tree",
+              "x": 2,
+              "y": 4
+            },
+            {
+              "id": "tree22",
+              "kind": "tree",
+              "x": 3,
+              "y": 4
+            },
+            {
+              "id": "tree23",
+              "kind": "tree",
+              "x": 4,
+              "y": 4
+            },
+            {
+              "id": "tree24",
+              "kind": "tree",
+              "x": 5,
+              "y": 4
+            },
+            {
+              "id": "tree25",
+              "kind": "tree",
+              "x": 6,
+              "y": 4
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 6,
+            "y": 3
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 7
+          },
+          "three": {
+            "maxBlocks": 5
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Тропинка петляет. Иди по светлым клеточкам."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_down",
+            "text": "После первого шага вправо сверни вниз."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 1
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 1
+                      }
+                    },
+                    {
+                      "id": "b3",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b4",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b5",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 3
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "forest-02",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "fix",
+        "tier": 1,
+        "taskText": "Почини программу! Котёнок ошибся в одном числе.",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 4,
+          "theme": "forest",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "tree1",
+              "kind": "tree",
+              "x": 4,
+              "y": 0
+            },
+            {
+              "id": "tree2",
+              "kind": "tree",
+              "x": 0,
+              "y": 1
+            },
+            {
+              "id": "tree3",
+              "kind": "tree",
+              "x": 1,
+              "y": 1
+            },
+            {
+              "id": "tree4",
+              "kind": "tree",
+              "x": 2,
+              "y": 1
+            },
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 3,
+              "y": 3
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down"
+        ],
+        "starterProgram": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 3
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 3,
+            "y": 3
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 3
+          },
+          "three": {
+            "maxBlocks": 2
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Запусти программу и посмотри, где котёнок ошибается."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_right",
+            "text": "Нажми на стрелку вправо в программе и поменяй число."
+          },
+          {
+            "kind": "showStep",
+            "text": "Вправо нужно шагнуть три раза."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 3
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 3
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "forest-03",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 1,
+        "taskText": "Возьми ключик, чтобы открыть дверь!",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 3,
+          "theme": "forest",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "key1",
+              "kind": "key",
+              "x": 2,
+              "y": 0,
+              "color": "yellow"
+            },
+            {
+              "id": "tree1",
+              "kind": "tree",
+              "x": 4,
+              "y": 0
+            },
+            {
+              "id": "tree2",
+              "kind": "tree",
+              "x": 5,
+              "y": 0
+            },
+            {
+              "id": "door1",
+              "kind": "door",
+              "x": 4,
+              "y": 1,
+              "color": "yellow"
+            },
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 5,
+              "y": 1
+            },
+            {
+              "id": "tree3",
+              "kind": "tree",
+              "x": 0,
+              "y": 2
+            },
+            {
+              "id": "tree4",
+              "kind": "tree",
+              "x": 1,
+              "y": 2
+            },
+            {
+              "id": "tree5",
+              "kind": "tree",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "tree6",
+              "kind": "tree",
+              "x": 3,
+              "y": 2
+            },
+            {
+              "id": "tree7",
+              "kind": "tree",
+              "x": 4,
+              "y": 2
+            },
+            {
+              "id": "tree8",
+              "kind": "tree",
+              "x": 5,
+              "y": 2
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 5,
+            "y": 1
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 6
+          },
+          "three": {
+            "maxBlocks": 4
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Дверь откроется, только если у котёнка есть ключ."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_up",
+            "text": "Ключ наверху. Поднимись за ним, а потом иди к двери."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_up",
+                      "args": {
+                        "count": 1
+                      }
+                    },
+                    {
+                      "id": "b3",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 1
+                      }
+                    },
+                    {
+                      "id": "b4",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 3
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "forest-04",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 1,
+        "taskText": "Обойди озеро: котята не плавают!",
+        "scene": {
+          "kind": "grid",
+          "cols": 7,
+          "rows": 5,
+          "theme": "forest",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 1,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "water1",
+              "kind": "water",
+              "x": 2,
+              "y": 1
+            },
+            {
+              "id": "water2",
+              "kind": "water",
+              "x": 3,
+              "y": 1
+            },
+            {
+              "id": "water3",
+              "kind": "water",
+              "x": 4,
+              "y": 1
+            },
+            {
+              "id": "water4",
+              "kind": "water",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "water5",
+              "kind": "water",
+              "x": 3,
+              "y": 2
+            },
+            {
+              "id": "water6",
+              "kind": "water",
+              "x": 4,
+              "y": 2
+            },
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 6,
+              "y": 2
+            },
+            {
+              "id": "tree1",
+              "kind": "tree",
+              "x": 0,
+              "y": 4
+            },
+            {
+              "id": "tree2",
+              "kind": "tree",
+              "x": 6,
+              "y": 4
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 6,
+            "y": 2
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 5
+          },
+          "three": {
+            "maxBlocks": 3
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Озеро можно обойти сверху или снизу."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_up",
+            "text": "Поднимись на одну клеточку и иди вправо над озером."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_up",
+                      "args": {
+                        "count": 1
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 6
+                      }
+                    },
+                    {
+                      "id": "b3",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 2
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "forest-05",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "reach",
+        "tier": 1,
+        "taskText": "Прыгни в волшебное окошко!",
+        "scene": {
+          "kind": "grid",
+          "cols": 7,
+          "rows": 4,
+          "theme": "forest",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "portal1",
+              "kind": "teleport",
+              "x": 2,
+              "y": 0,
+              "pair": "p1"
+            },
+            {
+              "id": "tree1",
+              "kind": "tree",
+              "x": 3,
+              "y": 0
+            },
+            {
+              "id": "tree2",
+              "kind": "tree",
+              "x": 0,
+              "y": 1
+            },
+            {
+              "id": "tree3",
+              "kind": "tree",
+              "x": 1,
+              "y": 1
+            },
+            {
+              "id": "tree4",
+              "kind": "tree",
+              "x": 2,
+              "y": 1
+            },
+            {
+              "id": "tree5",
+              "kind": "tree",
+              "x": 3,
+              "y": 1
+            },
+            {
+              "id": "tree6",
+              "kind": "tree",
+              "x": 3,
+              "y": 2
+            },
+            {
+              "id": "tree7",
+              "kind": "tree",
+              "x": 3,
+              "y": 3
+            },
+            {
+              "id": "portal2",
+              "kind": "teleport",
+              "x": 4,
+              "y": 3,
+              "pair": "p1"
+            },
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 6,
+              "y": 3
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down"
+        ],
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 6,
+            "y": 3
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 3
+          },
+          "three": {
+            "maxBlocks": 2
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Окошко переносит котёнка к другому такому же окошку."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_right",
+            "text": "Шагни вправо в окошко, а потом ещё вправо к флажку."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 4
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "forest-06",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "shorten",
+        "tier": 1,
+        "taskText": "Сделай программу короче! Для трёх звёзд хватит двух блоков.",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 4,
+          "theme": "forest",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "flag1",
+              "kind": "flag",
+              "x": 5,
+              "y": 2
+            },
+            {
+              "id": "tree1",
+              "kind": "tree",
+              "x": 0,
+              "y": 3
+            },
+            {
+              "id": "tree2",
+              "kind": "tree",
+              "x": 1,
+              "y": 3
+            },
+            {
+              "id": "tree3",
+              "kind": "tree",
+              "x": 4,
+              "y": 3
+            },
+            {
+              "id": "tree4",
+              "kind": "tree",
+              "x": 5,
+              "y": 3
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down"
+        ],
+        "starterProgram": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 1
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 1
+                      }
+                    },
+                    {
+                      "id": "b3",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 1
+                      }
+                    },
+                    {
+                      "id": "b4",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 1
+                      }
+                    },
+                    {
+                      "id": "b5",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 1
+                      }
+                    },
+                    {
+                      "id": "b6",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 1
+                      }
+                    },
+                    {
+                      "id": "b7",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 1
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "goals": [
+          {
+            "kind": "reach",
+            "x": 5,
+            "y": 2
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 4
+          },
+          "three": {
+            "maxBlocks": 2
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Одинаковые стрелки можно заменить одной с числом."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_right",
+            "text": "Оставь одну стрелку вправо и выбери число пять."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 5
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 2
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "forest-07",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "draw",
+        "tier": 1,
+        "taskText": "Нарисуй дорожкой такой же квадрат!",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 4,
+          "theme": "forest",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "tree1",
+              "kind": "tree",
+              "x": 0,
+              "y": 3
+            },
+            {
+              "id": "tree2",
+              "kind": "tree",
+              "x": 5,
+              "y": 3
+            }
+          ],
+          "trail": true
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down"
+        ],
+        "goals": [
+          {
+            "kind": "drawShape",
+            "cells": [
+              [
+                0,
+                0
+              ],
+              [
+                1,
+                0
+              ],
+              [
+                2,
+                0
+              ],
+              [
+                0,
+                1
+              ],
+              [
+                2,
+                1
+              ],
+              [
+                0,
+                2
+              ],
+              [
+                1,
+                2
+              ],
+              [
+                2,
+                2
+              ]
+            ]
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 6
+          },
+          "three": {
+            "maxBlocks": 4
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Котёнок оставляет следы. Обойди квадрат по краю и вернись назад."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_down",
+            "text": "Вправо, вниз, влево и вверх — по две клеточки."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b3",
+                      "type": "motion_left",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b4",
+                      "type": "motion_up",
+                      "args": {
+                        "count": 2
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "forest-08",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "collect",
+        "tier": 1,
+        "taskText": "Собери звёзды и крикни «Ура!»",
+        "scene": {
+          "kind": "grid",
+          "cols": 6,
+          "rows": 4,
+          "theme": "forest",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "star1",
+              "kind": "star",
+              "x": 2,
+              "y": 0
+            },
+            {
+              "id": "tree1",
+              "kind": "tree",
+              "x": 0,
+              "y": 1
+            },
+            {
+              "id": "tree2",
+              "kind": "tree",
+              "x": 1,
+              "y": 1
+            },
+            {
+              "id": "tree3",
+              "kind": "tree",
+              "x": 3,
+              "y": 1
+            },
+            {
+              "id": "tree4",
+              "kind": "tree",
+              "x": 4,
+              "y": 1
+            },
+            {
+              "id": "star2",
+              "kind": "star",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "star3",
+              "kind": "star",
+              "x": 4,
+              "y": 2
+            },
+            {
+              "id": "tree5",
+              "kind": "tree",
+              "x": 0,
+              "y": 3
+            },
+            {
+              "id": "tree6",
+              "kind": "tree",
+              "x": 1,
+              "y": 3
+            },
+            {
+              "id": "tree7",
+              "kind": "tree",
+              "x": 3,
+              "y": 3
+            },
+            {
+              "id": "tree8",
+              "kind": "tree",
+              "x": 4,
+              "y": 3
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down",
+          "looks_say"
+        ],
+        "goals": [
+          {
+            "kind": "collectAll"
+          },
+          {
+            "kind": "say",
+            "text": "Ура!"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 6
+          },
+          "three": {
+            "maxBlocks": 4
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Сначала собери звёзды, а в конце добавь блок «Скажи»."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "looks_say",
+            "text": "Нажми на блок «Скажи» в программе и выбери «Ура!»"
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b3",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b4",
+                      "type": "looks_say",
+                      "args": {
+                        "text": "Ура!"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "forest-09",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "collect",
+        "tier": 1,
+        "taskText": "Найди ключ, открой дверь и собери все звёзды!",
+        "scene": {
+          "kind": "grid",
+          "cols": 8,
+          "rows": 6,
+          "theme": "forest",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "tree1",
+              "kind": "tree",
+              "x": 3,
+              "y": 0
+            },
+            {
+              "id": "tree2",
+              "kind": "tree",
+              "x": 1,
+              "y": 1
+            },
+            {
+              "id": "tree3",
+              "kind": "tree",
+              "x": 3,
+              "y": 1
+            },
+            {
+              "id": "star1",
+              "kind": "star",
+              "x": 5,
+              "y": 1
+            },
+            {
+              "id": "tree4",
+              "kind": "tree",
+              "x": 1,
+              "y": 2
+            },
+            {
+              "id": "star2",
+              "kind": "star",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "tree5",
+              "kind": "tree",
+              "x": 3,
+              "y": 2
+            },
+            {
+              "id": "tree6",
+              "kind": "tree",
+              "x": 1,
+              "y": 3
+            },
+            {
+              "id": "door1",
+              "kind": "door",
+              "x": 3,
+              "y": 3,
+              "color": "yellow"
+            },
+            {
+              "id": "star3",
+              "kind": "star",
+              "x": 4,
+              "y": 3
+            },
+            {
+              "id": "tree7",
+              "kind": "tree",
+              "x": 6,
+              "y": 3
+            },
+            {
+              "id": "key1",
+              "kind": "key",
+              "x": 1,
+              "y": 4,
+              "color": "yellow"
+            },
+            {
+              "id": "tree8",
+              "kind": "tree",
+              "x": 3,
+              "y": 4
+            },
+            {
+              "id": "tree9",
+              "kind": "tree",
+              "x": 3,
+              "y": 5
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down"
+        ],
+        "goals": [
+          {
+            "kind": "collectAll"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 8
+          },
+          "three": {
+            "maxBlocks": 6
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Ключ лежит внизу. Без ключа дверь не откроется."
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_down",
+            "text": "Спустись вниз за ключом."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 4
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b3",
+                      "type": "motion_up",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b4",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 1
+                      }
+                    },
+                    {
+                      "id": "b5",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 3
+                      }
+                    },
+                    {
+                      "id": "b6",
+                      "type": "motion_up",
+                      "args": {
+                        "count": 2
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "forest-10",
+      "content": {
+        "schemaVersion": 1,
+        "kind": "collect",
+        "tier": 1,
+        "taskText": "Большое приключение: собери все звёзды!",
+        "scene": {
+          "kind": "grid",
+          "cols": 8,
+          "rows": 6,
+          "theme": "forest",
+          "actors": [
+            {
+              "id": "hero",
+              "character": "kitten",
+              "x": 0,
+              "y": 0,
+              "dir": "right"
+            }
+          ],
+          "items": [
+            {
+              "id": "water1",
+              "kind": "water",
+              "x": 2,
+              "y": 0
+            },
+            {
+              "id": "portal1",
+              "kind": "teleport",
+              "x": 4,
+              "y": 0,
+              "pair": "p1"
+            },
+            {
+              "id": "star1",
+              "kind": "star",
+              "x": 6,
+              "y": 0
+            },
+            {
+              "id": "star2",
+              "kind": "star",
+              "x": 0,
+              "y": 1
+            },
+            {
+              "id": "water2",
+              "kind": "water",
+              "x": 2,
+              "y": 1
+            },
+            {
+              "id": "water3",
+              "kind": "water",
+              "x": 2,
+              "y": 2
+            },
+            {
+              "id": "tree1",
+              "kind": "tree",
+              "x": 4,
+              "y": 2
+            },
+            {
+              "id": "door1",
+              "kind": "door",
+              "x": 5,
+              "y": 2,
+              "color": "yellow"
+            },
+            {
+              "id": "tree2",
+              "kind": "tree",
+              "x": 6,
+              "y": 2
+            },
+            {
+              "id": "water4",
+              "kind": "water",
+              "x": 2,
+              "y": 3
+            },
+            {
+              "id": "tree3",
+              "kind": "tree",
+              "x": 4,
+              "y": 3
+            },
+            {
+              "id": "star3",
+              "kind": "star",
+              "x": 5,
+              "y": 3
+            },
+            {
+              "id": "tree4",
+              "kind": "tree",
+              "x": 6,
+              "y": 3
+            },
+            {
+              "id": "portal2",
+              "kind": "teleport",
+              "x": 1,
+              "y": 4,
+              "pair": "p1"
+            },
+            {
+              "id": "water5",
+              "kind": "water",
+              "x": 2,
+              "y": 4
+            },
+            {
+              "id": "tree5",
+              "kind": "tree",
+              "x": 4,
+              "y": 4
+            },
+            {
+              "id": "tree6",
+              "kind": "tree",
+              "x": 5,
+              "y": 4
+            },
+            {
+              "id": "tree7",
+              "kind": "tree",
+              "x": 6,
+              "y": 4
+            },
+            {
+              "id": "key1",
+              "kind": "key",
+              "x": 7,
+              "y": 4,
+              "color": "yellow"
+            },
+            {
+              "id": "water6",
+              "kind": "water",
+              "x": 2,
+              "y": 5
+            }
+          ]
+        },
+        "allowedBlocks": [
+          "motion_right",
+          "motion_left",
+          "motion_up",
+          "motion_down"
+        ],
+        "goals": [
+          {
+            "kind": "collectAll"
+          }
+        ],
+        "stars": {
+          "two": {
+            "maxBlocks": 9
+          },
+          "three": {
+            "maxBlocks": 7
+          }
+        },
+        "hints": [
+          {
+            "kind": "say",
+            "text": "Через речку не перейти. Найди волшебное окошко!"
+          },
+          {
+            "kind": "highlight",
+            "blockType": "motion_down",
+            "text": "Сначала вниз за звездой и к окошку."
+          },
+          {
+            "kind": "showStep",
+            "text": "Смотри, я покажу первый шаг."
+          }
+        ],
+        "reference": {
+          "v": 1,
+          "targets": [
+            {
+              "target": "hero",
+              "scripts": [
+                {
+                  "id": "main",
+                  "blocks": [
+                    {
+                      "id": "start",
+                      "type": "event_start"
+                    },
+                    {
+                      "id": "b1",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 4
+                      }
+                    },
+                    {
+                      "id": "b2",
+                      "type": "motion_right",
+                      "args": {
+                        "count": 4
+                      }
+                    },
+                    {
+                      "id": "b3",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 4
+                      }
+                    },
+                    {
+                      "id": "b4",
+                      "type": "motion_up",
+                      "args": {
+                        "count": 3
+                      }
+                    },
+                    {
+                      "id": "b5",
+                      "type": "motion_left",
+                      "args": {
+                        "count": 2
+                      }
+                    },
+                    {
+                      "id": "b6",
+                      "type": "motion_down",
+                      "args": {
+                        "count": 2
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
